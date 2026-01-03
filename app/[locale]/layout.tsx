@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, Cairo } from "next/font/google"; // Import Cairo
-import "./globals.css";
+import "../../globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ToastProvider from "@/components/providers/ToastProvider";
