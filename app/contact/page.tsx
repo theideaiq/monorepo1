@@ -22,9 +22,6 @@ export default function ContactPage() {
     
     setLoading(false);
     toast.success("Message sent! We'll contact you shortly.");
-    
-    // Reset form (Optional)
-    // (e.target as HTMLFormElement).reset();
   };
 
   return (
@@ -64,4 +61,42 @@ export default function ContactPage() {
               <div className="w-12 h-12 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MapPin size={24} />
               </div>
-              <h3 className="
+              <h3 className="font-bold text-brand-dark">Visit Us</h3>
+              <p className="text-slate-400 text-sm mb-2">Come say hello</p>
+              <p className="text-brand-dark font-medium">Al-Mansour District, Baghdad</p>
+            </Card>
+
+          </div>
+
+          {/* RIGHT: The Form */}
+          <Card className="lg:col-span-2 p-8 h-fit">
+            <h2 className="text-2xl font-bold text-brand-dark mb-6">Send us a Message</h2>
+            
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Input label="First Name" placeholder="Ahmed" required />
+                <Input label="Last Name" placeholder="Ali" required />
+              </div>
+              
+              <Input label="Email Address" type="email" placeholder="ahmed@example.com" required />
+              
+              <Textarea label="Message" placeholder="How can we help you?" required />
+
+              <div className="flex justify-end">
+                <Button 
+                  type="submit" 
+                  isLoading={loading}
+                  className="w-full md:w-auto"
+                  variant="dark"
+                >
+                  Send Message <Send size={18} className="ml-2" />
+                </Button>
+              </div>
+            </form>
+          </Card>
+
+        </div>
+      </div>
+    </div>
+  );
+}
