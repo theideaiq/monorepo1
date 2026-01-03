@@ -1,65 +1,111 @@
-import Image from "next/image";
+import React from 'react';
+import Image from 'next/image';
+import { ShoppingBag, GraduationCap, PlayCircle, Users, ArrowRight } from 'lucide-react';
 
 export default function Home() {
+  const services = [
+    {
+      title: "The Megastore",
+      domain: "https://megastore.theideaiq.com",
+      description: "Premium products, curated for your lifestyle.",
+      icon: <ShoppingBag className="w-8 h-8 text-brand-pink" />,
+      action: "Shop Now"
+    },
+    {
+      title: "The Academy",
+      domain: "https://academy.theideaiq.com",
+      description: "Courses, exchange programs, and cultural articles.",
+      icon: <GraduationCap className="w-8 h-8 text-brand-pink" />,
+      action: "Learn More"
+    },
+    {
+      title: "IDEA Plus",
+      domain: "https://plus.theideaiq.com",
+      description: "Rentals for books, games, and movies. Delivered.",
+      icon: <PlayCircle className="w-8 h-8 text-brand-pink" />,
+      action: "Start Renting"
+    },
+    {
+      title: "The Network",
+      domain: "https://connect.theideaiq.com",
+      description: "Professional networking and HR management solutions.",
+      icon: <Users className="w-8 h-8 text-brand-pink" />,
+      action: "Connect"
+    }
+  ];
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-slate-50 text-brand-dark font-sans selection:bg-brand-yellow selection:text-brand-pink">
+      
+      {/* Navigation */}
+      <nav className="fixed w-full bg-white/95 backdrop-blur-md border-b border-slate-100 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            <div className="flex items-center gap-3">
+              {/* Logo Area */}
+              <div className="relative w-10 h-10 overflow-hidden rounded-lg">
+                 <Image src="/logo.webp" alt="The IDEA Logo" fill className="object-cover" />
+              </div>
+              <span className="text-2xl font-bold tracking-tight text-brand-pink">
+                The IDEA<span className="text-brand-yellow">.</span>
+              </span>
+            </div>
+            <button className="hidden md:block bg-brand-dark text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition">
+              Sign In
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="pt-40 pb-24 px-4 bg-brand-pink text-white text-center rounded-b-[3rem] shadow-xl">
+        <div className="max-w-4xl mx-auto">
+          <div className="inline-block mb-6 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-brand-yellow font-medium text-sm">
+            Welcome to the Ecosystem
+          </div>
+          <h1 className="text-4xl md:text-7xl font-bold tracking-tight mb-8 leading-tight">
+            Innovation for <br/>
+            <span className="text-brand-yellow">Every Aspect</span> of Life.
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-lg text-white/90 max-w-2xl mx-auto mb-10 font-light">
+            Bridging the gap between commerce, education, entertainment, and professional growth in Iraq.
           </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="#services" className="bg-brand-yellow text-brand-dark px-8 py-4 rounded-full font-bold hover:bg-yellow-400 transition shadow-lg flex items-center justify-center gap-2">
+              Explore Services <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Services Grid */}
+      <section id="services" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-bold text-brand-dark">The Ecosystem</h2>
+          <p className="mt-4 text-slate-500">One account. Endless possibilities.</p>
         </div>
-      </main>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {services.map((service, index) => (
+            <a 
+              key={index} 
+              href={service.domain}
+              className="group p-8 bg-white border border-slate-100 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-pink-50 flex items-center justify-center mb-6 group-hover:bg-brand-pink transition-colors duration-300">
+                <div className="group-hover:text-white transition-colors">
+                  {service.icon}
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-brand-dark mb-2">{service.title}</h3>
+              <p className="text-slate-500 text-sm mb-8 leading-relaxed">{service.description}</p>
+              <div className="flex items-center text-sm font-bold text-brand-pink group-hover:gap-2 transition-all">
+                {service.action} <ArrowRight className="w-4 h-4 ml-1" />
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
