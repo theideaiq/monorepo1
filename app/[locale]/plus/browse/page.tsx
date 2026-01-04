@@ -147,11 +147,13 @@ function CategoryRow({ title, items, onRent, rentingId, icon }: any) {
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 text-center">
                  <p className="text-xs text-slate-300 mb-2 line-clamp-3">{item.description}</p>
                  <Button 
-                   size="sm" 
-                   onClick={() => onRent(item)}
-                   isLoading={rentingId === item.id}
-                   className="w-full bg-white text-black hover:bg-brand-pink hover:text-white"
-                 >
+  // REMOVED size="sm" - Fixed the build error
+  onClick={() => onRent(item)}
+  isLoading={rentingId === item.id}
+  // Added "h-9 text-sm" here to make it small manually
+  className="w-full h-9 text-sm bg-white text-black hover:bg-brand-pink hover:text-white"
+>
+                   
                    {rentingId === item.id ? 'Requesting...' : 'Rent Now'}
                  </Button>
               </div>
