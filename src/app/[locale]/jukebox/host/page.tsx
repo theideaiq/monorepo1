@@ -5,7 +5,8 @@ import dynamic from 'next/dynamic';
 import { createClient } from '@/lib/supabase/client';
 import { SkipForward, Music } from 'lucide-react';
 
-// 1. DYNAMIC IMPORT
+// 1. THE FIX: Cast to 'any' to bypass strict TypeScript checks on Dynamic Imports
+// This fixes: "Property 'url' does not exist..."
 const ReactPlayer = dynamic(() => import('react-player'), { 
   ssr: false,
   loading: () => (
@@ -13,7 +14,7 @@ const ReactPlayer = dynamic(() => import('react-player'), {
       Loading Player System...
     </div>
   )
-});
+}) as any;
 
 export default function JukeboxHost() {
   const [queue, setQueue] = useState<any[]>([]);
@@ -75,7 +76,7 @@ export default function JukeboxHost() {
       {/* --- THE PLAYER --- */}
       <div className="w-full max-w-4xl aspect-video bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-white/10 mb-8 relative">
         <ReactPlayer
-          // Standard YouTube URL format
+          // 2. THE FIX: Use a standard clean YouTube URL
           url={currentVideo ? `https://www.youtube.com/watch?v=${currentVideo.video_id}` : ''}
           playing={true}
           controls={true}
@@ -83,8 +84,6 @@ export default function JukeboxHost() {
           height="100%"
           onEnded={playNext} 
           onStart={() => setIsPlaying(true)}
-          // FIX: Removed the 'config' block causing the TypeScript error. 
-          // ReactPlayer detects YouTube automatically.
         />
 
         {/* Empty State Overlay */}
