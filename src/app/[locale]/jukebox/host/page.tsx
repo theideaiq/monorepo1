@@ -2,16 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import Image from 'next/image'; // Import Image
 import { createClient } from '@/lib/supabase/client';
 import { SkipForward, Music } from 'lucide-react';
 
-// 1. THE FIX: Cast to 'any' to bypass strict TypeScript checks on Dynamic Imports
-// This fixes: "Property 'url' does not exist..."
+// Dynamic Import to prevent Hydration Errors
 const ReactPlayer = dynamic(() => import('react-player'), { 
   ssr: false,
   loading: () => (
     <div className="w-full h-full bg-gray-900 flex items-center justify-center text-gray-500 animate-pulse">
-      Loading Player System...
+      Loading System...
     </div>
   )
 }) as any;
@@ -23,7 +23,6 @@ export default function JukeboxHost() {
   
   const supabase = createClient();
 
-  // 2. REALTIME LISTENER
   useEffect(() => {
     fetchQueue();
 
@@ -37,7 +36,6 @@ export default function JukeboxHost() {
     return () => { supabase.removeChannel(channel); };
   }, []);
 
-  // 3. AUTO-PLAY LOGIC
   useEffect(() => {
     if (!currentVideo && queue.length > 0) {
       playNext();
@@ -73,10 +71,10 @@ export default function JukeboxHost() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-8 font-sans">
       
-      {/* --- THE PLAYER --- */}
+      {/* --- PLAYER --- */}
       <div className="w-full max-w-4xl aspect-video bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-white/10 mb-8 relative">
         <ReactPlayer
-          // 2. THE FIX: Use a standard clean YouTube URL
+          // ⚠️ Fixed URL format to standard YouTube
           url={currentVideo ? `https://www.youtube.com/watch?v=${currentVideo.video_id}` : ''}
           playing={true}
           controls={true}
@@ -86,7 +84,6 @@ export default function JukeboxHost() {
           onStart={() => setIsPlaying(true)}
         />
 
-        {/* Empty State Overlay */}
         {!currentVideo && (
            <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-600 z-10 bg-gray-900">
              <Music size={64} className="mb-4 opacity-50" />
@@ -96,7 +93,7 @@ export default function JukeboxHost() {
         )}
       </div>
 
-      {/* --- INFO SECTION --- */}
+      {/* --- INFO --- */}
       <div className="text-center mb-12">
         <h1 className="text-3xl md:text-4xl font-black mb-2 tracking-tight">
             {currentVideo?.title || "Silence in the Room"}
@@ -106,7 +103,7 @@ export default function JukeboxHost() {
         </div>
       </div>
 
-      {/* --- UP NEXT LIST --- */}
+      {/* --- UP NEXT --- */}
       <div className="w-full max-w-2xl">
         <div className="flex justify-between items-end mb-4 border-b border-white/10 pb-2">
            <h3 className="text-gray-400 text-sm uppercase tracking-widest font-bold">Up Next ({queue.length})</h3>
@@ -124,9 +121,18 @@ export default function JukeboxHost() {
             queue.map((item, i) => (
                 <div key={item.id} className="flex items-center gap-4 p-3 bg-white/5 rounded-lg border border-white/5">
                   <span className="text-gray-500 font-mono text-sm w-6">#{i + 1}</span>
+                  
+                  {/* ✅ Using Proper Next.js Image Component */}
                   <div className="relative w-12 h-8 rounded overflow-hidden flex-shrink-0">
-                      <img src={item.thumbnail} className="object-cover w-full h-full" alt="thumb" />
+                      <Image 
+                        src={item.thumbnail} 
+                        alt="thumbnail"
+                        fill
+                        className="object-cover"
+                        sizes="48px"
+                      />
                   </div>
+                  
                   <p className="truncate font-medium text-gray-300">{item.title}</p>
                 </div>
             ))
