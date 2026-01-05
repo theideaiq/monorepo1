@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -6,7 +7,7 @@ import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
 import { SkipForward, Music } from 'lucide-react';
 
-// Dynamic import to avoid SSR issues
+// Dynamic import to avoid SSR / hydration issues
 const ReactPlayer = dynamic(() => import('react-player'), {
   ssr: false,
   loading: () => (
@@ -23,7 +24,7 @@ export default function JukeboxHost() {
 
   const supabase = createClient();
 
-  /* ---------------- Realtime Queue ---------------- */
+  /* ---------------- REALTIME QUEUE ---------------- */
 
   useEffect(() => {
     fetchQueue();
@@ -48,7 +49,7 @@ export default function JukeboxHost() {
     }
   }, [queue, currentVideo]);
 
-  /* ---------------- Helpers ---------------- */
+  /* ---------------- HELPERS ---------------- */
 
   const fetchQueue = async () => {
     const { data, error } = await supabase
@@ -73,7 +74,7 @@ export default function JukeboxHost() {
 
     setCurrentVideo(next);
     setQueue(remaining);
-    setIsPlaying(false); // ensures light thumbnail shows
+    setIsPlaying(false); // ensures preview is shown
 
     await supabase
       .from('jukebox_queue')
@@ -91,22 +92,40 @@ export default function JukeboxHost() {
         {currentVideo ? (
           <ReactPlayer
             url={`https://www.youtube.com/watch?v=${currentVideo.video_id}`}
-            light={currentVideo.thumbnail || true}
+
+            /* 🔑 Force a real thumbnail (fixes iOS black screen) */
+            light={`https://img.youtube.com/vi/${currentVideo.video_id}/hqdefault.jpg`}
+
             playing={isPlaying}
             controls
             width="100%"
             height="100%"
+
+            /* Required for mobile */
             onClickPreview={() => setIsPlaying(true)}
             onStart={() => setIsPlaying(true)}
             onEnded={playNext}
+
+            /* TypeScript-safe */
             onError={(e: unknown) => {
               console.error('ReactPlayer error:', e);
             }}
+
+            /* Visible play button */
+            playIcon={
+              <div className="bg-black/60 p-5 rounded-full backdrop-blur">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="white">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            }
+
             config={{
               youtube: {
                 playerVars: {
                   rel: 0,
                   modestbranding: 1,
+                  playsinline: 1, // iOS Safari fix
                 },
               },
             }}
@@ -171,7 +190,7 @@ export default function JukeboxHost() {
 
                 <div className="relative w-12 h-8 rounded overflow-hidden flex-shrink-0">
                   <Image
-                    src={item.thumbnail}
+                    src={`https://img.youtube.com/vi/${item.video_id}/default.jpg`}
                     alt="thumbnail"
                     fill
                     className="object-cover"
