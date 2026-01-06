@@ -1,4 +1,7 @@
 {
+  "Common": {
+    "close": "Close"
+  },
   "Nav": {
     "home": "Home",
     "store": "Megastore",

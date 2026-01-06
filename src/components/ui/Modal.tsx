@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 interface ModalProps {
   isOpen: boolean;
@@ -12,6 +13,8 @@ interface ModalProps {
 }
 
 export function Modal({ isOpen, onClose, title, children }: ModalProps) {
+  const t = useTranslations('Common');
+
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -61,6 +64,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
                 <button
                   onClick={onClose}
                   className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-brand-pink"
+                  aria-label={t('close')}
                 >
                   <X size={20} />
                 </button>
