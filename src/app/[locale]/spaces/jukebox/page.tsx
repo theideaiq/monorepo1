@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Search, Plus, Check, Disc3, Music, Info, Mic2, Radio, Clock } from 'lucide-react';
+import { Search, Plus, Check, Disc3, Music, Info, Radio, Clock } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/Button';
 import { motion, AnimatePresence } from 'framer-motion';

@@ -8,6 +8,7 @@ import { SkipForward, Play, Volume2, VolumeX, Radio, Disc3, Mic2, Pause, AlertCi
 import { motion } from 'framer-motion';
 
 // Revert to standard import as submodule might be problematic in this env
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false }) as any;
 
 interface QueueItem {
@@ -33,6 +34,7 @@ export default function JukeboxHost() {
   const [volume, setVolume] = useState(1);
 
   const supabase = createClient();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const playerRef = useRef<any>(null);
 
   // Derived origin for player config
@@ -83,6 +85,7 @@ export default function JukeboxHost() {
     }
   }, [queue, currentVideo, isReady, playNext]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handlePlayerError = (e: any) => {
     console.error("ReactPlayer Error:", e);
     setError("Playback Error");

@@ -35,7 +35,6 @@ export async function searchYouTube(query: string) {
   const detailsData = await detailsRes.json();
 
   // 3. FILTER & FORMAT
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return detailsData.items
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .filter((video: any) => {

@@ -41,7 +41,7 @@ const ERAS: Era[] = [
     title: "The Grey Legend",
     subtitle: "The PlayStation 1 Revolution",
     description: "The startup sound that defined a generation. Gaming cafes (salas) opened on every corner. We learned teamwork from Crash Bash and rivalry from Tekken 3.",
-    color: "#a855f7", 
+    color: "#a855f7",
     bg: "bg-[#111827]",
     icon: Disc,
     memories: ["Pepsiman", "Winning Eleven 3", "Crash Bandicoot", "Tekken 3", "Driver"],
@@ -54,7 +54,7 @@ const ERAS: Era[] = [
     title: "The Golden Age",
     subtitle: "San Andreas & The Black Box",
     description: "The PS2 era. The world got bigger. We spent hours in GTA San Andreas (often the modded 'Baghdad' versions) and perfected our master league teams.",
-    color: "#3b82f6", 
+    color: "#3b82f6",
     bg: "bg-black",
     icon: MonitorPlay,
     memories: ["GTA: San Andreas", "God of War", "Need for Speed: Underground", "PES 6"],
@@ -129,7 +129,7 @@ const useRetroSound = () => {
 
 
 // 3. Era Section (Now with Audio Props)
-const EraSection = ({ data, index, playSound }: { data: Era, index: number, playSound: (t: any) => void }) => {
+const EraSection = ({ data, index, playSound }: { data: Era, index: number, playSound: (t: "square" | "sawtooth" | "sine") => void }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { margin: "-30% 0px -30% 0px" });
 
@@ -183,7 +183,7 @@ const EraSection = ({ data, index, playSound }: { data: Era, index: number, play
           </div>
 
           <div className="mt-8 italic text-slate-500 font-mono text-xs">
-            "{data.quote}"
+            &quot;{data.quote}&quot;
           </div>
         </motion.div>
 

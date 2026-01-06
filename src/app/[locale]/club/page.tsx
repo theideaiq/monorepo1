@@ -1,11 +1,9 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { 
-  Send, BookOpen, Music, Coffee, Trophy, 
+  Send, BookOpen, Music, Trophy,
   Briefcase, Gamepad2, Palette, Clapperboard, 
   Users, Sparkles, ArrowRight, Megaphone
 } from 'lucide-react';
@@ -135,7 +133,7 @@ export default function ClubPage() {
           </h1>
           
           <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            More than a group chat. It’s a digital clubhouse for innovators, artists, gamers, and thinkers. Pick your rooms, join the conversation.
+            More than a group chat. It&apos;s a digital clubhouse for innovators, artists, gamers, and thinkers. Pick your rooms, join the conversation.
           </p>
 
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -196,7 +194,7 @@ export default function ClubPage() {
         >
            <Sparkles size={40} className="text-brand-yellow mx-auto mb-6" />
            <h2 className="text-3xl font-black mb-4">Ready to jump in?</h2>
-           <p className="text-slate-400 mb-8">The community is active 24/7. Don't miss out on the next big idea or late-night gaming session.</p>
+           <p className="text-slate-400 mb-8">The community is active 24/7. Don&apos;t miss out on the next big idea or late-night gaming session.</p>
            <a href={telegramLink} target="_blank" rel="noopener noreferrer" className="inline-block">
               <span className="text-brand-pink font-bold flex items-center gap-2 hover:gap-4 transition-all">
                 Open Telegram <ArrowRight size={20} />

@@ -1,12 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Disc3, Terminal, Tv, Zap, RefreshCw, Power } from 'lucide-react';
+import { Terminal, RefreshCw } from 'lucide-react';
 
 /* --- ASSETS & CONFIG --- */
-const BRAND_PINK = '#E91E63';
-const BRAND_YELLOW = '#FFD600';
 const SCENES = ['VINYL', 'TERMINAL', 'TV'];
 
 // Konami Code Sequence
@@ -20,11 +18,19 @@ export default function ComingSoonPage() {
   // 1. Randomize Scene on Mount (Client-Side Only)
   useEffect(() => {
     const randomScene = SCENES[Math.floor(Math.random() * SCENES.length)];
-    setCurrentScene(randomScene);
+    const timeout = setTimeout(() => {
+        setCurrentScene(randomScene);
+    }, 0);
+    return () => clearTimeout(timeout);
   }, []);
 
   // 2. Easter Egg Listener (Konami Code)
   useEffect(() => {
+    const activateGodMode = () => {
+      setIsGodMode(true);
+      alert("🔓 GOD MODE ACTIVATED: You have unlocked the secret timeline.");
+    };
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === KONAMI_CODE[konamiIndex]) {
         const nextIndex = konamiIndex + 1;
@@ -41,11 +47,6 @@ export default function ComingSoonPage() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [konamiIndex]);
-
-  const activateGodMode = () => {
-    setIsGodMode(true);
-    alert("🔓 GOD MODE ACTIVATED: You have unlocked the secret timeline.");
-  };
 
   const switchScene = () => {
     const nextIndex = (SCENES.indexOf(currentScene || '') + 1) % SCENES.length;
@@ -69,17 +70,17 @@ export default function ComingSoonPage() {
         
         {/* --- SCENE 1: THE VINYL LOUNGE --- */}
         {currentScene === 'VINYL' && (
-          <VinylScene key="vinyl" isGodMode={isGodMode} />
+          <VinylScene key="vinyl" />
         )}
 
         {/* --- SCENE 2: THE TERMINAL --- */}
         {currentScene === 'TERMINAL' && (
-          <TerminalScene key="terminal" isGodMode={isGodMode} />
+          <TerminalScene key="terminal" />
         )}
 
         {/* --- SCENE 3: THE RETRO TV --- */}
         {currentScene === 'TV' && (
-          <TVScene key="tv" isGodMode={isGodMode} />
+          <TVScene key="tv" />
         )}
 
       </AnimatePresence>
@@ -98,12 +99,11 @@ export default function ComingSoonPage() {
    SCENE 1: THE VINYL PLAYER
    Interactive: Click to stop/start record
    ========================================= */
-function VinylScene({ isGodMode }: { isGodMode: boolean }) {
+function VinylScene() {
   const [isPlaying, setIsPlaying] = useState(true);
-  const [scratchAngle, setScratchAngle] = useState(0);
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="min-h-screen flex flex-col items-center justify-center bg-neutral-900 relative"
     >
@@ -135,7 +135,7 @@ function VinylScene({ isGodMode }: { isGodMode: boolean }) {
            <div className="w-32 h-32 bg-brand-pink rounded-full flex items-center justify-center text-center p-2 shadow-inner">
               <div>
                 <p className="text-[10px] font-bold text-black uppercase">The IDEA LP</p>
-                <p className="text-[8px] font-mono text-white/80">Side B: "Future Loading"</p>
+                <p className="text-[8px] font-mono text-white/80">Side B: &quot;Future Loading&quot;</p>
               </div>
            </div>
         </motion.div>
@@ -157,20 +157,21 @@ function VinylScene({ isGodMode }: { isGodMode: boolean }) {
    SCENE 2: THE TERMINAL (Hacker)
    Interactive: Typing effect
    ========================================= */
-function TerminalScene({ isGodMode }: { isGodMode: boolean }) {
+function TerminalScene() {
   const [lines, setLines] = useState<string[]>([]);
-  const bootSequence = [
-    "Initializing IDEA_KERNEL v2.0...",
-    "Loading assets... [OK]",
-    "Connecting to Bagdad Mainframe... [CONNECTED]",
-    "Optimizing User Experience... [IN PROGRESS]",
-    "Refactoring Reality... [DONE]",
-    "Almost there...",
-  ];
 
   useEffect(() => {
+    const bootSequence = [
+        "Initializing IDEA_KERNEL v2.0...",
+        "Loading assets... [OK]",
+        "Connecting to Bagdad Mainframe... [CONNECTED]",
+        "Optimizing User Experience... [IN PROGRESS]",
+        "Refactoring Reality... [DONE]",
+        "Almost there...",
+    ];
+
     let delay = 0;
-    bootSequence.forEach((line, index) => {
+    bootSequence.forEach((line) => {
       delay += Math.random() * 800 + 500;
       setTimeout(() => {
         setLines(prev => [...prev, line]);
@@ -208,9 +209,9 @@ function TerminalScene({ isGodMode }: { isGodMode: boolean }) {
    SCENE 3: RETRO TV (Static)
    Interactive: Hover to clear static
    ========================================= */
-function TVScene({ isGodMode }: { isGodMode: boolean }) {
+function TVScene() {
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="min-h-screen bg-indigo-900 flex items-center justify-center relative overflow-hidden"
     >
