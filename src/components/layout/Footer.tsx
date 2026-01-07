@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from '@/navigation';
+import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import { Facebook, Twitter, Instagram, Linkedin, Globe } from 'lucide-react';
 
