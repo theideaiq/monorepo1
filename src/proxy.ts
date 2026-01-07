@@ -1,5 +1,5 @@
 import createMiddleware from 'next-intl/middleware';
-import { routing } from './navigation';
+import { routing } from '@/i18n/navigation';
 
 // 1. Create the Intl Middleware with the "as-needed" override
 const intlMiddleware = createMiddleware({

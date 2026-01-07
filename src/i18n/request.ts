@@ -1,5 +1,5 @@
 import { getRequestConfig } from 'next-intl/server';
-import { routing } from '../navigation';
+import { routing } from './navigation';
 
 export default getRequestConfig(async ({ requestLocale }) => {
   // Await the locale from the request

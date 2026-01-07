@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { useRouter } from '@/navigation'; // Use localized router
+import { useRouter } from '@/i18n/navigation'; // Use localized router
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { PlayCircle, BookOpen, Camera, Info, ArrowLeft } from 'lucide-react';

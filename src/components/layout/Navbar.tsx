@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Link, usePathname } from '@/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import { Menu, X, ShoppingCart, User, Globe } from 'lucide-react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl'; // Import this
