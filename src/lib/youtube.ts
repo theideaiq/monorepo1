@@ -1,6 +1,10 @@
 // src/lib/youtube.ts
 
-// Helper to parse ISO duration (PT4M13S -> 4:13)
+/**
+ * Converts an ISO 8601 duration string to a human-readable format.
+ * @example parseDuration('PT4M13S') // Returns '4:13'
+ * @param isoDuration - The duration string from YouTube API (e.g., 'PT1H2M10S')
+ */
 function parseDuration(isoDuration: string) {
   const match = isoDuration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
   if (!match) return '0:00';
@@ -14,6 +18,17 @@ function parseDuration(isoDuration: string) {
   return `${mins || '0'}:${secs.padStart(2, '0')}`;
 }
 
+/**
+ * Searches YouTube for music videos with strict duration filtering.
+ *
+ * Rules:
+ * - Must be between 1 and 10 minutes long
+ * - Must be categorized as Music (CategoryId: 10)
+ *
+ * @param query - The search term
+ * @throws {Error} If YOUTUBE_API_KEY is missing
+ * @returns Array of video objects with normalized duration
+ */
 export async function searchYouTube(query: string) {
   const key = process.env.YOUTUBE_API_KEY;
 
