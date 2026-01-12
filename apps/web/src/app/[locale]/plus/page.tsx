@@ -3,19 +3,14 @@
 import { Badge } from '@/components/ui/Badge';
 // UI Kit
 import { Button } from '@/components/ui/Button';
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase/client';
 import { motion } from 'framer-motion';
 import { BookOpen, Check, Gamepad2, Loader2, Zap } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-const supabase = createClient(
-  // biome-ignore lint/style/noNonNullAssertion: migration
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  // biome-ignore lint/style/noNonNullAssertion: migration
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-);
+const supabase = createClient();
 
 export default function PlusHome() {
   const router = useRouter();
