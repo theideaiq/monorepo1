@@ -16,13 +16,13 @@ import {
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type BaseReactPlayer from 'react-player';
 
 // Revert to standard import as submodule might be problematic in this env
 
 const ReactPlayer = dynamic(() => import('react-player'), {
   ssr: false,
-});
+  // biome-ignore lint/suspicious/noExplicitAny: ReactPlayer types are tricky with dynamic import
+}) as any;
 
 interface QueueItem {
   id: string;
@@ -47,7 +47,8 @@ export default function JukeboxHost() {
   const [volume, setVolume] = useState(1);
 
   const supabase = createClient();
-  const playerRef = useRef<BaseReactPlayer>(null);
+  // biome-ignore lint/suspicious/noExplicitAny: ReactPlayer types are tricky with dynamic import
+  const playerRef = useRef<any>(null);
 
   // Derived origin for player config
   const origin =
@@ -185,7 +186,8 @@ export default function JukeboxHost() {
                   modestbranding: 1,
                   rel: 0,
                 },
-              },
+                // biome-ignore lint/suspicious/noExplicitAny: Legacy configuration structure
+              } as any,
             }}
           />
         </div>

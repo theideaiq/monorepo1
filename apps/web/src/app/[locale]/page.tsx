@@ -18,6 +18,15 @@ import { Link } from '@/i18n/navigation';
 export default function Home() {
   const t = useTranslations('Home');
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'The IDEA',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.theideaiq.com',
+    logo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.theideaiq.com'}/icon.svg`,
+    description: 'Innovation for Every Aspect of Life',
+  };
+
   const services = [
     {
       title: t('services.store_title'),
@@ -51,6 +60,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-slate-50 pt-20">
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD for SEO
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* 1. HERO SECTION */}
       <Hero />
 

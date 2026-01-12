@@ -57,21 +57,21 @@ describe('Checkout API Route', () => {
       },
     ];
 
-    it.each(invalidCases)(
-      'should return 400 when $name',
-      async ({ body, errorMatch }) => {
-        const req = new Request('http://localhost/api/checkout', {
-          method: 'POST',
-          body: JSON.stringify(body),
-        });
+    it.each(invalidCases)('should return 400 when $name', async ({
+      body,
+      errorMatch,
+    }) => {
+      const req = new Request('http://localhost/api/checkout', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
 
-        const res = await POST(req);
-        const json = await res.json();
+      const res = await POST(req);
+      const json = await res.json();
 
-        expect(res.status).toBe(400);
-        expect(json.error).toMatch(errorMatch);
-      },
-    );
+      expect(res.status).toBe(400);
+      expect(json.error).toMatch(errorMatch);
+    });
   });
 
   it('should call wayl.createPayment and return URL on success', async () => {
