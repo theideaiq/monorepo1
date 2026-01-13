@@ -8,6 +8,7 @@ import { getMessages } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
+import SkipLink from '@/components/layout/SkipLink';
 import QueryProvider from '@/components/providers/QueryProvider';
 import ToastProvider from '@/components/providers/ToastProvider';
 import { GlobalLoader } from '@repo/ui';
@@ -70,11 +71,15 @@ export default async function LocaleLayout({ children, params }: Props) {
         <NextIntlClientProvider locale={locale} messages={messages}>
           <QueryProvider>
             <GlobalLoader />
+            <SkipLink />
             <ToastProvider />
             <Navbar locale={locale} />
-            <div className={dir === 'rtl' ? 'font-arabic' : 'font-sans'}>
+            <main
+              id="main-content"
+              className={dir === 'rtl' ? 'font-arabic' : 'font-sans'}
+            >
               {children}
-            </div>
+            </main>
             <Footer />
           </QueryProvider>
         </NextIntlClientProvider>
