@@ -1,6 +1,7 @@
 {
   "Common": {
-    "close": "Close"
+    "close": "Close",
+    "skip_to_content": "Skip to content"
   },
   "Nav": {
     "home": "Home",

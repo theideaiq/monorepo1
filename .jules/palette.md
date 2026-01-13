@@ -1,5 +1,9 @@
 # Palette's Journal
 
+## 2026-01-13 - Skip to Content Link
+**Learning:** For keyboard and screen reader users, repeated navigation menus on every page are a major barrier. A "Skip to Content" link is a simple, invisible-until-focused mechanism that drastically improves navigation efficiency.
+**Action:** Ensure every page layout includes a hidden link at the very top that targets the main content area (`<main id="main-content">`).
+
 ## 2026-01-07 - Input Component Accessibility
 **Learning:** Screen readers require explicit association between inputs and their error messages. Merely rendering the error text near the input is insufficient for non-visual users to know the input is invalid or what the error is.
 **Action:** When creating form inputs, always generate a unique ID for the error message, add `aria-invalid` to the input when in an error state, and link them using `aria-describedby`.
