@@ -5,3 +5,7 @@
 ## 2025-05-20 - Missing Brand Token for Deep Dark Backgrounds
 **Learning:** Multiple components (`GlobalLoader`, `Footer`, `plus/page`, `megastore/page`) were hardcoding `#0f1014` as a background color. This color is slightly deeper than the configured `brand-dark` (`#0f172a`), creating a "magic number" dependency that makes theming inconsistent.
 **Action:** Introduced `--color-brand-deep` (`#0f1014`) to the Tailwind theme config. Future dark-mode or "cinema-mode" backgrounds should use `bg-brand-deep` instead of hardcoded hex values or generic black.
+
+## 2025-05-21 - Semantic Link Styling
+**Learning:** Detected invalid HTML nesting (`<Link><button>`) in `Navbar`, causing accessibility and hydration issues. This often happens when developers want a link to "look like a button" but use composition incorrectly.
+**Action:** Do not nest `<button>` inside `<Link>`. Instead, apply button utility classes directly to the `<Link>` component or use `asChild` if using a UI library component that supports polymorphism.

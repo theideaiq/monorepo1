@@ -34,25 +34,25 @@ export default function Navbar({ locale }: { locale: string }) {
           <div className="hidden md:flex items-center space-x-8">
             <Link
               href="/megastore"
-              className="text-slate-600 hover:text-brand-pink font-medium transition"
+              className="text-slate-600 hover:text-brand-pink font-medium transition focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 rounded-md outline-none"
             >
               {t('store')}
             </Link>
             <Link
               href="/plus"
-              className="text-slate-600 hover:text-brand-pink font-medium transition"
+              className="text-slate-600 hover:text-brand-pink font-medium transition focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 rounded-md outline-none"
             >
               {t('plus')}
             </Link>
             <Link
               href="/academy"
-              className="text-slate-600 hover:text-brand-pink font-medium transition"
+              className="text-slate-600 hover:text-brand-pink font-medium transition focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 rounded-md outline-none"
             >
               {t('academy')}
             </Link>
             <Link
               href="/suite"
-              className="text-slate-600 hover:text-brand-pink font-medium transition"
+              className="text-slate-600 hover:text-brand-pink font-medium transition focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 rounded-md outline-none"
             >
               {t('business')}
             </Link>
@@ -67,7 +67,7 @@ export default function Navbar({ locale }: { locale: string }) {
                 <Link
                   href={pathname}
                   locale="ar"
-                  className="font-arabic font-bold text-slate-700 hover:text-brand-pink focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 rounded-sm outline-none"
+                  className="font-arabic font-bold text-slate-700 hover:text-brand-pink focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 rounded-md outline-none"
                   aria-label={t('switch_lang_ar')}
                 >
                   عربي
@@ -76,7 +76,7 @@ export default function Navbar({ locale }: { locale: string }) {
                 <Link
                   href={pathname}
                   locale="en"
-                  className="font-sans font-bold text-slate-700 hover:text-brand-pink focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 rounded-sm outline-none"
+                  className="font-sans font-bold text-slate-700 hover:text-brand-pink focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 rounded-md outline-none"
                   aria-label={t('switch_lang_en')}
                 >
                   English
@@ -97,20 +97,15 @@ export default function Navbar({ locale }: { locale: string }) {
               aria-label={t('cart')}
             >
               <ShoppingCart size={22} />
-              <span className="absolute -top-2 -right-2 bg-brand-pink text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-brand-pink text-white text-[0.625rem] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                 0
               </span>
             </Link>
             <Link
               href="/register"
-              className="focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 rounded-full outline-none"
+              className="bg-brand-dark text-white px-5 py-2 rounded-full font-bold hover:bg-slate-800 transition shadow-lg shadow-brand-dark/20 focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 outline-none"
             >
-              <button
-                type="button"
-                className="bg-brand-dark text-white px-5 py-2 rounded-full font-bold hover:bg-slate-800 transition shadow-lg shadow-brand-dark/20"
-              >
-                {t('join')}
-              </button>
+              {t('join')}
             </Link>
           </div>
 
