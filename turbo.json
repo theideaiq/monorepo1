@@ -21,6 +21,14 @@
     "test:coverage": {
        "outputs": ["coverage/**"]
     },
-    "format": {}
+    "format": {},
+    "storybook": {
+      "cache": false,
+      "persistent": true
+    },
+    "build-storybook": {
+      "outputs": ["storybook-static/**"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"]
+    }
   }
 }

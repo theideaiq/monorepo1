@@ -19,3 +19,6 @@ pnpm-debug.log*
 # Testing
 test-results/
 playwright-report/
+
+*storybook.log
+storybook-static

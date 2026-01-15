@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fonts - using system fallbacks as Next.js fonts aren't available directly */
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand Colors */
+  --color-brand-pink: #e91e63;
+  --color-brand-yellow: #ffd600;
+  --color-brand-dark: #0f172a;
+  --color-brand-deep: #0f1014;
+}
