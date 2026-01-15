@@ -1,5 +1,8 @@
-export type CRMStatus = 'lead' | 'customer' | 'churned' | 'vip';
-export type UserRole = 'user' | 'admin' | 'superadmin' | 'student'; // 'student' mentioned in example
+// biome-ignore lint/style/useImportType: Constants are used as values in typeof
+import { CAMPAIGN_STATUSES, CRM_STATUSES, ROLES } from '@/lib/constants';
+
+export type CRMStatus = typeof CRM_STATUSES[keyof typeof CRM_STATUSES];
+export type UserRole = typeof ROLES[keyof typeof ROLES];
 
 export interface Profile {
   id: string;
@@ -23,7 +26,7 @@ export interface MarketingSegment {
   created_at: string;
 }
 
-export type CampaignStatus = 'draft' | 'scheduled' | 'sent' | 'failed';
+export type CampaignStatus = typeof CAMPAIGN_STATUSES[keyof typeof CAMPAIGN_STATUSES];
 
 export interface MarketingCampaign {
   id: string;

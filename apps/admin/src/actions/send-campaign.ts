@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import React from 'react';
+import { CAMPAIGN_STATUSES, ROLES } from '@/lib/constants';
 import { logAdminAction } from '@/lib/audit';
 import { Resend } from 'resend';
 import { BrandedTemplate } from '@/emails/BrandedTemplate';
@@ -34,7 +35,7 @@ export async function sendCampaign(campaignId: string) {
     throw new Error('Unauthorized: User invalid or banned');
   }
 
-  if (requester.role !== 'admin' && requester.role !== 'superadmin') {
+  if (requester.role !== ROLES.ADMIN && requester.role !== ROLES.SUPERADMIN) {
     throw new Error('Unauthorized: Insufficient permissions');
   }
 
@@ -89,7 +90,7 @@ export async function sendCampaign(campaignId: string) {
   await supabase
     .from('marketing_campaigns')
     .update({
-      status: 'sent',
+      status: CAMPAIGN_STATUSES.SENT,
       sent_count: emails.length,
       sent_at: new Date().toISOString(),
     })

@@ -1,4 +1,7 @@
-export type UserRole = 'user' | 'admin' | 'superadmin';
+// biome-ignore lint/style/useImportType: ROLES is used as a value in typeof
+import { ROLES } from '@/lib/constants';
+
+export type UserRole = typeof ROLES.USER | typeof ROLES.ADMIN | typeof ROLES.SUPERADMIN;
 
 export interface UserProfile {
   id: string;

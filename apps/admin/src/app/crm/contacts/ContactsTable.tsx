@@ -24,6 +24,7 @@ import { format } from 'date-fns';
 import { Edit, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
+import { CRM_STATUSES, ROLES } from '@/lib/constants';
 import { updateProfile } from '@/actions/crm';
 import type { CRMStatus, Profile } from '@/types/crm';
 
@@ -73,13 +74,13 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
         accessorKey: 'crm_status',
         header: 'Status',
         cell: ({ row }) => {
-          const status = row.original.crm_status || 'lead';
+          const status = row.original.crm_status || CRM_STATUSES.LEAD;
           const variant =
-            status === 'vip'
+            status === CRM_STATUSES.VIP
               ? 'brand'
-              : status === 'customer'
+              : status === CRM_STATUSES.CUSTOMER
                 ? 'success'
-                : status === 'churned'
+                : status === CRM_STATUSES.CHURNED
                   ? 'danger'
                   : 'neutral';
           return <Badge variant={variant}>{status.toUpperCase()}</Badge>;
@@ -90,7 +91,7 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
         header: 'Role',
         cell: ({ row }) => (
           <span className="capitalize">
-            {String(row.original.role || 'user')}
+            {String(row.original.role || ROLES.USER)}
           </span>
         ),
       },
@@ -151,7 +152,7 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
   const handleEdit = (profile: Profile) => {
     setEditingProfile(profile);
     setEditForm({
-      crm_status: profile.crm_status || 'lead',
+      crm_status: profile.crm_status || CRM_STATUSES.LEAD,
       crm_tags: profile.crm_tags?.join(', ') || '',
     });
     setIsSheetOpen(true);
@@ -216,10 +217,10 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
             }
           >
             <option value="">All Statuses</option>
-            <option value="lead">Lead</option>
-            <option value="customer">Customer</option>
-            <option value="vip">VIP</option>
-            <option value="churned">Churned</option>
+            <option value={CRM_STATUSES.LEAD}>Lead</option>
+            <option value={CRM_STATUSES.CUSTOMER}>Customer</option>
+            <option value={CRM_STATUSES.VIP}>VIP</option>
+            <option value={CRM_STATUSES.CHURNED}>Churned</option>
           </select>
           <select
             className="border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white"
@@ -230,9 +231,9 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
             }
           >
             <option value="">All Roles</option>
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-            <option value="student">Student</option>
+            <option value={ROLES.USER}>User</option>
+            <option value={ROLES.ADMIN}>Admin</option>
+            <option value={ROLES.STUDENT}>Student</option>
           </select>
         </div>
       </div>
@@ -318,10 +319,10 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
               <Select
                 label="CRM Status"
                 options={[
-                  { value: 'lead', label: 'Lead' },
-                  { value: 'customer', label: 'Customer' },
-                  { value: 'vip', label: 'VIP' },
-                  { value: 'churned', label: 'Churned' },
+                  { value: CRM_STATUSES.LEAD, label: 'Lead' },
+                  { value: CRM_STATUSES.CUSTOMER, label: 'Customer' },
+                  { value: CRM_STATUSES.VIP, label: 'VIP' },
+                  { value: CRM_STATUSES.CHURNED, label: 'Churned' },
                 ]}
                 value={editForm.crm_status}
                 onChange={(e) =>

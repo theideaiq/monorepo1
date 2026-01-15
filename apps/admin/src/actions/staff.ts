@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { ROLES } from '@/lib/constants';
 import { logAdminAction } from '@/lib/audit';
 import type { UserRole } from '@/types/auth';
 
@@ -10,7 +11,7 @@ export async function getStaff() {
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
-    .neq('role', 'user')
+    .neq('role', ROLES.USER)
     .order('full_name');
 
   if (error) throw new Error(error.message);
@@ -23,7 +24,7 @@ export async function updateRole(userId: string, newRole: UserRole) {
   if (!user) throw new Error('Unauthorized');
 
   const { data: requester } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-  if (requester?.role !== 'superadmin') {
+  if (requester?.role !== ROLES.SUPERADMIN) {
     throw new Error('Only Superadmins can change roles');
   }
 
@@ -44,7 +45,7 @@ export async function toggleBan(userId: string, banStatus: boolean) {
   if (!user) throw new Error('Unauthorized');
 
   const { data: requester } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-  if (requester?.role !== 'superadmin') {
+  if (requester?.role !== ROLES.SUPERADMIN) {
      throw new Error('Only Superadmins can ban users');
   }
 
@@ -65,7 +66,7 @@ export async function addStaff(email: string) {
   if (!user) throw new Error('Unauthorized');
 
   const { data: requester } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-  if (requester?.role !== 'superadmin') {
+  if (requester?.role !== ROLES.SUPERADMIN) {
     throw new Error('Only Superadmins can add staff');
   }
 
@@ -82,7 +83,7 @@ export async function addStaff(email: string) {
 
   const { error } = await supabase
     .from('profiles')
-    .update({ role: 'admin' })
+    .update({ role: ROLES.ADMIN })
     .eq('id', target.id);
 
   if (error) throw new Error(error.message);

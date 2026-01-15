@@ -9,3 +9,8 @@ Standard: Utilities should be grouped by domain (e.g., `date.ts`, `string.ts`) o
 
 Smell: Copy-pasting SVG code for common icons when a library like `lucide-react` is already in use.
 Standard: Always use the imported icon component from the design system's icon library (e.g., `lucide-react`). Only use custom SVGs for branding or unique assets not available in the library.
+
+## 2025-02-18 - Centralized Constants
+
+Smell: Magic strings/numbers scattered across components and logic.
+Standard: Extract magic values into domain-specific constants objects (e.g., `ROLES`, `CRM_STATUSES`) in a centralized `lib/constants.ts` file. Use these constants for both logic comparisons and type definitions.
