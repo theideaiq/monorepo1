@@ -1,10 +1,20 @@
 'use client';
 
 import { Lightbulb, Target } from 'lucide-react';
+import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
+import { useLocale } from 'next-intl';
 
 export default function AboutPage() {
+  const locale = useLocale();
+
   return (
     <div className="min-h-screen bg-white pt-20">
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', item: `https://www.theideaiq.com/${locale}` },
+          { name: 'About', item: `https://www.theideaiq.com/${locale}/about` },
+        ]}
+      />
       {/* Hero Section */}
       <section className="bg-brand-dark text-white py-24 px-4 text-center rounded-b-[3rem] relative overflow-hidden">
         <div className="relative z-10 max-w-4xl mx-auto">

@@ -8,6 +8,8 @@ import { BookOpen, Check, Gamepad2, Loader2, Zap } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { type ReactNode, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
+import { useLocale } from 'next-intl';
 
 interface Tier {
   id: string;
@@ -32,6 +34,7 @@ const supabase = createClient(
 export default function PlusHome() {
   const router = useRouter();
   const [loadingTier, setLoadingTier] = useState<string | null>(null);
+  const locale = useLocale();
 
   const tiers: Tier[] = [
     {
@@ -126,6 +129,12 @@ export default function PlusHome() {
 
   return (
     <div className="min-h-screen bg-brand-deep text-white font-sans -mt-20 pt-20">
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', item: `https://www.theideaiq.com/${locale}` },
+          { name: 'Plus', item: `https://www.theideaiq.com/${locale}/plus` },
+        ]}
+      />
       {/* Hero Section */}
       <section className="relative h-[85vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-40" />

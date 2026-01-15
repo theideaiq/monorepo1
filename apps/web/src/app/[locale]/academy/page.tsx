@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
+import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
+import { useLocale } from 'next-intl';
 
 // --- MOCK DATA ---
 const COURSES = [
@@ -95,9 +97,16 @@ const ARTICLES = [
 
 export default function AcademyPage() {
   const [activeTab, setActiveTab] = useState<'learn' | 'exchange'>('learn');
+  const locale = useLocale();
 
   return (
     <div className="min-h-screen bg-slate-50 pt-20">
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', item: `https://www.theideaiq.com/${locale}` },
+          { name: 'Academy', item: `https://www.theideaiq.com/${locale}/academy` },
+        ]}
+      />
       {/* 1. HERO SECTION */}
       <section className="bg-brand-dark text-white pt-20 pb-32 px-4 relative overflow-hidden">
         <div className="max-w-7xl mx-auto relative z-10">

@@ -20,6 +20,8 @@ import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useProducts } from '@/hooks/queries/use-products';
 import { useCartStore } from '@/stores/cart-store';
+import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
+import { useLocale } from 'next-intl';
 
 const CATEGORIES = [
   { name: 'Gaming', icon: <Gamepad2 size={18} /> },
@@ -32,6 +34,7 @@ export default function MegastorePage() {
   const [filter, setFilter] = useState('All');
   const { data: products, isLoading } = useProducts();
   const addItem = useCartStore((s) => s.addItem);
+  const locale = useLocale();
 
   const addToCart = (product: string) => {
     addItem(product);
@@ -48,6 +51,12 @@ export default function MegastorePage() {
 
   return (
     <div className="min-h-screen bg-slate-50 pt-20">
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', item: `https://www.theideaiq.com/${locale}` },
+          { name: 'Megastore', item: `https://www.theideaiq.com/${locale}/megastore` },
+        ]}
+      />
       {/* 1. HERO (PlayStation Store Style) */}
       <section className="relative h-[60vh] bg-brand-deep overflow-hidden flex items-center">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2070')] bg-cover bg-center opacity-40" />
