@@ -45,6 +45,7 @@ This monorepo is managed with [Turborepo](https://turbo.build/) and [pnpm](https
 ### Apps
 - [`apps/web`](./apps/web): Public-facing web application.
 - [`apps/admin`](./apps/admin): Internal administration dashboard.
+- [`apps/droid`](./apps/droid): Telegram bot powered by Google Gemini.
 
 ### Packages
 - [`packages/ui`](./packages/ui): Shared UI component library (Tailwind 4 + React).
@@ -72,11 +73,12 @@ This monorepo is managed with [Turborepo](https://turbo.build/) and [pnpm](https
     ```
 
 3.  **Environment Setup:**
-    Create a local environment file in `apps/web` and `apps/admin`:
+    Create a local environment file in `apps/web`, `apps/admin`, and `apps/droid`:
 
     ```bash
     cp apps/web/.env.example apps/web/.env.local
     cp apps/admin/.env.example apps/admin/.env.local
+    cp apps/droid/.env.example apps/droid/.env.local
     ```
 
 4.  **Run Development Server:**
@@ -85,13 +87,14 @@ This monorepo is managed with [Turborepo](https://turbo.build/) and [pnpm](https
     ```
     - Web: [http://localhost:3000](http://localhost:3000)
     - Admin: [http://localhost:3001](http://localhost:3001)
+    - Droid: Local process (Port varies)
 
 ## 🔐 Environment Variables
 
 Proper management of environment variables is crucial for security and deployment.
 
 ### Development
-Use `.env.local` files in the respective app directories (`apps/web`, `apps/admin`). **Never commit these files.**
+Use `.env.local` files in the respective app directories (`apps/web`, `apps/admin`, `apps/droid`). **Never commit these files.**
 
 ### CI/CD & Production
 **Do not store secrets in the codebase.**

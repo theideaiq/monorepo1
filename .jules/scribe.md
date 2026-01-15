@@ -26,3 +26,8 @@ Rule: Documentation instructions must be verified by running them in a clean env
 
 Insight: The `README.md` contained copy-paste errors in the setup instructions (copying web env to admin), which would cause application crashes due to missing variables.
 Rule: Do not assume similar-looking commands are identical. Always verify setup instructions by running them line-by-line in a clean environment.
+
+## 2025-01-15 - Orphaned Monorepo Applications
+
+Insight: The `apps/droid` application was completely missing from the root `README.md`, making it invisible to developers and causing setup gaps.
+Rule: The root `README.md` must serve as the single source of truth for ALL applications in the `apps/` directory, including their specific environment setup commands.
