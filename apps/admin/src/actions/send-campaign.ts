@@ -6,16 +6,12 @@ import { logAdminAction } from '@/lib/audit';
 import { Resend } from 'resend';
 import { BrandedTemplate } from '@/emails/BrandedTemplate';
 import { createClient } from '@/lib/supabase/server';
+import { env } from '@/env';
 
 const BATCH_SIZE = 50;
 
 export async function sendCampaign(campaignId: string) {
-  const RESEND_API_KEY = process.env.RESEND_API_KEY;
-  if (!RESEND_API_KEY) {
-    throw new Error('Missing RESEND_API_KEY');
-  }
-
-  const resend = new Resend(RESEND_API_KEY);
+  const resend = new Resend(env.RESEND_API_KEY);
   const supabase = await createClient();
 
   // 0. Security Check: Validate User & Role

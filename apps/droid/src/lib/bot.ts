@@ -11,7 +11,7 @@ interface SessionData {
 
 export type MyContext = Context & SessionFlavor<SessionData>;
 
-export const bot = new Bot<MyContext>(env.TELEGRAM_BOT_TOKEN ?? "mock");
+export const bot = new Bot<MyContext>(env.TELEGRAM_BOT_TOKEN);
 
 function getSessionKey(ctx: Context): string | undefined {
   return ctx.from && ctx.chat ? `${ctx.chat.id}:${ctx.from.id}` : undefined;

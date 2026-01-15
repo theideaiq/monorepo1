@@ -1,5 +1,6 @@
 'use client';
 
+import { env } from '@/env';
 import { Button, Card, Input } from '@repo/ui';
 import { createClient } from '@supabase/supabase-js';
 import { ArrowRight, UserPlus } from 'lucide-react';
@@ -10,10 +11,8 @@ import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 const supabase = createClient(
-  // biome-ignore lint/style/noNonNullAssertion: migration
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  // biome-ignore lint/style/noNonNullAssertion: migration
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  env.NEXT_PUBLIC_SUPABASE_URL,
+  env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
 );
 
 export default function RegisterPage() {

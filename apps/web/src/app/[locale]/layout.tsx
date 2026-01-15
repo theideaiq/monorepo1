@@ -7,6 +7,7 @@ import { notFound } from 'next/navigation';
 // NEW: Imports for translation data
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
+import { env } from '@/env';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import SkipLink from '@/components/layout/SkipLink';
@@ -36,8 +37,7 @@ export async function generateMetadata({
   params,
 }: Omit<Props, 'children'>): Promise<Metadata> {
   const { locale } = await params;
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || 'https://www.theideaiq.com';
+  const baseUrl = env.NEXT_PUBLIC_SITE_URL;
 
   return {
     metadataBase: new URL(baseUrl),
@@ -83,8 +83,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages();
 
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || 'https://www.theideaiq.com';
+  const baseUrl = env.NEXT_PUBLIC_SITE_URL;
 
   return (
     <html lang={locale} dir={dir}>

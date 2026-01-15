@@ -2,7 +2,7 @@ import { GoogleGenerativeAI, type Content, SchemaType } from "@google/generative
 import { env } from "../env";
 import { supabase } from "./supabase";
 
-const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY ?? "mock");
+const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
 
 const tools = [
   {

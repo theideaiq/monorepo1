@@ -1,4 +1,5 @@
 // src/lib/youtube.ts
+import { env } from '@/env';
 
 // ⚡ Bolt Optimization: Pre-compile regexes to avoid re-compilation on every call
 const ISO_DURATION_REGEX = /PT(\d+H)?(\d+M)?(\d+S)?/;
@@ -84,13 +85,11 @@ function parseDuration(isoDuration: string): string {
  * - Must be categorized as Music (CategoryId: 10)
  *
  * @param query - The search term
- * @throws {Error} If YOUTUBE_API_KEY is missing
  * @returns Array of video objects with normalized duration
  */
-export async function searchYouTube(query: string): Promise<FormattedVideo[]> {
-  const key = process.env.YOUTUBE_API_KEY;
 
-  if (!key) throw new Error('YOUTUBE_API_KEY is missing');
+export async function searchYouTube(query: string): Promise<FormattedVideo[]> {
+  const key = env.YOUTUBE_API_KEY;
 
   // 1. SEARCH
   const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=${MUSIC_CATEGORY_ID}&maxResults=${SEARCH_RESULT_LIMIT}&q=${encodeURIComponent(query)}&key=${key}`;

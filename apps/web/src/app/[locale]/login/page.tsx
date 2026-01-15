@@ -1,5 +1,6 @@
 'use client';
 
+import { env } from '@/env';
 import { Button, Card, Input } from '@repo/ui';
 import { createClient } from '@supabase/supabase-js';
 import { ArrowRight, Chrome, Lock } from 'lucide-react'; // Added Chrome icon for Google
@@ -9,10 +10,8 @@ import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 const supabase = createClient(
-  // biome-ignore lint/style/noNonNullAssertion: migration
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  // biome-ignore lint/style/noNonNullAssertion: migration
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  env.NEXT_PUBLIC_SUPABASE_URL,
+  env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
 );
 
 export default function LoginPage() {
@@ -36,7 +35,7 @@ export default function LoginPage() {
     } else {
       toast.success('Welcome back!');
       // Check if admin (simple check)
-      if (email === process.env.NEXT_PUBLIC_ADMIN_EMAIL) {
+      if (email === env.NEXT_PUBLIC_ADMIN_EMAIL) {
         router.push('/admin');
       } else {
         router.push('/account');

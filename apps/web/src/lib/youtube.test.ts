@@ -1,25 +1,24 @@
+// @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/env', () => ({
+  env: {
+    YOUTUBE_API_KEY: 'test-api-key',
+  },
+}));
+
 import { searchYouTube } from './youtube';
 
 describe('searchYouTube', () => {
   beforeEach(() => {
     vi.resetModules();
-    vi.stubEnv('YOUTUBE_API_KEY', 'test-api-key');
     // Using vi.stubGlobal is safer than global.fetch = ...
     vi.stubGlobal('fetch', vi.fn());
   });
 
   afterEach(() => {
-    vi.unstubAllEnvs();
     vi.unstubAllGlobals();
     vi.clearAllMocks();
-  });
-
-  it('should throw error if YOUTUBE_API_KEY is missing', async () => {
-    vi.stubEnv('YOUTUBE_API_KEY', '');
-    await expect(searchYouTube('query')).rejects.toThrow(
-      'YOUTUBE_API_KEY is missing',
-    );
   });
 
   it('should return empty array if no videos found', async () => {
