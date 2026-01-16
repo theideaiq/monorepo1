@@ -44,18 +44,25 @@ export default function LoginPage() {
         .from('profiles')
         .select('role')
         .eq('id', data.user.id)
-        .single();
+        .maybeSingle();
 
       if (profileError) {
+        console.error('Profile fetch error:', profileError);
         await supabase.auth.signOut();
-        throw new Error('Failed to verify permissions');
+        throw new Error(`Failed to verify permissions: ${profileError.message}`);
       }
 
-      const role = profile?.role as UserRole;
-
-      if (role !== 'admin' && role !== 'superadmin') {
+      if (!profile) {
         await supabase.auth.signOut();
-        throw new Error('Access Denied: Admin privileges required.');
+        throw new Error('Profile not found for this user.');
+      }
+
+      const role = profile.role as UserRole;
+      const roleNormalized = role?.toLowerCase();
+
+      if (roleNormalized !== 'admin' && roleNormalized !== 'superadmin') {
+        await supabase.auth.signOut();
+        throw new Error(`Access Denied: Admin privileges required. Found role: ${role}`);
       }
 
       toast.success('Welcome back, Admin');
