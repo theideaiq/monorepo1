@@ -35,6 +35,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: Setup Turbo cache
+        uses: actions/cache@v5
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-quality-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-quality-
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -70,6 +78,14 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
+
+      - name: Setup Turbo cache
+        uses: actions/cache@v5
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-build-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-build-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -109,6 +125,14 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
+
+      - name: Setup Turbo cache
+        uses: actions/cache@v5
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-e2e-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-e2e-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
