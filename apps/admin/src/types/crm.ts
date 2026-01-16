@@ -1,5 +1,9 @@
-export type CRMStatus = 'lead' | 'customer' | 'churned' | 'vip';
-export type UserRole = 'user' | 'admin' | 'superadmin' | 'student'; // 'student' mentioned in example
+import { CAMPAIGN_STATUSES, CRM_STATUSES } from '@/lib/constants';
+import type { UserRole } from '@/types/auth';
+
+// biome-ignore lint/style/useImportType: This is a value import needed for typeof
+export type CRMStatus = (typeof CRM_STATUSES)[keyof typeof CRM_STATUSES];
+export type { UserRole };
 
 export interface Profile {
   id: string;
@@ -23,7 +27,9 @@ export interface MarketingSegment {
   created_at: string;
 }
 
-export type CampaignStatus = 'draft' | 'scheduled' | 'sent' | 'failed';
+// biome-ignore lint/style/useImportType: This is a value import needed for typeof
+export type CampaignStatus =
+  (typeof CAMPAIGN_STATUSES)[keyof typeof CAMPAIGN_STATUSES];
 
 export interface MarketingCampaign {
   id: string;

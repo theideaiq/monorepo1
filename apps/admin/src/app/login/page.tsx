@@ -5,6 +5,7 @@ import { Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { ROLES } from '@/lib/constants';
 import { createClient } from '@/lib/supabase/client';
 import type { UserRole } from '@/types/auth';
 
@@ -49,7 +50,9 @@ export default function LoginPage() {
       if (profileError) {
         console.error('Profile fetch error:', profileError);
         await supabase.auth.signOut();
-        throw new Error(`Failed to verify permissions: ${profileError.message}`);
+        throw new Error(
+          `Failed to verify permissions: ${profileError.message}`,
+        );
       }
 
       if (!profile) {
@@ -60,9 +63,14 @@ export default function LoginPage() {
       const role = profile.role as UserRole;
       const roleNormalized = role?.toLowerCase();
 
-      if (roleNormalized !== 'admin' && roleNormalized !== 'superadmin') {
+      if (
+        roleNormalized !== ROLES.ADMIN &&
+        roleNormalized !== ROLES.SUPERADMIN
+      ) {
         await supabase.auth.signOut();
-        throw new Error(`Access Denied: Admin privileges required. Found role: ${role}`);
+        throw new Error(
+          `Access Denied: Admin privileges required. Found role: ${role}`,
+        );
       }
 
       toast.success('Welcome back, Admin');

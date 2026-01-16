@@ -4,6 +4,7 @@ import { Button, Card, Input, Select } from '@repo/ui';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { createSegment } from '@/actions/marketing';
+import { CRM_STATUSES, ROLES } from '@/lib/constants';
 
 export function SegmentForm() {
   const [name, setName] = useState('');
@@ -44,9 +45,9 @@ export function SegmentForm() {
           label="Role"
           options={[
             { value: '', label: 'Any Role' },
-            { value: 'user', label: 'User' },
-            { value: 'student', label: 'Student' },
-            { value: 'admin', label: 'Admin' },
+            { value: ROLES.USER, label: 'User' },
+            { value: ROLES.STUDENT, label: 'Student' },
+            { value: ROLES.ADMIN, label: 'Admin' },
           ]}
           value={role}
           onChange={(e) => setRole(e.target.value)}
@@ -55,10 +56,10 @@ export function SegmentForm() {
           label="CRM Status"
           options={[
             { value: '', label: 'Any Status' },
-            { value: 'lead', label: 'Lead' },
-            { value: 'customer', label: 'Customer' },
-            { value: 'vip', label: 'VIP' },
-            { value: 'churned', label: 'Churned' },
+            { value: CRM_STATUSES.LEAD, label: 'Lead' },
+            { value: CRM_STATUSES.CUSTOMER, label: 'Customer' },
+            { value: CRM_STATUSES.VIP, label: 'VIP' },
+            { value: CRM_STATUSES.CHURNED, label: 'Churned' },
           ]}
           value={status}
           onChange={(e) => setStatus(e.target.value)}
