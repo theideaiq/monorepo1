@@ -4,7 +4,7 @@
   "private": true,
   "exports": {
     "./client": "./src/client.ts",
-    "./server": "./src/server.ts",
+    "./service": "./src/service.ts",
     "./types": "./src/types_db.ts"
   },
   "scripts": {
@@ -12,7 +12,10 @@
     "format": "biome format --write .",
     "check": "biome check --write .",
     "typecheck": "tsc --noEmit",
-    "generate:types": "echo 'Run: npx supabase gen types typescript --project-id YOUR_ID > src/types_db.ts'"
+    "generate:types": "echo 'Run: npx supabase gen types typescript --project-id YOUR_ID > src/types_db.ts'",
+    "seed:accounts": "tsx scripts/seed-accounts.ts",
+    "seed:products": "tsx scripts/seed-products.ts",
+    "seed": "pnpm seed:accounts && pnpm seed:products"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
@@ -22,6 +25,8 @@
     "@biomejs/biome": "^2.3.11",
     "@repo/config": "workspace:*",
     "@types/node": "^25.0.9",
+    "dotenv": "^17.2.3",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {

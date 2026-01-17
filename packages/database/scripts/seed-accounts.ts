@@ -1,12 +1,13 @@
-import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import path from 'path';
+import { createServiceRoleClient } from '../src/service';
 
 // Load environment variables
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
-dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
-dotenv.config({ path: path.resolve(__dirname, '../../web/.env') }); // Fallback to web env
-dotenv.config({ path: path.resolve(__dirname, '../../web/.env.local') });
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') }); // Root env
+dotenv.config({ path: path.resolve(__dirname, '../../../apps/web/.env') }); // Web env
+dotenv.config({ path: path.resolve(__dirname, '../../../apps/web/.env.local') });
+dotenv.config({ path: path.resolve(__dirname, '../../../apps/admin/.env') }); // Admin env
+dotenv.config({ path: path.resolve(__dirname, '../../../apps/admin/.env.local') });
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -21,7 +22,7 @@ if (!supabaseUrl || (!supabaseKey && !supabaseServiceKey)) {
 }
 
 // Prefer Service Key for seeding to bypass potential RLS
-const supabase = createClient(supabaseUrl, supabaseServiceKey || supabaseKey!);
+const supabase = createServiceRoleClient(supabaseUrl, supabaseServiceKey || supabaseKey!);
 
 const accounts = [
   // ASSETS
