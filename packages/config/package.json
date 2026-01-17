@@ -2,5 +2,5 @@
   "name": "@repo/config",
   "version": "0.0.0",
   "private": true,
-  "files": ["biome.json", "tsconfig.json"]
+  "files": ["biome.json", "tsconfig.json", "postcss.config.mjs"]
 }

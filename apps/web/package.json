@@ -37,6 +37,7 @@
     "@repo/env": "workspace:*",
     "@repo/ui": "workspace:*",
     "@repo/utils": "workspace:*",
+    "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.90.1",
     "@tanstack/react-query": "^5.90.18",
     "@types/three": "^0.182.0",

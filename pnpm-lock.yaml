@@ -280,6 +280,9 @@ importers:
       '@repo/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@supabase/ssr':
+        specifier: ^0.8.0
+        version: 0.8.0(@supabase/supabase-js@2.90.1)
       '@supabase/supabase-js':
         specifier: ^2.90.1
         version: 2.90.1
@@ -428,6 +431,12 @@ importers:
       '@types/node':
         specifier: ^25.0.9
         version: 25.0.9
+      dotenv:
+        specifier: ^17.2.3
+        version: 17.2.3
+      tsx:
+        specifier: ^4.21.0
+        version: 4.21.0
       typescript:
         specifier: ^5.9.3
         version: 5.9.3

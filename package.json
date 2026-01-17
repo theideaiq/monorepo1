@@ -17,7 +17,8 @@
     "fix:sync": "syncpack fix-mismatches",
     "release": "turbo build && changeset publish",
     "clean": "turbo clean && rimraf node_modules",
-    "audit": "pnpm audit --prod"
+    "audit": "pnpm audit --prod",
+    "db:seed": "pnpm --filter @repo/database seed"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.11",
