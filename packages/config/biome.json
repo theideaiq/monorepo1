@@ -1,25 +1,5 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true
-  },
-  "files": {
-    "ignoreUnknown": false,
-    "includes": [
-      "**",
-      "!**/node_modules",
-      "!**/.next",
-      "!**/out",
-      "!**/build",
-      "!**/dist",
-      "!**/public",
-      "!**/.turbo",
-      "!**/coverage",
-      "!**/src/app/globals.css"
-    ]
-  },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
@@ -27,7 +7,9 @@
     "lineEnding": "lf",
     "lineWidth": 80
   },
-  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "organizeImports": {
+    "enabled": true
+  },
   "linter": {
     "enabled": true,
     "rules": {
@@ -68,7 +50,7 @@
   },
   "overrides": [
     {
-      "includes": ["**/scripts/**"],
+      "includes": ["**/scripts/**", "**/*.config.js", "**/*.config.ts"],
       "linter": {
         "rules": {
           "suspicious": {
