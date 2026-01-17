@@ -11,3 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial documentation (`README.md`, `CONTRIBUTING.md`, `CHANGELOG.md`).
 - Basic project structure with Next.js 16, Supabase, and Tailwind CSS 4.
+
+### Fixed
+
+- Updated root `README.md` to list all packages.

@@ -51,6 +51,8 @@ This monorepo is managed with [Turborepo](https://turbo.build/) and [pnpm](https
 - [`packages/ui`](./packages/ui): Shared UI component library (Tailwind 4 + React).
 - [`packages/config`](./packages/config): Shared configuration (TypeScript, Biome).
 - [`packages/utils`](./packages/utils): Shared utility functions (Date, String, Math helpers).
+- [`packages/database`](./packages/database): Type-safe Supabase client and schema definitions.
+- [`packages/env`](./packages/env): Environment variable validation and type-safety.
 
 ## 🚀 Getting Started
 
