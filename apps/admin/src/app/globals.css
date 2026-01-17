@@ -1,12 +1,9 @@
 @import 'tailwindcss';
 @source "../../../../packages/ui";
+@config "../../../../packages/ui/tailwind.config.ts";
 
 @theme {
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
-
-  --color-brand-pink: #e91e63;
-  --color-brand-yellow: #ffd600;
-  --color-brand-dark: #0f172a;
 
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));

@@ -1,0 +1,31 @@
+{
+  "name": "@repo/database",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./client": "./src/client.ts",
+    "./server": "./src/server.ts",
+    "./types": "./src/types_db.ts"
+  },
+  "scripts": {
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
+    "typecheck": "tsc --noEmit",
+    "generate:types": "echo 'Run: npx supabase gen types typescript --project-id YOUR_ID > src/types_db.ts'"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.39.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.11",
+    "@repo/config": "workspace:*",
+    "@types/node": "^24.10.4",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "next": "16.1.1",
+    "react": "19.2.3"
+  }
+}

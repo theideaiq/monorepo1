@@ -1,4 +1,4 @@
-import { ROLES } from '@/lib/constants';
+import type { ROLES } from '@/lib/constants';
 
 // biome-ignore lint/style/useImportType: This is a value import needed for typeof
 export type UserRole = (typeof ROLES)[keyof typeof ROLES];

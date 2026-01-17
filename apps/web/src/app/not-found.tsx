@@ -71,14 +71,17 @@ export default function NotFound() {
   // ⚡ Bolt Optimization: Initialize state randomly without useEffect to avoid double-render.
   // Using suppressHydrationWarning to handle the inevitable mismatch.
   const [scenario, setScenario] = useState(
-    () => scenarios[Math.floor(Math.random() * scenarios.length)],
+    // biome-ignore lint/style/noNonNullAssertion: scenarios is hardcoded
+    () => (scenarios[Math.floor(Math.random() * scenarios.length)] ?? scenarios[0])!,
   );
 
   const reroll = () => {
-    let newScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+    // biome-ignore lint/style/noNonNullAssertion: scenarios is hardcoded
+    let newScenario = (scenarios[Math.floor(Math.random() * scenarios.length)] ?? scenarios[0])!;
     // Make sure we don't get the same one twice in a row
     while (newScenario.id === scenario.id) {
-      newScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+       // biome-ignore lint/style/noNonNullAssertion: scenarios is hardcoded
+       newScenario = (scenarios[Math.floor(Math.random() * scenarios.length)] ?? scenarios[0])!;
     }
     setScenario(newScenario);
   };

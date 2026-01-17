@@ -6,7 +6,9 @@ export const Button = ({ children, isLoading, ...props }: any) => (
   </button>
 );
 
-export const Card = ({ children, className }: any) => <div className={className}>{children}</div>;
+export const Card = ({ children, className }: any) => (
+  <div className={className}>{children}</div>
+);
 
 export const Input = ({ label, ...props }: any) => (
   <label>

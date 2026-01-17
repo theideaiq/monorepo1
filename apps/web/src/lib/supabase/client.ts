@@ -1,6 +1,6 @@
-import { env } from '@/env';
-import { createBrowserClient } from '@supabase/ssr';
+import { webEnv } from '@repo/env/web';
+import { createClient as createBaseClient } from '@repo/database/client';
 
 export function createClient() {
-  return createBrowserClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  return createBaseClient(webEnv.NEXT_PUBLIC_SUPABASE_URL, webEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 }

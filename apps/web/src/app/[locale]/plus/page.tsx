@@ -1,7 +1,7 @@
 'use client';
 
 // UI Kit
-import { env } from '@/env';
+import { webEnv as env } from '@repo/env/web';
 import { createClient } from '@/lib/supabase/client';
 import { Badge, Button } from '@repo/ui';
 import { motion } from 'framer-motion';

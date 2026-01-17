@@ -1,6 +1,6 @@
 import { Bot, session, type Context, type SessionFlavor } from "grammy";
 import type { Content } from "@google/generative-ai";
-import { env } from "../env";
+import { droidEnv as env } from '@repo/env/droid';
 import { UpstashAdapter } from "./storage";
 import { redis } from "./redis";
 import { generateResponse } from "./gemini";

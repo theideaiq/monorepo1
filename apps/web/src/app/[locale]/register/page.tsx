@@ -1,6 +1,6 @@
 'use client';
 
-import { env } from '@/env';
+import { webEnv as env } from '@repo/env/web';
 import { createClient } from '@/lib/supabase/client';
 import { Button, Card, Input } from '@repo/ui';
 import { ArrowRight, UserPlus } from 'lucide-react';

@@ -1,4 +1,4 @@
-import { env } from '@/env';
+import { webEnv as env } from '@repo/env/web';
 import type { MetadataRoute } from 'next';
 
 export const dynamic = 'force-static';

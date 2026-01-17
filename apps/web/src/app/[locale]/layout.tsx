@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 // NEW: Imports for translation data
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
-import { env } from '@/env';
+import { webEnv as env } from '@repo/env/web';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import SkipLink from '@/components/layout/SkipLink';

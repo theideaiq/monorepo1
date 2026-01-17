@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { env } from '../env';
+import { droidEnv as env } from '@repo/env/droid';
 
 // We use the service role key to bypass RLS for the bot's operations
 export const supabase = createClient(

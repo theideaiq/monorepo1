@@ -1,12 +1,12 @@
 'use server';
 
+import { adminEnv as env } from '@repo/env/admin';
 import { revalidatePath } from 'next/cache';
 import React from 'react';
-import { logAdminAction } from '@/lib/audit';
 import { Resend } from 'resend';
 import { BrandedTemplate } from '@/emails/BrandedTemplate';
+import { logAdminAction } from '@/lib/audit';
 import { createClient } from '@/lib/supabase/server';
-import { env } from '@/env';
 
 const BATCH_SIZE = 50;
 

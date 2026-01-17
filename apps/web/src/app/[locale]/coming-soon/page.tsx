@@ -30,7 +30,7 @@ export default function ComingSoonPage() {
   useEffect(() => {
     const randomScene = SCENES[Math.floor(Math.random() * SCENES.length)];
     const timeout = setTimeout(() => {
-      setCurrentScene(randomScene);
+      setCurrentScene(randomScene ?? 'VINYL');
     }, 0);
     return () => clearTimeout(timeout);
   }, []);
@@ -61,7 +61,7 @@ export default function ComingSoonPage() {
 
   const switchScene = () => {
     const nextIndex = (SCENES.indexOf(currentScene || '') + 1) % SCENES.length;
-    setCurrentScene(SCENES[nextIndex]);
+    setCurrentScene(SCENES[nextIndex] ?? 'VINYL');
   };
 
   if (!currentScene) return <div className="min-h-screen bg-black" />;

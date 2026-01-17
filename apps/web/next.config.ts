@@ -1,4 +1,4 @@
-import './src/env';
+import '@repo/env/web';
 import withBundleAnalyzer from '@next/bundle-analyzer';
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
@@ -12,7 +12,7 @@ const isMobile = process.env.NEXT_PUBLIC_APP_ENV === 'mobile';
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
-  transpilePackages: ['@repo/ui', '@repo/utils'],
+  transpilePackages: ['@repo/ui', '@repo/utils', '@repo/env'],
   output: isMobile ? 'export' : undefined,
   images: {
     unoptimized: isMobile,

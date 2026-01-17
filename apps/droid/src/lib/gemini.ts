@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI, type Content, SchemaType } from "@google/generative-ai";
-import { env } from "../env";
+import { droidEnv as env } from '@repo/env/droid';
 import { supabase } from "./supabase";
 
 const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);

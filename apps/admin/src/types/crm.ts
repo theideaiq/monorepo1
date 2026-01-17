@@ -1,4 +1,4 @@
-import { CAMPAIGN_STATUSES, CRM_STATUSES } from '@/lib/constants';
+import type { CAMPAIGN_STATUSES, CRM_STATUSES } from '@/lib/constants';
 import type { UserRole } from '@/types/auth';
 
 // biome-ignore lint/style/useImportType: This is a value import needed for typeof

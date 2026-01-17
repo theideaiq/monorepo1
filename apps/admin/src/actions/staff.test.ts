@@ -1,8 +1,7 @@
-
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { updateRole } from './staff';
-import * as audit from '@/lib/audit';
 import * as nextCache from 'next/cache';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import * as audit from '@/lib/audit';
+import { updateRole } from './staff';
 
 // Mock dependencies using vi.hoisted to avoid ReferenceError
 const mocks = vi.hoisted(() => ({
@@ -34,7 +33,7 @@ describe('staff actions - updateRole', () => {
   const setupSupabaseMock = (
     user: { id: string } | null,
     requesterRole: string | null = null,
-    updateError: { message: string } | null = null
+    updateError: { message: string } | null = null,
   ) => {
     // Mock getUser
     mocks.supabase.auth.getUser.mockResolvedValue({
@@ -85,11 +84,10 @@ describe('staff actions - updateRole', () => {
 
     // Assert
     expect(mocks.supabase.from).toHaveBeenCalledWith('profiles');
-    expect(audit.logAdminAction).toHaveBeenCalledWith(
-      'update_role',
-      'staff',
-      { target_user_id: targetUserId, new_role: newRole }
-    );
+    expect(audit.logAdminAction).toHaveBeenCalledWith('update_role', 'staff', {
+      target_user_id: targetUserId,
+      new_role: newRole,
+    });
     expect(nextCache.revalidatePath).toHaveBeenCalledWith('/settings/staff');
   });
 
@@ -99,8 +97,9 @@ describe('staff actions - updateRole', () => {
     setupSupabaseMock({ id: adminId }, 'admin');
 
     // Act & Assert
-    await expect(updateRole('target-id', 'admin'))
-      .rejects.toThrow('Only Superadmins can change roles');
+    await expect(updateRole('target-id', 'admin')).rejects.toThrow(
+      'Only Superadmins can change roles',
+    );
 
     expect(audit.logAdminAction).not.toHaveBeenCalled();
     expect(nextCache.revalidatePath).not.toHaveBeenCalled();
@@ -111,19 +110,23 @@ describe('staff actions - updateRole', () => {
     setupSupabaseMock(null);
 
     // Act & Assert
-    await expect(updateRole('target-id', 'admin'))
-      .rejects.toThrow('Unauthorized');
+    await expect(updateRole('target-id', 'admin')).rejects.toThrow(
+      'Unauthorized',
+    );
 
-     expect(audit.logAdminAction).not.toHaveBeenCalled();
+    expect(audit.logAdminAction).not.toHaveBeenCalled();
   });
 
   it('should throw error if update operation fails', async () => {
-     // Arrange
+    // Arrange
     const superAdminId = 'super-admin-id';
-    setupSupabaseMock({ id: superAdminId }, 'superadmin', { message: 'Database error' });
+    setupSupabaseMock({ id: superAdminId }, 'superadmin', {
+      message: 'Database error',
+    });
 
     // Act & Assert
-    await expect(updateRole('target-id', 'admin'))
-      .rejects.toThrow('Database error');
+    await expect(updateRole('target-id', 'admin')).rejects.toThrow(
+      'Database error',
+    );
   });
 });

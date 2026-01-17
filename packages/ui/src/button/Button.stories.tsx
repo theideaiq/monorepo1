@@ -16,11 +16,11 @@ const meta: Meta<typeof Button> = {
     },
     disabled: {
       control: 'boolean',
-      description: 'Whether the button is disabled'
+      description: 'Whether the button is disabled',
     },
     isLoading: {
       control: 'boolean',
-      description: 'Whether the button shows a loading spinner'
+      description: 'Whether the button shows a loading spinner',
     },
     children: {
       control: 'text',

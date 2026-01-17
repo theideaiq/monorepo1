@@ -1,4 +1,4 @@
-import './src/env';
+import '@repo/env/admin';
 import withBundleAnalyzer from '@next/bundle-analyzer';
 import type { NextConfig } from 'next';
 
@@ -8,7 +8,7 @@ const withAnalyzer = withBundleAnalyzer({
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
-  transpilePackages: ['@repo/ui', '@repo/utils'],
+  transpilePackages: ['@repo/ui', '@repo/utils', '@repo/env'],
   images: {
     remotePatterns: [
       {
