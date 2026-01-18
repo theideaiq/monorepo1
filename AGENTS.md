@@ -54,6 +54,10 @@ Rule: Do not leave flat component files in the root of `packages/ui/src/`. Creat
 **Learning:** A blank list (e.g., "No results") is a dead end for users. An empty state should explain *why* it's empty and provide a clear *action* to resolve it (e.g., "Clear Filters", "Create New").
 **Action:** When rendering lists that can be empty, always include a dedicated empty state component with an icon, explanation, and a call-to-action button.
 
+### 2025-05-21 - Button Component Loading State
+**Learning:** The `Button` component from `@repo/ui` prepends a spinner when `isLoading` is true but keeps the children visible. For buttons with icons, this results in two icons (spinner + original icon) unless the original icon is manually hidden.
+**Action:** When adding loading states to icon-buttons, conditionally render the original icon: `{!loading && <Icon />}`.
+
 ## Pixel (UI Implementation Details)
 
 ### 2024-02-14 - Inconsistent Style Merging
