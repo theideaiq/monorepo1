@@ -1,6 +1,8 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { createMiddlewareClient } from '@/lib/supabase/middleware';
 import type { UserRole } from '@/types/auth';
+import { ROLES } from '@/lib/constants';
+import { WINDOW_SIZE_MS } from '@/lib/rate-limit';
 
 /**
  * Global middleware for authentication and rate limiting.
@@ -28,7 +30,7 @@ export async function proxy(request: NextRequest) {
       if (limit) {
         const lastRequest = new Date(limit.last_request);
         const timeDiff = now.getTime() - lastRequest.getTime();
-        if (timeDiff < 60000 && limit.count >= 10) {
+        if (timeDiff < WINDOW_SIZE_MS && limit.count >= 10) {
           // 10 requests per minute for login page loads
           return new NextResponse('Too Many Requests', { status: 429 });
         }
@@ -36,7 +38,7 @@ export async function proxy(request: NextRequest) {
         // Async update (fire and forget - sort of, we await it to be safe in middleware)
         // In middleware we generally want to be fast.
         // For now, we update.
-        if (timeDiff > 60000) {
+        if (timeDiff > WINDOW_SIZE_MS) {
           await supabase
             .from('rate_limits')
             .update({ count: 1, last_request: now.toISOString() })
@@ -94,7 +96,7 @@ export async function proxy(request: NextRequest) {
     }
 
     const role = profile.role as UserRole;
-    if (role !== 'admin' && role !== 'superadmin') {
+    if (role !== ROLES.ADMIN && role !== ROLES.SUPERADMIN) {
       if (path !== '/login') {
         return NextResponse.redirect(new URL('/login', request.url));
       }
