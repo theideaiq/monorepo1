@@ -6,7 +6,14 @@
     "CI",
     "NEXT_PUBLIC_*",
     "VERCEL_URL",
-    "SKIP_ENV_VALIDATION"
+    "SKIP_ENV_VALIDATION",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "RESEND_API_KEY",
+    "STRIPE_SECRET_KEY",
+    "TELEGRAM_BOT_TOKEN",
+    "GEMINI_API_KEY",
+    "UPSTASH_REDIS_REST_URL",
+    "UPSTASH_REDIS_REST_TOKEN"
   ],
   "tasks": {
     "build": {
@@ -48,6 +55,15 @@
     "build-storybook": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["storybook-static/**"]
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
+    "db:seed": {
+      "cache": false
     }
   }
 }
