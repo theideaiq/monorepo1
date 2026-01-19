@@ -3,8 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./service": "./src/service.ts",
-    "./types": "./src/types_db.ts"
+    "./service": {
+      "types": "./src/service.ts",
+      "default": "./src/service.ts"
+    },
+    "./types": {
+      "types": "./src/types_db.ts",
+      "default": "./src/types_db.ts"
+    }
   },
   "scripts": {
     "lint": "biome lint .",
