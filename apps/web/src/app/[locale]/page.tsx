@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, buttonVariants } from '@repo/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, buttonVariants } from '@repo/ui';
 import {
   Building2,
   Gamepad2,
@@ -63,7 +63,7 @@ export default async function Home({ params }: Props) {
       <Hero />
 
       {/* 2. SERVICES GRID */}
-      <section className="py-24 px-4 max-w-7xl mx-auto">
+      <section className="py-16 lg:py-24 px-4 max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-brand-dark">
             {t('explore_title')}
@@ -95,7 +95,7 @@ export default async function Home({ params }: Props) {
       </section>
 
       {/* 3. WHY CHOOSE US */}
-      <section className="bg-brand-dark text-white py-24 px-4 rounded-3xl mx-4 lg:mx-8 mb-20 relative overflow-hidden">
+      <section className="bg-brand-dark text-white py-16 lg:py-24 px-4 rounded-2xl md:rounded-3xl mx-4 lg:mx-8 mb-20 relative overflow-hidden">
         <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
           <div className="md:w-1/2">
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
@@ -133,7 +133,7 @@ export default async function Home({ params }: Props) {
             </div>
           </div>
 
-          <div className="md:w-1/2 relative h-[400px] w-full bg-slate-800 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+          <div className="md:w-1/2 relative h-[300px] md:h-[400px] w-full bg-slate-800 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
             {/* Placeholder for a cool lifestyle image */}
             <div className="absolute inset-0 bg-gradient-to-tr from-brand-pink/20 to-brand-yellow/20" />
             <div className="absolute inset-0 flex items-center justify-center">
@@ -151,7 +151,7 @@ export default async function Home({ params }: Props) {
       </section>
 
       {/* 4. CTA */}
-      <section className="py-20 text-center px-4">
+      <section className="py-16 lg:py-24 text-center px-4">
         <h2 className="text-3xl font-bold text-brand-dark mb-6">
           {t('footer_cta')}
         </h2>
