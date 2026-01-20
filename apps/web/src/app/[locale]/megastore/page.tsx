@@ -16,7 +16,7 @@ import {
   Zap,
 } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useProducts } from '@/hooks/queries/use-products';
 import { useCartStore } from '@/stores/cart-store';
@@ -38,8 +38,12 @@ export default function MegastorePage() {
     toast.success(`${product} added to cart`);
   };
 
-  const filteredProducts =
-    products?.filter((p) => filter === 'All' || p.category === filter) ?? [];
+  // ⚡ Bolt: Memoize filtered products to prevent re-calculation on every render
+  const filteredProducts = useMemo(
+    () =>
+      products?.filter((p) => filter === 'All' || p.category === filter) ?? [],
+    [products, filter],
+  );
 
   if (isLoading) {
     return (
@@ -142,6 +146,7 @@ export default function MegastorePage() {
                       src={product.image}
                       alt={product.title}
                       fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     {/* Overlay Action */}
@@ -283,6 +288,7 @@ export default function MegastorePage() {
               src="https://images.unsplash.com/photo-1615663245857-acda5b2b15d5?auto=format&fit=crop&q=80&w=1600"
               alt="Flash Deal"
               fill
+              sizes="(max-width: 768px) 100vw, 66vw"
               className="object-cover"
             />
           </div>
