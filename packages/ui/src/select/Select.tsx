@@ -48,9 +48,9 @@ export function Select({
           <option value="" disabled>
             Select an option
           </option>
-          {options.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
             </option>
           ))}
         </select>
@@ -58,6 +58,7 @@ export function Select({
         <ChevronDown
           className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
           size={18}
+          aria-hidden="true"
         />
       </div>
       {error && (
