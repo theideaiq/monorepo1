@@ -45,6 +45,30 @@ interface LedgerLineWithJoins {
       }>;
 }
 
+interface LedgerLineWithJoins {
+  debit: number | string | null;
+  credit: number | string | null;
+  chart_of_accounts:
+    | {
+        name: string;
+        type: string;
+        category: string | null;
+      }
+    | Array<{
+        name: string;
+        type: string;
+        category: string | null;
+      }>
+    | null;
+  ledger_entries?:
+    | {
+        transaction_date: string;
+      }
+    | Array<{
+        transaction_date: string;
+      }>;
+}
+
 /**
  * Calculates Profit and Loss for a given period.
  */
@@ -59,7 +83,7 @@ export async function getProfitAndLoss(
     .from('ledger_lines')
     .select(`
       debit,
-      credit,
+  lines.forEach((line: LedgerLineWithJoins) => {
       chart_of_accounts!inner (
         name,
         type,
