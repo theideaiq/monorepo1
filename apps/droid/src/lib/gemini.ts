@@ -48,7 +48,14 @@ function isValidSearchQuery(query: unknown): query is string {
 
 async function searchProducts(query: string) {
   // biome-ignore lint/suspicious/noConsole: logging is fine
-  console.log(`Searching products for: ${query}`);
+  const MAX_LOG_QUERY_LENGTH = 100;
+  const rawQuery = String(query);
+  const sanitizedQuery = rawQuery.replace(/[\r\n\t]/g, ' ');
+  const safeQueryForLog =
+    sanitizedQuery.length > MAX_LOG_QUERY_LENGTH
+      ? sanitizedQuery.slice(0, MAX_LOG_QUERY_LENGTH) + '…'
+      : sanitizedQuery;
+  console.log(`Searching products for query (truncated if long): "${safeQueryForLog}"`);
   const { data, error } = await supabase
     .from('products')
     .select('id, name, description, price, stock_count')
@@ -58,13 +65,24 @@ async function searchProducts(query: string) {
   if (error) {
     // biome-ignore lint/suspicious/noConsole: logging is fine
     console.error('Supabase search error:', error);
+    const maybeErrorObject =
+      typeof error === 'object' && error !== null ? (error as Record<string, unknown>) : null;
+    const errorCode =
+      maybeErrorObject && typeof maybeErrorObject.code === 'string'
+        ? maybeErrorObject.code
+        : null;
+    const errorMessage =
+      maybeErrorObject && typeof maybeErrorObject.message === 'string'
+        ? maybeErrorObject.message
+        : String(error);
+
     return {
       error: 'Error searching for products.',
       code: 'SUPABASE_SEARCH_ERROR',
       details: {
         // Limit details to non-sensitive, high-level information
-        code: (error as any).code ?? null,
-        message: (error as any).message ?? String(error),
+        code: errorCode,
+        message: errorMessage,
       },
     };
   }
