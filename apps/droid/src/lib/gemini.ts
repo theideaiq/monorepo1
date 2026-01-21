@@ -117,7 +117,7 @@ export async function generateResponse(
           ],
         });
 
-        return finalResult.text || "";
+        return finalResult.text || "I couldn't generate a follow-up answer based on the product search. Please try again.";
       }
     }
 
