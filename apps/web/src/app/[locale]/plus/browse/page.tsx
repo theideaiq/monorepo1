@@ -201,7 +201,7 @@ function CategoryRow({ title, items, onRent, rentingId, icon }: any) {
               </h4>
               <div className="flex justify-between items-center mt-2">
                 <span className="text-xs text-brand-yellow font-bold">
-                  {item.daily_rate.toLocaleString()} IQD/day
+                  {item.daily_rate.toLocaleString('en-US', { maximumFractionDigits: 0 })} IQD/day
                 </span>
                 <Badge
                   variant="neutral"
