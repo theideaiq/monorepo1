@@ -10,6 +10,19 @@ import { requireAdmin } from '@/lib/auth-checks';
 
 const BATCH_SIZE = 50;
 
+/**
+ * Sends a marketing campaign to a segment of users.
+ *
+ * Architecture:
+ * - Uses Resend for email delivery.
+ * - Batches emails in chunks of 50 to avoid API rate limits.
+ * - Renders React Email templates server-side.
+ *
+ * Security:
+ * - Explicit `requireAdmin()` check (Defense in Depth).
+ *
+ * @param campaignId - ID of the campaign to send.
+ */
 export async function sendCampaign(campaignId: string) {
   const resend = new Resend(env.RESEND_API_KEY);
 

@@ -1,5 +1,9 @@
 import { cn } from '@repo/utils';
 
+/**
+ * Placeholder component for loading states.
+ * Renders a pulsing gray box.
+ */
 function Skeleton({
   className,
   ...props

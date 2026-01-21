@@ -51,25 +51,40 @@ For **Tailwind CSS 4**, add the `@source` directive to your application's main C
 @source "../../../packages/ui"; /* Adjust path relative to your CSS file */
 ```
 
+### 🔗 Link Injection Pattern
+
+To keep components framework-agnostic (avoiding direct dependencies on `next/link`), navigation components like `Navbar` and `Footer` require a `Link` component to be injected via props.
+
+```tsx
+import { Link } from '@/i18n/navigation'; // Local app link
+import { Navbar } from '@repo/ui';
+
+<Navbar
+  Link={Link}
+  logo={<Logo />}
+  // ...
+/>
+```
+
 ## 🧱 Components
 
 Source code is located in `src/`. Components are organized in their own directories.
 
-- **AppShell**: `src/app-shell/AppShell.tsx` (Standardized layout wrapper)
-- **Badge**: `src/badge/Badge.tsx` (Variants: `success`, `warning`, `danger`, `neutral`, `brand`)
-- **Button**: `src/button/Button.tsx` (Variants: `primary`, `secondary`, `dark`, `outline`, `ghost`, `link`, `destructive`)
-- **Card**: `src/card/Card.tsx`
-- **Footer**: `src/footer/Footer.tsx`
-- **Input**: `src/input/Input.tsx`
-- **MetricCard**: `src/metric-card/MetricCard.tsx` (Includes trend indicators)
-- **Modal**: `src/modal/Modal.tsx`
-- **Navbar**: `src/navbar/Navbar.tsx`
-- **Select**: `src/select/Select.tsx`
-- **Sheet**: `src/sheet/Sheet.tsx`
-- **Skeleton**: `src/skeleton/Skeleton.tsx`
-- **Spinner**: `src/spinner/Spinner.tsx`
-- **Table**: `src/table/Table.tsx`
-- **Textarea**: `src/textarea/Textarea.tsx`
+- **AppShell**: `src/app-shell/AppShell.tsx` (Standardized layout wrapper with skip-link)
+- **Badge**: `src/badge/Badge.tsx` (Status indicators)
+- **Button**: `src/button/Button.tsx` (Primary actions with loading states)
+- **Card**: `src/card/Card.tsx` (Content containers)
+- **Footer**: `src/footer/Footer.tsx` (Multi-column footer)
+- **Input**: `src/input/Input.tsx` (Form inputs with validation states)
+- **MetricCard**: `src/metric-card/MetricCard.tsx` (Dashboard metrics with trends)
+- **Modal**: `src/modal/Modal.tsx` (Accessible dialogs with focus trapping)
+- **Navbar**: `src/navbar/Navbar.tsx` (Responsive navigation)
+- **Select**: `src/select/Select.tsx` (Native select with custom styling)
+- **Sheet**: `src/sheet/Sheet.tsx` (Sidebars/Drawers powered by Radix UI)
+- **Skeleton**: `src/skeleton/Skeleton.tsx` (Loading placeholders)
+- **Spinner**: `src/spinner/Spinner.tsx` (Loading indicators)
+- **Table**: `src/table/Table.tsx` (Responsive data tables)
+- **Textarea**: `src/textarea/Textarea.tsx` (Multi-line inputs)
 
 ## 📜 Scripts
 

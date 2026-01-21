@@ -4,10 +4,16 @@ import { useId } from 'react';
 
 interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  /** Label text displayed above the textarea */
   label?: string;
+  /** Error message displayed below the textarea */
   error?: string;
 }
 
+/**
+ * Enhanced Textarea component with built-in label and error handling.
+ * Automatically generates IDs for label association if not provided.
+ */
 export function Textarea({ label, error, className, ...props }: TextareaProps) {
   const uniqueId = useId();
   const id = props.id || uniqueId;

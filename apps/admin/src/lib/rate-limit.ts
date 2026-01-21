@@ -5,7 +5,10 @@ export const MAX_REQUESTS = 5; // 5 requests per minute
 
 /**
  * Checks if a specific key has exceeded the rate limit.
- * Implements a sliding window strategy using Supabase.
+ * Implements a sliding window strategy using a Supabase table.
+ *
+ * Note: This implementation is distributed (works across Vercel Lambdas) because
+ * state is stored in the database.
  *
  * @param key - The unique key to rate limit (e.g., user ID or IP).
  * @returns A promise resolving to `true` if allowed, `false` if blocked.

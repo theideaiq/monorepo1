@@ -6,12 +6,29 @@ import { Sheet, SheetContent, SheetTrigger } from '../sheet/Sheet';
 
 interface AppShellProps {
   children: React.ReactNode;
+  /** Sidebar component content */
   sidebar: React.ReactNode;
+  /** User navigation actions (e.g., Profile dropdown) */
   userNav?: React.ReactNode;
+  /** Brand Logo component */
   logo?: React.ReactNode;
   className?: string;
 }
 
+/**
+ * Standard Application Shell Layout.
+ *
+ * Features:
+ * - Responsive Sidebar (Collapsible on mobile via Sheet).
+ * - "Skip to Content" link for keyboard accessibility (Section 508).
+ * - Sticky Header.
+ * - Consistent background and spacing.
+ *
+ * @example
+ * <AppShell sidebar={<Sidebar />} userNav={<UserMenu />}>
+ *   <PageContent />
+ * </AppShell>
+ */
 export function AppShell({
   children,
   sidebar,
@@ -21,6 +38,7 @@ export function AppShell({
 }: AppShellProps) {
   return (
     <div className={cn('flex min-h-screen bg-slate-50', className)}>
+      {/* Accessibility: Skip Link */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:m-4 focus:block focus:rounded-md focus:bg-white focus:p-4 focus:text-slate-900 focus:shadow-lg focus:ring-2 focus:ring-brand-pink"
@@ -43,6 +61,7 @@ export function AppShell({
         {/* Header */}
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6 shadow-sm">
           <div className="flex items-center gap-4">
+            {/* Mobile Menu Trigger */}
             <Sheet>
               <SheetTrigger asChild>
                 <Button

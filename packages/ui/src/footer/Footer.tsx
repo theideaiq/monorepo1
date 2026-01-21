@@ -25,6 +25,7 @@ export interface FooterProps {
     rights: string;
     location: string;
   };
+  /** Link component injection */
   Link: React.ComponentType<{
     href: string;
     children: React.ReactNode;
@@ -32,6 +33,10 @@ export interface FooterProps {
   }>;
 }
 
+/**
+ * Global Footer Component.
+ * Responsive multi-column layout with social links and copyright.
+ */
 export function Footer({ brand, columns, copyright, Link }: FooterProps) {
   return (
     <footer className="bg-brand-deep text-white border-t border-white/10 pt-16 pb-8">
@@ -87,6 +92,9 @@ export function Footer({ brand, columns, copyright, Link }: FooterProps) {
   );
 }
 
+/**
+ * Helper component for rendering social media icons.
+ */
 export function SocialIcon({
   href,
   icon,

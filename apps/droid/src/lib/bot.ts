@@ -6,11 +6,16 @@ import { redis } from './redis';
 import { UpstashAdapter } from './storage';
 
 interface SessionData {
+  /** Chat history for context-aware AI responses */
   history: Content[];
 }
 
 export type MyContext = Context & SessionFlavor<SessionData>;
 
+/**
+ * The main Bot instance.
+ * Uses Long Polling for development and Webhooks for production (configured in API route).
+ */
 export const bot = new Bot<MyContext>(env.TELEGRAM_BOT_TOKEN);
 
 function getSessionKey(ctx: Context): string | undefined {
@@ -18,6 +23,7 @@ function getSessionKey(ctx: Context): string | undefined {
 }
 
 // Session middleware
+// Stores session data (conversation history) in Upstash Redis to be stateless/serverless friendly.
 bot.use(
   session({
     initial: (): SessionData => ({ history: [] }),
@@ -36,7 +42,8 @@ bot.on('message:text', async (ctx) => {
   const text = ctx.message.text;
   const chatType = ctx.chat.type;
 
-  // Group Logic: Spam
+  // Group Logic: Spam Protection
+  // Basic keyword filtering for crypto/spam bots in public groups.
   if (chatType === 'group' || chatType === 'supergroup') {
     const lower = text.toLowerCase();
     const spamKeywords = [
@@ -61,6 +68,7 @@ bot.on('message:text', async (ctx) => {
   }
 
   // Private Logic: AI Agent
+  // Interacts with Gemini to provide helpful responses.
   if (chatType === 'private') {
     await ctx.replyWithChatAction('typing');
 
@@ -77,7 +85,7 @@ bot.on('message:text', async (ctx) => {
       { role: 'model', parts: [{ text: reply }] },
     ];
 
-    // Limit to last 20 messages
+    // Limit to last 20 messages to manage context window and storage
     ctx.session.history = newHistory.slice(-20) as Content[];
   }
 });

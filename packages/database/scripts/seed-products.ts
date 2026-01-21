@@ -1,3 +1,15 @@
+/**
+ * Seed Products Script
+ *
+ * Populates the `products` table with sample data.
+ *
+ * Usage:
+ * 1. Ensure environment variables are set (either in .env or .env.local).
+ * 2. Run via tsx: `pnpm tsx packages/database/scripts/seed-products.ts`
+ *
+ * Note: Uses Service Role key to bypass RLS policies during seeding.
+ */
+
 import dotenv from 'dotenv';
 import path from 'path';
 import { createServiceRoleClient } from '../src/service';

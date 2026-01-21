@@ -4,6 +4,11 @@ import { createClient } from '@/lib/supabase/server';
 /**
  * Logs an administrative action to the audit table.
  *
+ * Architecture:
+ * - Implements a "fail-silent" strategy. If audit logging fails (e.g., database lock),
+ *   it should NOT block the actual business logic (like updating a product).
+ * - Errors are logged to the application logger for debugging.
+ *
  * @param action - The action performed (e.g., 'update_user', 'delete_post').
  * @param resource - The target resource identifier (e.g., user ID).
  * @param details - Optional JSON object with additional context.
@@ -31,11 +36,11 @@ export async function logAdminAction(
     });
 
     if (error) {
-      // Silently log error to console to prevent disrupting the admin flow
+      // Fail-safe: Silently log error to console to prevent disrupting the admin flow
       Logger.error('Failed to write audit log', error);
     }
   } catch (err) {
-    // Silently catch exceptions
+    // Fail-safe: Silently catch exceptions
     Logger.error('Unexpected error in audit logging', err);
   }
 }

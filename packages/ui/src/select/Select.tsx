@@ -9,6 +9,11 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   options: { value: string; label: string }[];
 }
 
+/**
+ * Native Select component styled for consistency.
+ *
+ * @param options - Array of objects { value, label } to render as <option>.
+ */
 export function Select({
   label,
   error,

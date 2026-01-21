@@ -38,8 +38,8 @@ interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   /**
-   * If true, displays a loading spinner and hides the button content (except for the spinner).
-   * Automatically disables the button.
+   * If true, displays a loading spinner.
+   * Note: The button's children (text/icons) are hidden while loading to prevent layout shifts or double icons.
    */
   isLoading?: boolean;
 }
@@ -47,6 +47,20 @@ interface ButtonProps
 /**
  * Primary UI button component.
  * Supports various variants, sizes, and a loading state.
+ *
+ * @param variant - Visual style of the button (primary, secondary, outline, etc.)
+ * @param size - Size of the button (default, sm, lg, icon)
+ * @param isLoading - Shows a spinner and disables the button if true.
+ *
+ * @example
+ * <Button variant="primary" onClick={handleClick}>
+ *   Click Me
+ * </Button>
+ *
+ * @example
+ * <Button variant="outline" isLoading={isSubmitting}>
+ *   Submit
+ * </Button>
  */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (

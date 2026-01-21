@@ -3,6 +3,21 @@ import * as React from 'react';
 
 /**
  * A container component for grouping related content and actions.
+ * Typically used for panels, dashboards, and detailed views.
+ *
+ * @example
+ * <Card>
+ *   <CardHeader>
+ *     <CardTitle>My Card</CardTitle>
+ *     <CardDescription>This is a description</CardDescription>
+ *   </CardHeader>
+ *   <CardContent>
+ *     <p>Main content goes here.</p>
+ *   </CardContent>
+ *   <CardFooter>
+ *     <Button>Action</Button>
+ *   </CardFooter>
+ * </Card>
  */
 const Card = React.forwardRef<
   HTMLDivElement,
@@ -19,6 +34,9 @@ const Card = React.forwardRef<
 ));
 Card.displayName = 'Card';
 
+/**
+ * Header section of the Card. Usually contains Title and Description.
+ */
 const CardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -31,6 +49,10 @@ const CardHeader = React.forwardRef<
 ));
 CardHeader.displayName = 'CardHeader';
 
+/**
+ * The primary heading of the Card.
+ * Uses an `h3` element by default.
+ */
 const CardTitle = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLHeadingElement>
@@ -46,6 +68,9 @@ const CardTitle = React.forwardRef<
 ));
 CardTitle.displayName = 'CardTitle';
 
+/**
+ * A subtitle or description text for the Card.
+ */
 const CardDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
@@ -54,6 +79,9 @@ const CardDescription = React.forwardRef<
 ));
 CardDescription.displayName = 'CardDescription';
 
+/**
+ * The main content area of the Card.
+ */
 const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -62,6 +90,9 @@ const CardContent = React.forwardRef<
 ));
 CardContent.displayName = 'CardContent';
 
+/**
+ * The footer area of the Card. Useful for action buttons.
+ */
 const CardFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>

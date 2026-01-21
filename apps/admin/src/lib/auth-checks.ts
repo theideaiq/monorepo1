@@ -19,9 +19,14 @@ export function hasAdminAccess(role?: string | null): boolean {
 
 /**
  * Verifies that the current user is authenticated, not banned, and has Admin or Superadmin role.
- * Throws an error if any check fails.
+ *
+ * Security:
+ * - Checks Auth Session (Authentication)
+ * - Checks Database Profile (Authorization & Ban Status)
+ * - Throws explicit errors to be caught by the UI or Server Action wrapper.
  *
  * @returns Object containing the Supabase client, user, and requester profile.
+ * @throws Error if unauthorized.
  */
 export async function requireAdmin() {
   const supabase = await createClient();
@@ -52,9 +57,10 @@ export async function requireAdmin() {
 
 /**
  * Verifies that the current user is authenticated, not banned, and has Superadmin role.
- * Throws an error if any check fails.
+ * Used for sensitive operations like managing other staff members.
  *
  * @returns Object containing the Supabase client, user, and requester profile.
+ * @throws Error if unauthorized.
  */
 export async function requireSuperAdmin() {
   const supabase = await createClient();

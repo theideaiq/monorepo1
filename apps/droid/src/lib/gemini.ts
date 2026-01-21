@@ -5,6 +5,7 @@ import { supabase } from './supabase';
 const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
 const MAX_PRODUCT_SEARCH_RESULTS = 5;
 
+// Define Tool Schema for Function Calling
 interface SearchProductsFunctionDeclaration {
   name: string;
   description: string;
@@ -52,6 +53,9 @@ function escapeIlikePattern(value: string): string {
   return value.replace(/([\\%_])/g, '\\$1');
 }
 
+/**
+ * Searches Supabase products table using a case-insensitive ILIKE query.
+ */
 async function searchProducts(query: string) {
   const MAX_LOG_QUERY_LENGTH = 100;
   const rawQuery = String(query);
@@ -103,6 +107,14 @@ async function searchProducts(query: string) {
   return { products: data };
 }
 
+/**
+ * Generates a response from Gemini AI.
+ * Handles function calling (Tool Use) for product searches.
+ *
+ * @param history - Conversation history.
+ * @param message - User's current message.
+ * @returns The AI's response text.
+ */
 export async function generateResponse(
   history: Content[],
   message: string,
@@ -113,6 +125,8 @@ export async function generateResponse(
       history: history,
       config: {
         tools: tools,
+        // System instruction defines the Persona and Business Knowledge.
+        // Critical for maintaining the correct tone and capabilities.
         systemInstruction:
           'You are Droid, the official AI assistant for The IDEA (Innovation for Every Aspect of Life). ' +
           'You are helpful, professional, and knowledgeable about our ecosystem: ' +

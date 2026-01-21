@@ -5,10 +5,30 @@ import { Eye, EyeOff } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  /** Label text displayed above the input */
   label?: string;
+  /** Error message displayed below the input. Also triggers red border styling. */
   error?: string;
 }
 
+/**
+ * Enhanced Input component with built-in label, error handling, and password toggling.
+ *
+ * Features:
+ * - Built-in label support with automatic `for`/`id` association.
+ * - Error message display with `aria-invalid` and `aria-describedby` for accessibility.
+ * - Password visibility toggle for `type="password"`.
+ * - Focus ring styling matching the brand.
+ *
+ * @example
+ * <Input
+ *   label="Email Address"
+ *   type="email"
+ *   placeholder="user@example.com"
+ *   error={errors.email?.message}
+ *   {...register('email')}
+ * />
+ */
 export function Input({
   label,
   error,

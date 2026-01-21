@@ -2,7 +2,8 @@ import { cn } from '@repo/utils';
 import * as React from 'react';
 
 /**
- * A responsive table component.
+ * A responsive table component container.
+ * Wraps the table in a scrollable div for responsiveness.
  */
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -18,6 +19,9 @@ const Table = React.forwardRef<
 ));
 Table.displayName = 'Table';
 
+/**
+ * The header section of the table (`thead`).
+ */
 const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
@@ -26,6 +30,9 @@ const TableHeader = React.forwardRef<
 ));
 TableHeader.displayName = 'TableHeader';
 
+/**
+ * The body section of the table (`tbody`).
+ */
 const TableBody = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
@@ -38,6 +45,10 @@ const TableBody = React.forwardRef<
 ));
 TableBody.displayName = 'TableBody';
 
+/**
+ * The footer section of the table (`tfoot`).
+ * Useful for summary rows.
+ */
 const TableFooter = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
@@ -53,6 +64,10 @@ const TableFooter = React.forwardRef<
 ));
 TableFooter.displayName = 'TableFooter';
 
+/**
+ * A row in the table (`tr`).
+ * Includes hover effects.
+ */
 const TableRow = React.forwardRef<
   HTMLTableRowElement,
   React.HTMLAttributes<HTMLTableRowElement>
@@ -68,6 +83,9 @@ const TableRow = React.forwardRef<
 ));
 TableRow.displayName = 'TableRow';
 
+/**
+ * A header cell (`th`).
+ */
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
   React.ThHTMLAttributes<HTMLTableCellElement>
@@ -83,6 +101,9 @@ const TableHead = React.forwardRef<
 ));
 TableHead.displayName = 'TableHead';
 
+/**
+ * A data cell (`td`).
+ */
 const TableCell = React.forwardRef<
   HTMLTableCellElement,
   React.TdHTMLAttributes<HTMLTableCellElement>
@@ -95,6 +116,9 @@ const TableCell = React.forwardRef<
 ));
 TableCell.displayName = 'TableCell';
 
+/**
+ * A caption for the table.
+ */
 const TableCaption = React.forwardRef<
   HTMLTableCaptionElement,
   React.HTMLAttributes<HTMLTableCaptionElement>

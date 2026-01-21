@@ -7,14 +7,34 @@ import type React from 'react';
 import { useEffect, useId, useRef } from 'react';
 
 interface ModalProps {
+  /** Whether the modal is currently visible */
   isOpen: boolean;
+  /** Callback fired when the modal requests to be closed (e.g., clicking overlay or pressing Esc) */
   onClose: () => void;
+  /** Optional title displayed in the header */
   title?: string;
+  /** Modal content */
   children: React.ReactNode;
   className?: string;
+  /** Accessibility label for the close button. Defaults to "Close". */
   closeLabel?: string;
 }
 
+/**
+ * Accessible Modal component using Framer Motion for animations.
+ *
+ * Features:
+ * - Focus management (traps focus when open).
+ * - Body scroll locking.
+ * - Keyboard navigation (Esc to close).
+ * - Animated backdrop and content.
+ *
+ * @example
+ * <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Confirm Action">
+ *   <p>Are you sure?</p>
+ *   <Button onClick={handleConfirm}>Yes</Button>
+ * </Modal>
+ */
 export function Modal({
   isOpen,
   onClose,
@@ -26,12 +46,13 @@ export function Modal({
   const titleId = useId();
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Lock body scroll when modal is open
+  // Lock body scroll when modal is open to prevent background scrolling
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-      // Focus the modal when it opens for accessibility
-      // Small timeout to allow animation to start/render to happen
+      // Focus the modal when it opens for accessibility.
+      // We use requestAnimationFrame to ensure the element is mounted and rendered
+      // before attempting to focus, which is crucial when combined with AnimatePresence.
       requestAnimationFrame(() => {
         modalRef.current?.focus();
       });
@@ -43,7 +64,7 @@ export function Modal({
     };
   }, [isOpen]);
 
-  // Close on Escape key
+  // Close on Escape key press
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();

@@ -1,16 +1,14 @@
 # Shared Configuration
 
-This package contains shared configuration files for the monorepo.
+This package contains shared configuration files and constants for the monorepo.
 
 ## Contents
 
 - **TypeScript**: Shared `tsconfig.json` used as a base for other packages.
 - **Biome**: Shared `biome.json` for linting and formatting rules.
-- **Tailwind**: (If applicable) Shared Tailwind configuration.
+- **Navigation**: Shared navigation constants for Web and Admin apps (`src/navigation.ts`).
 
 ## Usage
-
-Extend the configuration in your workspace:
 
 ### TypeScript
 ```json
@@ -26,4 +24,13 @@ Extend the configuration in your workspace:
 {
   "extends": ["@repo/config/biome.json"]
 }
+```
+
+### Navigation Constants
+Import shared navigation structure to keep links consistent.
+
+```ts
+import { webNavigation } from '@repo/config/navigation';
+
+// Use in Next.js Navbar
 ```

@@ -20,6 +20,10 @@ export interface NavbarProps {
     menuOpen: string;
     menuClose: string;
   };
+  /**
+   * Component to use for links (e.g. Next.js Link).
+   * Injected to keep the UI package framework-agnostic.
+   */
   Link: React.ComponentType<{
     href: string;
     children: React.ReactNode;
@@ -28,6 +32,10 @@ export interface NavbarProps {
   }>;
 }
 
+/**
+ * Responsive Navbar component with mobile menu toggle.
+ * Uses dependency injection for the Link component to remain framework-agnostic.
+ */
 export function Navbar({
   logo,
   navItems,

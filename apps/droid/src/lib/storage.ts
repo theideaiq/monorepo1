@@ -1,6 +1,10 @@
 import type { Redis } from '@upstash/redis';
 import type { StorageAdapter } from 'grammy';
 
+/**
+ * Storage Adapter for grammY sessions using Upstash Redis.
+ * Allows the bot to be stateless (serverless compatible).
+ */
 export class UpstashAdapter<T> implements StorageAdapter<T> {
   private redis: Redis;
 

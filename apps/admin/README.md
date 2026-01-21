@@ -11,6 +11,13 @@ The internal administration dashboard for The IDEA IQ.
 - **Data**: TanStack Table, Recharts
 - **Emails**: Resend, React Email
 
+## 🔐 Security Architecture
+
+This application enforces strict security controls:
+1.  **Role-Based Access Control (RBAC)**: All Server Actions and API routes must explicitly call `requireAdmin()` or `requireSuperAdmin()` from `@/lib/auth-checks`.
+2.  **Audit Logging**: Critical write operations are logged to the `audit_logs` table via `@/lib/audit`.
+3.  **Environment Isolation**: Uses `apps/admin/.env.local` and never exposes Service Role keys to the client.
+
 ## 🚀 Getting Started
 
 ### Prerequisites

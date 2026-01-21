@@ -1,3 +1,4 @@
+import { Logger } from '@repo/utils';
 import { createClient } from '@/lib/supabase/client';
 
 export interface Product {
@@ -12,32 +13,52 @@ export interface Product {
   isVerified: boolean;
 }
 
+// Partial Supabase DB type for Products (since full types are not generated yet)
+interface DBProduct {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  image_url: string;
+  condition: string;
+  seller: string;
+  is_verified: boolean;
+  reviews?: { rating: number }[];
+}
+
 /**
  * Fetches a list of available products from Supabase.
  *
- * @returns A promise resolving to an array of products.
+ * Architecture:
+ * - Uses the Client-side Supabase client (Client Component usage).
+ * - Maps the database schema (snake_case) to the UI model (camelCase).
+ * - Aggregates reviews to calculate average ratings on the fly.
+ *
+ * @returns A promise resolving to an array of mapped Product objects.
  */
 export async function getProducts(): Promise<Product[]> {
   const supabase = createClient();
 
   try {
+    // Select specific columns for performance (avoiding 'select *')
     const { data, error } = await supabase
       .from('products')
       .select(
         'id, name, price, category, image_url, condition, seller, is_verified, reviews(rating)',
       )
-      .gt('stock_count', 0);
+      .gt('stock_count', 0); // Only show in-stock items
 
     if (error) {
-      console.error('Error fetching products:', error);
+      Logger.error('Error fetching products:', error);
       return [];
     }
 
     if (!data) return [];
 
-    return data.map((item: any) => {
-      // Calculate average rating
-      const ratings = item.reviews?.map((r: any) => r.rating) || [];
+    // Transformation Layer: DB -> UI
+    return (data as unknown as DBProduct[]).map((item) => {
+      // Calculate average rating from related reviews
+      const ratings = item.reviews?.map((r) => r.rating) || [];
       const avgRating =
         ratings.length > 0
           ? ratings.reduce((a: number, b: number) => a + b, 0) / ratings.length
@@ -56,7 +77,7 @@ export async function getProducts(): Promise<Product[]> {
       };
     });
   } catch (err) {
-    console.error('Unexpected error fetching products:', err);
+    Logger.error('Unexpected error fetching products:', err);
     return [];
   }
 }

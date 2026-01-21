@@ -1,5 +1,15 @@
 'use client';
 
+/**
+ * Injects JSON-LD Structured Data into the page head.
+ * Critical for SEO: Helps search engines understand the Organization and Website identity.
+ *
+ * Renders:
+ * - Organization Schema (Logo, Address, Contact)
+ * - WebSite Schema (Search Action, Name)
+ *
+ * @param baseUrl - The canonical base URL of the site (e.g., https://theidea.iq)
+ */
 export default function JsonLd({ baseUrl }: { baseUrl: string }) {
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -49,7 +59,7 @@ export default function JsonLd({ baseUrl }: { baseUrl: string }) {
   return (
     <script
       type="application/ld+json"
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD is safe
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD is safe and required by Google
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
   );

@@ -12,6 +12,21 @@ The public-facing web application for The IDEA IQ.
 - **I18n**: next-intl
 - **Testing**: Vitest, Playwright
 
+## 📂 Project Structure
+
+- **`src/app`**: Next.js App Router pages and layouts.
+- **`src/components`**: React components.
+  - **`ui`**: Local UI components (specific to web).
+  - **`providers`**: Context providers (Query, Toast).
+  - **`seo`**: SEO helpers (JSON-LD).
+- **`src/lib`**: Core utilities and domain-agnostic libraries.
+  - **`supabase`**: Supabase client factories (Client vs Server).
+- **`src/services`**: Domain-specific business logic and API integrations.
+  - **`products.ts`**: Product fetching and transformation.
+  - **`wayl.ts`**: Payment gateway integration.
+- **`src/hooks`**: Custom React hooks.
+  - **`queries`**: TanStack Query hooks.
+
 ## 🚀 Getting Started
 
 ### Prerequisites

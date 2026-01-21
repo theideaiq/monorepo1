@@ -4,18 +4,41 @@ import type React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../card/Card';
 
 interface MetricCardProps {
+  /** Title of the metric (e.g., "Total Revenue") */
   title: string;
+  /** The main value to display (e.g., "$50,000") */
   value: string | number;
+  /** Optional icon to display in the top-right corner */
   icon?: React.ReactNode;
+  /** Description text displayed below the value */
   description?: string;
+  /**
+   * Trend indicator configuration.
+   * Displays an arrow and percentage change.
+   */
   trend?: {
-    value: number; // e.g. 12
-    label: string; // e.g. "from last month"
+    /** The percentage value (e.g. 12 for 12%) */
+    value: number;
+    /** Label context for the trend (e.g. "from last month") */
+    label: string;
+    /** Direction of the trend: 'up' (green), 'down' (red), or 'neutral' (gray) */
     direction: 'up' | 'down' | 'neutral';
   };
   className?: string;
 }
 
+/**
+ * A specialized Card component for displaying dashboard metrics.
+ * Includes support for icons, values, descriptions, and trend indicators.
+ *
+ * @example
+ * <MetricCard
+ *   title="Active Users"
+ *   value="1,234"
+ *   icon={<UsersIcon />}
+ *   trend={{ value: 12, label: "vs last month", direction: "up" }}
+ * />
+ */
 export function MetricCard({
   title,
   value,
