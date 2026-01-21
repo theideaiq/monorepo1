@@ -27,6 +27,18 @@ interface BadgeProps
 /**
  * A small status indicator component.
  *
+ * The visual style of the badge is controlled by the {@link BadgeProps.variant | variant} prop:
+ * - `success`: for positive states or completed items (e.g. "Completed", "Active").
+ * - `warning`: for cautionary states that may require attention soon (e.g. "Expiring soon").
+ * - `danger`: for error or critical states (e.g. "Failed", "Blocked").
+ * - `neutral`: for default or informational states without strong emphasis.
+ * - `brand`: for brand-related highlights or marketing emphasis.
+ *
+ * If no `variant` is provided, the badge defaults to the `neutral` variant.
+ *
+ * @param variant Controls the visual appearance of the badge. Accepts one of:
+ * `success`, `warning`, `danger`, `neutral`, or `brand`.
+ *
  * @example
  * <Badge variant="success">Completed</Badge>
  */
