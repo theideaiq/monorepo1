@@ -18,6 +18,8 @@ export function Select({
 }: SelectProps) {
   const uniqueId = useId();
   const id = props.id || uniqueId;
+  const errorId = `${id}-error`;
+
   return (
     <div className="w-full">
       {label && (
@@ -25,12 +27,14 @@ export function Select({
           htmlFor={id}
           className="block text-sm font-medium text-slate-700 mb-1.5"
         >
-          {label}
+          {label} {props.required && <span className="text-red-500">*</span>}
         </label>
       )}
       <div className="relative">
         <select
           id={id}
+          aria-invalid={!!error}
+          aria-describedby={error ? errorId : undefined}
           className={cn(
             'w-full px-4 py-3 rounded-lg border bg-white transition-all outline-none appearance-none',
             'pr-10',
@@ -56,7 +60,11 @@ export function Select({
           size={18}
         />
       </div>
-      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+      {error && (
+        <p id={errorId} className="mt-1 text-sm text-red-500">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

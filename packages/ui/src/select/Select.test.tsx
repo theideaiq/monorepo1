@@ -35,4 +35,20 @@ describe('Select', () => {
     const select = screen.getByRole('combobox');
     expect(select).toHaveClass('border-red-500');
   });
+
+  it('sets aria-invalid and aria-describedby when error is provided', () => {
+    render(
+      <Select options={options} error="Something went wrong" label="Select" />,
+    );
+    const select = screen.getByLabelText('Select');
+    const errorMessage = screen.getByText('Something went wrong');
+
+    expect(select).toHaveAttribute('aria-invalid', 'true');
+    expect(select).toHaveAttribute('aria-describedby', errorMessage.id);
+  });
+
+  it('shows required indicator in label', () => {
+    render(<Select label="Test Label" options={options} required />);
+    expect(screen.getByText('*')).toBeInTheDocument();
+  });
 });
