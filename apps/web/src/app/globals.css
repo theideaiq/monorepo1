@@ -14,6 +14,11 @@
 }
 
 /* 3. Global Styles */
+:root {
+  /* Mobile: Remove blue tap flash */
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   font-family: var(--font-sans);
   /* Now 'text-brand-dark' exists and this will work */
@@ -21,9 +26,34 @@ body {
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* BOTH: Disable text selection by default (App feel) */
+  user-select: none;
+  -webkit-user-select: none;
+
+  /* PC: Custom Cursor Preparation */
+  /* Note: User will add 'public/cursor.svg' later */
+  cursor: default; /* Fallback */
+  /* cursor: url('/cursor.svg'), auto; <-- Ready for uncommenting */
+}
+
+/* SCROLLING: Hide scrollbars but allow scrolling */
+::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Webkit */
+}
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
 /* 4. Utilities */
+/* UTILITY: Allow selection on specific text (e.g. codes, blogs) */
+.select-text {
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: text;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
