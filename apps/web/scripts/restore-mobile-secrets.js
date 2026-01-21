@@ -9,6 +9,8 @@ function restoreSecret(envVar, destPath, platformName) {
   if (secretBase64) {
     try {
       const secretBuffer = Buffer.from(secretBase64, 'base64');
+      const destDir = path.dirname(destPath);
+      fs.mkdirSync(destDir, { recursive: true });
       fs.writeFileSync(destPath, secretBuffer);
       fs.chmodSync(destPath, 0o600);
       console.log(`✅ ${platformName} secrets restored to ${destPath}`);
