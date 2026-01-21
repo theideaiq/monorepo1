@@ -3,6 +3,7 @@ import { droidEnv as env } from '@repo/env/droid';
 import { supabase } from './supabase';
 
 const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
+const MAX_PRODUCT_SEARCH_RESULTS = 5;
 
 interface SearchProductsFunctionDeclaration {
   name: string;
@@ -66,7 +67,7 @@ async function searchProducts(query: string) {
     .from('products')
     .select('id, name, description, price, stock_count')
     .ilike('name', `%${escapedQuery}%`)
-    .limit(5);
+    .limit(MAX_PRODUCT_SEARCH_RESULTS);
 
   if (error) {
     // biome-ignore lint/suspicious/noConsole: logging is fine
