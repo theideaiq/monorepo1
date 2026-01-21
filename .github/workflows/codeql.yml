@@ -1,0 +1,86 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '30 1 * * 0'
+
+permissions:
+  security-events: write
+  actions: read
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: javascript-typescript
+            build-mode: none
+            os: ubuntu-latest
+          - language: java-kotlin
+            build-mode: manual
+            os: ubuntu-latest
+          - language: swift
+            build-mode: manual
+            os: macos-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Setup Java
+      if: matrix.language == 'java-kotlin'
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        build-mode: ${{ matrix.build-mode }}
+
+    - name: Manual Build (Java)
+      if: matrix.language == 'java-kotlin'
+      env:
+        ANDROID_GOOGLE_SERVICES_BASE64: ${{ secrets.ANDROID_GOOGLE_SERVICES_BASE64 }}
+      run: |
+        npm run secrets:restore --workspace=apps/web
+        chmod +x apps/web/android/gradlew
+        cd apps/web/android && ./gradlew assembleDebug --no-daemon
+
+    - name: Manual Build (Swift)
+      if: matrix.language == 'swift'
+      env:
+        IOS_GOOGLE_SERVICE_INFO_BASE64: ${{ secrets.IOS_GOOGLE_SERVICE_INFO_BASE64 }}
+      run: |
+        npm run secrets:restore --workspace=apps/web
+
+        xcodebuild -resolvePackageDependencies \
+          -project apps/web/ios/App/App.xcodeproj \
+          -scheme App
+
+        xcodebuild build \
+          -project apps/web/ios/App/App.xcodeproj \
+          -scheme App \
+          -destination 'generic/platform=iOS Simulator,name=iPhone 15' \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
