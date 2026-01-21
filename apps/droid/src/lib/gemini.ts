@@ -93,6 +93,6 @@ export async function generateResponse(
   } catch (error) {
     // biome-ignore lint/suspicious/noConsole: logging is fine
     console.error('Gemini Error:', error);
-    return "I'm having trouble thinking right now. Please try again later.";
+    return 'Something went wrong while generating a response. Please try again in a moment.';
   }
 }
