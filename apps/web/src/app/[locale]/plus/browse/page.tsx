@@ -59,7 +59,10 @@ export default function PlusBrowsePage() {
     });
 
     if (error) {
-      toast.error('Rental failed. Try again.');
+      Logger.error('Rental creation failed:', error);
+      toast.error(
+        'We were unable to complete your rental request. Please check your details and try again, or try again in a few minutes.'
+      );
     } else {
       toast.success(`🎉 ${item.title} has been requested!`);
     }
