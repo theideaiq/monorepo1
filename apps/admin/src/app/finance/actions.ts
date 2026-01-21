@@ -156,7 +156,12 @@ export async function getChartOfAccounts(): Promise<ChartOfAccount[]> {
     .from('chart_of_accounts')
     .select('id, code, name, type, category')
     .order('code');
-  if (error) redirect('/login');
+  if (error) {
+    // Log the underlying error before redirecting for easier debugging
+    // biome-ignore lint/suspicious/noConsole: Log critical data fetching error
+    console.error('Error fetching chart of accounts:', error);
+    redirect('/login');
+  }
   return data as ChartOfAccount[];
 }
 
