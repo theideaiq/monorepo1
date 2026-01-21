@@ -9,16 +9,17 @@ export function KPICard({
   value: number;
   type?: 'currency' | 'number' | 'percent';
 }) {
+  const locale = 'en-US';
   let formattedValue: string;
   if (type === 'currency') {
-    formattedValue = new Intl.NumberFormat('en-US', {
+    formattedValue = new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: 'USD',
     }).format(value);
   } else if (type === 'percent') {
     formattedValue = `${value.toFixed(1)}%`;
   } else {
-    formattedValue = new Intl.NumberFormat('en-US').format(value);
+    formattedValue = new Intl.NumberFormat(locale).format(value);
   }
 
   return (
