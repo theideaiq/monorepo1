@@ -41,7 +41,15 @@ async function searchProducts(query: string) {
   if (error) {
     // biome-ignore lint/suspicious/noConsole: logging is fine
     console.error('Supabase search error:', error);
-    return { error: 'Error searching for products.' };
+    return {
+      error: 'Error searching for products.',
+      code: 'SUPABASE_SEARCH_ERROR',
+      details: {
+        // Limit details to non-sensitive, high-level information
+        code: (error as any).code ?? null,
+        message: (error as any).message ?? String(error),
+      },
+    };
   }
 
   if (!data || data.length === 0) {
