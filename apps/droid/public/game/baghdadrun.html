@@ -10,22 +10,24 @@
         :root {
             --gold: #ffd700;
             --dark: #1a0b2e;
+            --teal: #009688;
         }
 
         body {
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-color: var(--dark); /* Fallback color */
+            background-color: var(--dark);
             font-family: 'Amiri', serif;
-            touch-action: none;
+            touch-action: none; /* Prevent scrolling on mobile */
+            user-select: none;
         }
 
         #game-container {
             position: relative;
             width: 100vw;
             height: 100vh;
-            /* Default sky in case JS fails */
+            /* Gradient Sky Background (Always visible) */
             background: linear-gradient(to bottom, #2b1055, #7597de); 
             overflow: hidden;
         }
@@ -36,7 +38,7 @@
             height: 100%;
         }
 
-        /* --- UI LAYER --- */
+        /* --- UI OVERLAY --- */
         #ui-layer {
             position: absolute;
             top: 20px;
@@ -49,58 +51,71 @@
             pointer-events: none;
         }
 
-        #start-screen, #game-over-screen {
+        /* Screens (Start / Game Over) */
+        #menu-layer {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
-            color: #fff;
-            background: rgba(26, 11, 46, 0.95);
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(26, 11, 46, 0.8);
+            z-index: 20;
+            transition: opacity 0.3s;
+        }
+
+        .card {
+            background: rgba(20, 10, 35, 0.95);
             padding: 40px;
             border: 4px double var(--gold);
             border-radius: 20px;
+            text-align: center;
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            font-family: 'Cinzel Decorative', cursive;
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            max-width: 400px;
+            width: 80%;
         }
 
-        h1 { margin: 0; font-size: 2.5rem; color: var(--gold); line-height: 1.2; }
-        p { font-family: 'Amiri', serif; font-size: 1.2rem; color: #ddd; margin: 20px 0; }
-        
-        .btn {
+        h1 {
+            margin: 0;
+            font-size: 3rem;
+            color: var(--gold);
+            font-family: 'Cinzel Decorative', cursive;
+            line-height: 1;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        p {
+            color: #ddd;
+            font-size: 1.2rem;
+            margin: 20px 0;
+        }
+
+        button {
             background: linear-gradient(45deg, #ffc107, #ff9800);
             border: none;
-            padding: 15px 40px;
-            font-size: 1.2rem;
+            padding: 15px 50px;
+            font-size: 1.5rem;
             font-weight: bold;
             color: #3e2723;
             cursor: pointer;
             border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             font-family: 'Cinzel Decorative', cursive;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             transition: transform 0.1s;
-            pointer-events: auto;
         }
-        .btn:active { transform: scale(0.95); }
-        
-        .hidden { display: none !important; }
 
+        button:active { transform: scale(0.95); }
+
+        .hidden { display: none !important; opacity: 0; pointer-events: none; }
+
+        /* Mobile Controls */
         #mobile-hint {
             position: absolute;
-            bottom: 30px;
+            bottom: 20px;
             width: 100%;
             text-align: center;
-            color: rgba(255,255,255,0.6);
+            color: rgba(255,255,255,0.5);
             font-size: 1rem;
             pointer-events: none;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
     </style>
 </head>
@@ -113,140 +128,180 @@
 
     <canvas id="gameCanvas"></canvas>
 
-    <div id="start-screen">
-        <h1>Baghdad<br>Run</h1>
-        <p>Dash through the Round City.<br>Jump over ruins, slide under Djinns.</p>
-        <button class="btn" id="start-btn">Start Journey</button>
-    </div>
+    <div id="menu-layer">
+        <div class="card" id="start-card">
+            <h1>Baghdad<br>Run</h1>
+            <p>Escape the Djinn.<br>Run through the Golden City.</p>
+            <button id="btn-start">Start</button>
+            <p style="font-size: 0.9rem; margin-top: 15px; color: #aaa;">Space / Tap to Jump<br>Down / Hold Left to Slide</p>
+        </div>
 
-    <div id="game-over-screen" class="hidden">
-        <h1 style="color: #ff5252;">Fallen</h1>
-        <p>Distance: <span id="final-score">0</span>m</p>
-        <button class="btn" id="restart-btn">Try Again</button>
+        <div class="card hidden" id="game-over-card">
+            <h1 style="color: #ff5252">Fallen</h1>
+            <p>Distance: <span id="final-score">0</span>m</p>
+            <button id="btn-restart">Retry</button>
+        </div>
     </div>
     
-    <div id="mobile-hint">Tap Right to Jump • Tap Left to Duck</div>
+    <div id="mobile-hint">Tap Right: Jump • Tap Left: Slide</div>
 </div>
 
 <script>
-window.onload = function() {
-    // --- SETUP ---
+    /**
+     * BAGHDAD RUNNER - FINAL FIXED VERSION
+     */
+    
+    // --- CANVAS SETUP ---
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     
-    // Force canvas to fill screen immediately
+    let GAME_WIDTH = window.innerWidth;
+    let GAME_HEIGHT = window.innerHeight;
+
     function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        GAME_WIDTH = window.innerWidth;
+        GAME_HEIGHT = window.innerHeight;
+        canvas.width = GAME_WIDTH;
+        canvas.height = GAME_HEIGHT;
     }
     window.addEventListener('resize', resize);
-    resize();
+    resize(); // Call immediately
 
-    // --- CONFIG ---
-    let GAME_WIDTH = canvas.width;
-    let GAME_HEIGHT = canvas.height;
+    // --- CONFIGURATION ---
     const GROUND_HEIGHT = 60;
     const GRAVITY = 0.6;
-    const JUMP_FORCE = -13;
+    const JUMP_FORCE = -14;
     const SPEED_INITIAL = 9;
-    const SPEED_MAX = 22;
+    const SPEED_MAX = 20;
 
-    // --- STATE ---
+    // --- GAME STATE ---
     let frameId;
     let gameSpeed = SPEED_INITIAL;
     let score = 0;
     let isRunning = false;
     let frameCount = 0;
 
-    // --- DRAWING HELPERS ---
+    // --- ASSETS (Procedural Drawing) ---
     
     function drawRunner(ctx, x, y, w, h, frame, isDucking) {
         ctx.save();
         ctx.translate(x, y);
 
-        // Bobbing animation
-        const bob = isDucking ? 0 : Math.sin(frame * 0.2) * 4;
-        
         // Shadow
-        ctx.fillStyle = 'rgba(0,0,0,0.2)';
-        ctx.beginPath(); ctx.ellipse(w/2, h-5, w/3, 4, 0, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        ctx.beginPath(); ctx.ellipse(w/2, h-2, w/3, 4, 0, 0, Math.PI*2); ctx.fill();
 
         if (isDucking) {
-            // Slide Pose
-            ctx.fillStyle = '#00acc1'; // Teal Robe
-            ctx.fillRect(0, h/2, w, h/2 - 5); 
-            ctx.fillStyle = '#ffb74d'; // Skin
-            ctx.fillRect(w - 15, h/2 + 5, 15, 15);
-            ctx.fillStyle = '#fff'; // Turban
-            ctx.beginPath(); ctx.arc(w - 8, h/2 + 5, 8, 0, Math.PI*2); ctx.fill();
+            // SLIDE POSE
+            // Robe
+            ctx.fillStyle = '#009688';
+            ctx.fillRect(0, h-30, w, 25);
+            // Sash
+            ctx.fillStyle = '#ffc107';
+            ctx.fillRect(0, h-30, w, 5);
+            // Head (Forward)
+            ctx.fillStyle = '#ffcc80';
+            ctx.fillRect(w-20, h-25, 20, 20);
+            // Turban
+            ctx.fillStyle = '#fff';
+            ctx.beginPath(); ctx.arc(w-10, h-25, 12, 0, Math.PI*2); ctx.fill();
         } else {
-            // Run Pose
+            // RUN POSE (Bobbing)
+            const bob = Math.sin(frame * 0.25) * 4;
             ctx.translate(0, bob);
-            ctx.fillStyle = '#00acc1'; // Robe
-            ctx.fillRect(10, 20, w-20, h-30);
-            ctx.fillStyle = '#ffd700'; // Sash
-            ctx.fillRect(10, 35, w-20, 6);
-            
-            // Legs
+
+            // Legs (Simple animation)
             ctx.fillStyle = '#333';
-            const legOffset = Math.sin(frame * 0.3) * 12;
-            ctx.fillRect(15 + legOffset, h-10, 8, 10);
-            ctx.fillRect(25 - legOffset, h-10, 8, 10);
+            const legSwing = Math.sin(frame * 0.3) * 15;
+            ctx.fillRect(15 + legSwing, h-15, 10, 15);
+            ctx.fillRect(15 - legSwing, h-15, 10, 15);
+
+            // Robe
+            ctx.fillStyle = '#009688'; // Teal
+            ctx.fillRect(10, 20, w-20, h-35);
+            // Sash
+            ctx.fillStyle = '#ffc107'; // Gold
+            ctx.fillRect(10, 35, w-20, 8);
 
             // Head
-            ctx.fillStyle = '#ffb74d';
+            ctx.fillStyle = '#ffcc80'; // Skin
             ctx.fillRect(15, 5, 20, 15);
-            ctx.fillStyle = '#fff'; // Turban
-            ctx.beginPath(); ctx.arc(25, 5, 13, Math.PI, 0); ctx.fill();
-            ctx.fillStyle = '#ff4081'; // Gem
-            ctx.beginPath(); ctx.arc(25, 2, 3, 0, Math.PI*2); ctx.fill();
-
-            // Scarf
+            // Turban
+            ctx.fillStyle = '#fff';
+            ctx.beginPath(); ctx.arc(25, 5, 14, Math.PI, 0); ctx.fill();
+            // Gem
+            ctx.fillStyle = '#e91e63';
+            ctx.beginPath(); ctx.arc(25, 2, 4, 0, Math.PI*2); ctx.fill();
+            
+            // Scarf Trail
             ctx.strokeStyle = '#fff';
             ctx.lineWidth = 3;
             ctx.beginPath();
             ctx.moveTo(10, 15);
-            ctx.quadraticCurveTo(-15 + Math.sin(frame*0.5)*8, 15, -20, 30);
+            ctx.quadraticCurveTo(-10 + Math.sin(frame*0.5)*5, 15, -20, 25);
             ctx.stroke();
         }
         ctx.restore();
     }
 
     function drawObstacle(ctx, obs) {
-        const x = obs.x; const y = obs.y; const w = obs.w; const h = obs.h;
-        
         if (obs.type === 'ruin') {
-            // Ruin / Broken Pillar
-            ctx.fillStyle = '#795548';
-            ctx.fillRect(x, y, w, h);
-            // Cracks
-            ctx.strokeStyle = '#4e342e';
-            ctx.lineWidth = 2;
-            ctx.beginPath(); ctx.moveTo(x+5, y); ctx.lineTo(x+10, y+20); ctx.stroke();
+            // RUIN (Jump over)
+            ctx.fillStyle = '#5d4037';
+            ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+            // Detail
+            ctx.fillStyle = '#8d6e63';
+            ctx.fillRect(obs.x + 5, obs.y + 5, obs.w - 10, 10);
             // Foliage
-            ctx.fillStyle = '#43a047';
-            ctx.beginPath(); ctx.arc(x-5, y+10, 10, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(x+w+5, y+5, 8, 0, Math.PI*2); ctx.fill();
-
-        } else if (obs.type === 'djinn') {
-            // Floating Djinn
-            const hover = Math.sin(frameCount * 0.1) * 5;
+            ctx.fillStyle = '#2e7d32';
+            ctx.beginPath(); ctx.arc(obs.x, obs.y + 10, 10, 0, Math.PI*2); ctx.fill();
+        } else {
+            // DJINN (Duck under)
+            const hover = Math.sin(frameCount * 0.1) * 8;
+            const y = obs.y + hover;
+            
+            // Aura
+            ctx.fillStyle = 'rgba(103, 58, 183, 0.3)';
+            ctx.beginPath(); ctx.arc(obs.x + obs.w/2, y + obs.h/2, 25, 0, Math.PI*2); ctx.fill();
+            
+            // Body
             ctx.fillStyle = '#673ab7';
-            ctx.beginPath(); ctx.arc(x + w/2, y + h/2 + hover, 15, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(obs.x + obs.w/2, y + obs.h/2, 15, 0, Math.PI*2); ctx.fill();
             
             // Eyes
-            ctx.fillStyle = '#ffd700';
-            ctx.beginPath(); ctx.arc(x + w/2 - 5, y + h/2 + hover, 3, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(x + w/2 + 5, y + h/2 + hover, 3, 0, Math.PI*2); ctx.fill();
-            
-            // Smoke Trail
-            ctx.fillStyle = 'rgba(103, 58, 183, 0.4)';
-            ctx.beginPath(); ctx.arc(x + w + 10, y + h/2 + hover, 8, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(x + w + 25, y + h/2 + hover - 5, 5, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = '#ffeb3b';
+            ctx.beginPath(); ctx.arc(obs.x + obs.w/2 - 5, y + obs.h/2, 3, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(obs.x + obs.w/2 + 5, y + obs.h/2, 3, 0, Math.PI*2); ctx.fill();
         }
     }
 
-    // --- GAME LOGIC ---
+    function drawBackground(ctx) {
+        // Sky Gradient (Changes with score)
+        const cycle = (score % 2000) / 2000;
+        const grad = ctx.createLinearGradient(0, 0, 0, GAME_HEIGHT);
+        
+        if (cycle < 0.5) { // Sunset
+            grad.addColorStop(0, '#2b1055');
+            grad.addColorStop(1, '#7597de');
+        } else { // Night
+            grad.addColorStop(0, '#000000');
+            grad.addColorStop(1, '#1a0b2e');
+        }
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+        // Ground
+        ctx.fillStyle = '#3e2723';
+        ctx.fillRect(0, GAME_HEIGHT - GROUND_HEIGHT, GAME_WIDTH, GROUND_HEIGHT);
+        ctx.fillStyle = '#ffb300'; // Gold Line
+        ctx.fillRect(0, GAME_HEIGHT - GROUND_HEIGHT, GAME_WIDTH, 5);
+
+        // Moon
+        ctx.fillStyle = '#fff9c4';
+        ctx.beginPath(); ctx.arc(GAME_WIDTH - 100, 100, 40, 0, Math.PI*2); ctx.fill();
+    }
+
+    // --- CLASSES ---
 
     class Player {
         constructor() {
@@ -266,13 +321,13 @@ window.onload = function() {
             }
         }
 
-        duck(isDucking) {
-            this.ducking = isDucking;
-            if (isDucking) {
-                this.h = 30;
+        duck(isActive) {
+            this.ducking = isActive;
+            if (isActive) {
+                this.h = 30; // Shrink
                 this.y = GAME_HEIGHT - GROUND_HEIGHT - this.h;
             } else {
-                this.h = 60;
+                this.h = 60; // Grow
                 this.y = GAME_HEIGHT - GROUND_HEIGHT - this.h;
             }
         }
@@ -282,6 +337,7 @@ window.onload = function() {
                 this.vy += GRAVITY;
                 this.y += this.vy;
             }
+
             // Floor Collision
             const floorY = GAME_HEIGHT - GROUND_HEIGHT - this.h;
             if (this.y >= floorY) {
@@ -298,7 +354,8 @@ window.onload = function() {
 
     class Obstacle {
         constructor() {
-            this.type = Math.random() < 0.6 ? 'ruin' : 'djinn';
+            // 50/50 Chance of Ruin or Djinn
+            this.type = Math.random() > 0.5 ? 'ruin' : 'djinn';
             this.x = GAME_WIDTH + 100;
             this.markedForDeletion = false;
 
@@ -307,19 +364,16 @@ window.onload = function() {
                 this.h = 50 + Math.random() * 30;
                 this.y = GAME_HEIGHT - GROUND_HEIGHT - this.h;
             } else {
-                // Djinn (Flying)
-                this.w = 40;
-                this.h = 40;
-                // Randomly high (duck) or low (jump)
-                this.y = Math.random() > 0.5 
-                    ? GAME_HEIGHT - GROUND_HEIGHT - 90  // High (Duck under)
-                    : GAME_HEIGHT - GROUND_HEIGHT - 35; // Low (Jump over)
+                // Djinn (Flying) - Needs Ducking
+                this.w = 50;
+                this.h = 50;
+                this.y = GAME_HEIGHT - GROUND_HEIGHT - 90; // High in air
             }
         }
 
         update() {
             this.x -= gameSpeed;
-            if (this.x + this.w < -50) this.markedForDeletion = true;
+            if (this.x + this.w < -100) this.markedForDeletion = true;
         }
 
         draw() {
@@ -327,118 +381,53 @@ window.onload = function() {
         }
     }
 
-    class Background {
-        constructor() {
-            this.buildings = [];
-            for(let i=0; i<15; i++) {
-                this.buildings.push(this.createBuilding(Math.random() * GAME_WIDTH));
-            }
-        }
-        
-        createBuilding(x) {
-            return {
-                x: x,
-                w: 60 + Math.random() * 80,
-                h: 50 + Math.random() * 150,
-                type: Math.random() > 0.5 ? 'dome' : 'tower'
-            };
-        }
-
-        draw() {
-            // Sky Gradient
-            const cycle = (score % 2000) / 2000; 
-            const grad = ctx.createLinearGradient(0, 0, 0, GAME_HEIGHT);
-            
-            if (cycle < 0.5) { // Sunset
-                grad.addColorStop(0, '#4a148c');
-                grad.addColorStop(1, '#ff6f00');
-            } else { // Night
-                grad.addColorStop(0, '#000000');
-                grad.addColorStop(1, '#1a237e');
-            }
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-            // Moon/Sun
-            ctx.fillStyle = cycle < 0.5 ? '#ffca28' : '#e0e0e0';
-            ctx.beginPath(); ctx.arc(GAME_WIDTH - 80, 80, 40, 0, Math.PI*2); ctx.fill();
-
-            // Cityscape
-            ctx.fillStyle = 'rgba(0,0,0,0.3)';
-            this.buildings.forEach(b => {
-                b.x -= gameSpeed * 0.1;
-                if (b.x + b.w < 0) {
-                    // Recycle building to right side
-                    Object.assign(b, this.createBuilding(GAME_WIDTH + 50));
-                }
-                
-                const y = GAME_HEIGHT - GROUND_HEIGHT - b.h;
-                if (b.type === 'dome') {
-                    ctx.beginPath(); ctx.arc(b.x + b.w/2, y + 20, b.w/2, Math.PI, 0); ctx.fill();
-                    ctx.fillRect(b.x, y + 20, b.w, b.h - 20);
-                } else {
-                    ctx.fillRect(b.x, y, b.w, b.h);
-                }
-            });
-
-            // Ground
-            ctx.fillStyle = '#3e2723';
-            ctx.fillRect(0, GAME_HEIGHT - GROUND_HEIGHT, GAME_WIDTH, GROUND_HEIGHT);
-            ctx.fillStyle = '#ffb300'; // Gold trim
-            ctx.fillRect(0, GAME_HEIGHT - GROUND_HEIGHT, GAME_WIDTH, 5);
-        }
-    }
-
-    // --- MAIN ENGINE ---
+    // --- GAME ENGINE ---
 
     const Game = {
         player: new Player(),
         obstacles: [],
-        bg: new Background(),
         spawnTimer: 0,
 
         start() {
-            if (isRunning) return;
-            document.getElementById('start-screen').classList.add('hidden');
-            document.getElementById('game-over-screen').classList.add('hidden');
-            
-            // Reset
+            // Reset variables
             this.player = new Player();
             this.obstacles = [];
-            score = 0;
-            gameSpeed = SPEED_INITIAL;
             this.spawnTimer = 0;
+            gameSpeed = SPEED_INITIAL;
+            score = 0;
+            frameCount = 0;
             isRunning = true;
+
+            // UI Hide
+            document.getElementById('start-card').parentElement.classList.add('hidden'); // Hide menu layer
+            document.getElementById('menu-layer').classList.add('hidden'); 
             
             loop();
         },
 
         update() {
-            // Update dimensions in case of resize
-            GAME_WIDTH = canvas.width;
-            GAME_HEIGHT = canvas.height;
-
             frameCount++;
-            gameSpeed += 0.002;
+            gameSpeed += 0.005;
             if (gameSpeed > SPEED_MAX) gameSpeed = SPEED_MAX;
 
             this.player.update();
 
-            // Spawn
+            // Spawn Obstacles
             this.spawnTimer--;
             if (this.spawnTimer <= 0) {
                 this.obstacles.push(new Obstacle());
-                this.spawnTimer = (70 + Math.random() * 50) * (SPEED_INITIAL / gameSpeed); 
+                this.spawnTimer = (60 + Math.random() * 40) * (SPEED_INITIAL / gameSpeed);
             }
 
-            // Update Obstacles & Collision
+            // Move Obstacles & Check Collision
             this.obstacles.forEach(obs => {
                 obs.update();
-                
-                // AABB Collision (Reduced hitbox)
+
+                // Hitbox
                 const p = this.player;
-                if (p.x + 15 < obs.x + obs.w &&
-                    p.x + p.w - 15 > obs.x &&
+                // Shrink hitbox slightly for gameplay feel
+                if (p.x + 10 < obs.x + obs.w &&
+                    p.x + p.w - 10 > obs.x &&
                     p.y + 10 < obs.y + obs.h &&
                     p.y + p.h - 10 > obs.y) {
                     
@@ -447,22 +436,28 @@ window.onload = function() {
             });
 
             this.obstacles = this.obstacles.filter(o => !o.markedForDeletion);
+            
+            // Score
             score++;
             document.getElementById('score').innerText = Math.floor(score / 5).toString().padStart(4, '0');
         },
 
         draw() {
             ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-            this.bg.draw();
+            drawBackground(ctx);
             this.obstacles.forEach(o => o.draw());
             this.player.draw();
         },
 
         gameOver() {
             isRunning = false;
-            document.getElementById('game-over-screen').classList.remove('hidden');
-            document.getElementById('final-score').innerText = Math.floor(score / 5);
             cancelAnimationFrame(frameId);
+            
+            // Show Game Over UI
+            document.getElementById('menu-layer').classList.remove('hidden');
+            document.getElementById('start-card').classList.add('hidden');
+            document.getElementById('game-over-card').classList.remove('hidden');
+            document.getElementById('final-score').innerText = Math.floor(score / 5);
         }
     };
 
@@ -473,18 +468,27 @@ window.onload = function() {
         frameId = requestAnimationFrame(loop);
     }
 
-    // --- EVENTS ---
+    // --- CONTROLS ---
 
-    document.getElementById('start-btn').addEventListener('click', () => Game.start());
-    document.getElementById('restart-btn').addEventListener('click', () => Game.start());
+    // Button Listeners (The specific fix for the "Not Working" issue)
+    document.getElementById('btn-start').addEventListener('click', () => {
+        Game.start();
+    });
+    
+    document.getElementById('btn-restart').addEventListener('click', () => {
+        Game.start();
+    });
 
     // Keyboard
     window.addEventListener('keydown', e => {
-        if (!isRunning && (e.code === 'Space' || e.code === 'ArrowUp')) Game.start();
-        else if (isRunning) {
-            if (e.code === 'Space' || e.code === 'ArrowUp') Game.player.jump();
-            if (e.code === 'ArrowDown') Game.player.duck(true);
+        if (e.code === 'Space' || e.code === 'ArrowUp') {
+            if (!isRunning && document.getElementById('menu-layer').className.indexOf('hidden') === -1) {
+                 Game.start();
+            } else {
+                 Game.player.jump();
+            }
         }
+        if (e.code === 'ArrowDown') Game.player.duck(true);
     });
 
     window.addEventListener('keyup', e => {
@@ -492,25 +496,23 @@ window.onload = function() {
     });
 
     // Touch
-    const c = document.getElementById('game-container');
-    c.addEventListener('touchstart', e => {
-        e.preventDefault();
-        if (!isRunning) { Game.start(); return; }
-        
+    document.addEventListener('touchstart', e => {
+        if (!isRunning) return; // Let clicks handle the menu
         const touchX = e.touches[0].clientX;
-        if (touchX < window.innerWidth / 2) Game.player.duck(true);
-        else Game.player.jump();
+        if (touchX < window.innerWidth / 2) {
+            Game.player.duck(true);
+        } else {
+            Game.player.jump();
+        }
     });
 
-    c.addEventListener('touchend', e => {
-        e.preventDefault();
+    document.addEventListener('touchend', e => {
         Game.player.duck(false);
     });
 
-    // Initial Static Render
-    Game.bg.draw();
-    Game.player.draw();
-};
+    // Initial Render (Background) to show it's working
+    drawBackground(ctx);
+
 </script>
 </body>
 </html>
