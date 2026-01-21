@@ -165,6 +165,10 @@ Rule: Routinely audit `.env.example` files against the strict Zod validation sch
 ### 2026-01-20 - Code Commenting
 **Standard:** Code commenting standards follow Google principles: TSDoc for exported functions/components, inline comments for complex logic (explaining "why"), and inclusion of performance optimization notes.
 
+### 2025-02-28 - Missing Capacitor Patch
+**Insight:** The `patches/@capacitor__cli.patch` file referenced in `package.json` was missing from the repository, causing `pnpm install` to fail immediately.
+**Rule:** Do not define `patchedDependencies` in `package.json` unless the corresponding patch file exists in the `patches/` directory. Configuration must match the filesystem state.
+
 ## Sentinel (Security)
 
 ### 2025-02-14 - Information Leakage in Checkout API
