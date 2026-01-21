@@ -8,7 +8,14 @@ describe('String Utils (@repo/utils)', () => {
       expect(slugify('  Spaced   String  ')).toBe('spaced-string');
       expect(slugify('Complex@#$Chars')).toBe('complexchars');
       expect(slugify('Multiple--Dashes')).toBe('multiple-dashes');
+    });
+
+    it('should handle empty, null or undefined input', () => {
       expect(slugify('')).toBe('');
+      // @ts-expect-error testing runtime safety
+      expect(slugify(null)).toBe('');
+      // @ts-expect-error testing runtime safety
+      expect(slugify(undefined)).toBe('');
     });
   });
 
