@@ -15,7 +15,7 @@ Smell: Copy-pasting SVG code for common icons when a library like `lucide-react`
 Standard: Always use the imported icon component from the design system's icon library (e.g., `lucide-react`). Only use custom SVGs for branding or unique assets not available in the library.
 
 ### 2026-01-20 - Global Tech Stack Standards
-**Standard:** The project standardizes on Vite v7 (`^7.3.1`) for tooling, Next.js 16 for apps, and React 19. All workspaces must adhere to these versions to ensure compatibility.
+**Standard:** The project standardizes on Vite v7 (`^7.3.1`) for tooling, Next.js v16.x for apps, and React v19.x. All workspaces must adhere to these versions to ensure compatibility.
 **Zod:** The project uses Zod v4.3.5. Custom error messages must be passed as the first string argument to the validator (e.g., `z.string("Error")`) rather than using an options object.
 
 ### 2026-01-20 - Middleware Pattern
