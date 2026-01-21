@@ -41,7 +41,7 @@ export function formatDate(date: string | Date): string {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
-  }).format(new Date(date));
+  }).format(date instanceof Date ? date : new Date(date));
 }
 
 /**
