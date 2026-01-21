@@ -3,6 +3,7 @@ import { droidEnv as env } from '@repo/env/droid';
 import { supabase } from './supabase';
 
 const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
+const MAX_PRODUCT_SEARCH_RESULTS = 5;
 
 interface SearchProductsFunctionDeclaration {
   name: string;
@@ -46,6 +47,11 @@ function isValidSearchQuery(query: unknown): query is string {
   return typeof query === 'string' && query.trim().length > 0;
 }
 
+function escapeIlikePattern(value: string): string {
+  // Escape backslash first to avoid double-escaping
+  return value.replace(/([\\%_])/g, '\\$1');
+}
+
 async function searchProducts(query: string) {
   // biome-ignore lint/suspicious/noConsole: logging is fine
   const MAX_LOG_QUERY_LENGTH = 100;
@@ -56,11 +62,12 @@ async function searchProducts(query: string) {
       ? sanitizedQuery.slice(0, MAX_LOG_QUERY_LENGTH) + '…'
       : sanitizedQuery;
   console.log(`Searching products for query (truncated if long): "${safeQueryForLog}"`);
+  const escapedQuery = escapeIlikePattern(query);
   const { data, error } = await supabase
     .from('products')
     .select('id, name, description, price, stock_count')
-    .ilike('name', `%${query}%`)
-    .limit(5);
+    .ilike('name', `%${escapedQuery}%`)
+    .limit(MAX_PRODUCT_SEARCH_RESULTS);
 
   if (error) {
     // biome-ignore lint/suspicious/noConsole: logging is fine
@@ -77,7 +84,8 @@ async function searchProducts(query: string) {
         : String(error);
 
     return {
-      error: 'Error searching for products.',
+      error:
+        "We couldn't complete your product search. Please try again shortly or refine your search query.",
       code: 'SUPABASE_SEARCH_ERROR',
       details: {
         // Limit details to non-sensitive, high-level information
@@ -122,7 +130,7 @@ export async function generateResponse(
         if (!isValidSearchQuery(query)) {
           // biome-ignore lint/suspicious/noConsole: logging is fine
           console.error('Invalid arguments for search_products tool call:', rawArgs);
-          return "I couldn't understand the product you want to search for. Please try again with a product name.";
+          return "I couldn't understand the product you want to search for. Please try again with a clear product name or short description, for example: 'wireless headphones', 'iPhone 15 case', or '4K monitor'.";
         }
 
         const productData = await searchProducts(query);
@@ -143,10 +151,55 @@ export async function generateResponse(
       }
     }
 
-    return result.text || "";
+    return result.text || "I couldn't generate a response. Please try asking your question again or try rephrasing it.";
   } catch (error) {
     // biome-ignore lint/suspicious/noConsole: logging is fine
     console.error('Gemini Error:', error);
-    return 'Something went wrong while generating a response. Please try again in a moment.';
+
+    // Derive a more specific, user-safe error message without exposing internal details.
+    const err = error as unknown;
+    let userMessage =
+      'I had trouble talking to the AI service. Please try again in a moment.';
+
+    if (err && typeof err === 'object') {
+      const anyErr = err as {
+        message?: string;
+        code?: string | number;
+        status?: number;
+        statusCode?: number;
+      };
+
+      const message = (anyErr.message || '').toLowerCase();
+      const status = anyErr.status ?? anyErr.statusCode;
+
+      // Likely configuration or authentication issue with the AI service.
+      if (
+        message.includes('api key') ||
+        message.includes('unauthorized') ||
+        message.includes('invalid authentication') ||
+        message.includes('permission') ||
+        status === 401 ||
+        status === 403
+      ) {
+        userMessage =
+          'The AI service is currently misconfigured or unavailable. Please try again later.';
+      }
+      // Transient network / rate limit / server errors from the provider.
+      else if (
+        status === 429 ||
+        (typeof status === 'number' && status >= 500 && status <= 599) ||
+        message.includes('network error') ||
+        message.includes('timeout') ||
+        message.includes('timed out') ||
+        message.includes('etimedout') ||
+        message.includes('econnrefused') ||
+        message.includes('enotfound')
+      ) {
+        userMessage =
+          'The AI service is temporarily unavailable due to a connection issue. Please wait a moment and try again.';
+      }
+    }
+
+    return userMessage;
   }
 }

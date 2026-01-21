@@ -18,6 +18,8 @@ export function Select({
 }: SelectProps) {
   const uniqueId = useId();
   const id = props.id || uniqueId;
+  const errorId = `${id}-error`;
+
   return (
     <div className="w-full">
       {label && (
@@ -25,12 +27,14 @@ export function Select({
           htmlFor={id}
           className="block text-sm font-medium text-slate-700 mb-1.5"
         >
-          {label}
+          {label} {props.required && <span className="text-red-500">*</span>}
         </label>
       )}
       <div className="relative">
         <select
           id={id}
+          aria-invalid={!!error}
+          aria-describedby={error ? errorId : undefined}
           className={cn(
             'w-full px-4 py-3 rounded-lg border bg-white transition-all outline-none appearance-none',
             'pr-10',
@@ -44,9 +48,9 @@ export function Select({
           <option value="" disabled>
             Select an option
           </option>
-          {options.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
             </option>
           ))}
         </select>
@@ -54,9 +58,14 @@ export function Select({
         <ChevronDown
           className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
           size={18}
+          aria-hidden="true"
         />
       </div>
-      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+      {error && (
+        <p id={errorId} className="mt-1 text-sm text-red-500">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

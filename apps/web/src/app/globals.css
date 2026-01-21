@@ -8,7 +8,7 @@
 
   /* 2. Define Brand Colors (Critical for Tailwind v4) */
   --color-brand-dark: #0F172A;  /* Slate 900 */
-  --color-brand-deep: #020617;  /* Slate 950 */
+  --color-brand-deep: #0f1014;  /* Deep dark for cinema/plus mode */
   --color-brand-pink: #E91E63;  /* Pink 500 */
   --color-brand-yellow: #FFD600; /* Yellow 400 */
 }
@@ -30,4 +30,20 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+/* 5. Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
 }
