@@ -11,6 +11,7 @@ on:
 jobs:
   gitleaks:
     name: Gitleaks
+    if: false # Disabled until GITLEAKS_LICENSE secret is available
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6

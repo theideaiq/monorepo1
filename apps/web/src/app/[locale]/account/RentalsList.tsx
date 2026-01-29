@@ -1,8 +1,11 @@
-'use client';
+import Image from 'next/image';
+
+('use client');
 
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
+// biome-ignore lint/suspicious/noExplicitAny: Data fetch
 export default function RentalsList({ rentals }: { rentals: any[] }) {
   const t = useTranslations('Account');
   const [selectedRental, setSelectedRental] = useState<string | null>(null);
@@ -20,8 +23,10 @@ export default function RentalsList({ rentals }: { rentals: any[] }) {
         >
           <div className="flex items-center gap-4 mb-4">
             {rental.product?.image_url && (
-              <img
+              <Image
                 src={rental.product.image_url}
+                width={64}
+                height={64}
                 alt={rental.product.name}
                 className="w-16 h-16 object-cover rounded"
               />
