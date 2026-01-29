@@ -195,6 +195,11 @@ Rule: Routinely audit `.env.example` files against the strict Zod validation sch
 ### 2026-01-20 - Audit Logging Fail-Safe
 **Standard:** The `logAdminAction` function in `apps/admin/src/lib/audit.ts` handles audit logging and is implemented to fail silently (catching errors) to ensure admin workflows are not disrupted by database logging failures.
 
+### 2025-05-24 - Webhook Signature Verification
+**Vulnerability:** The payment webhook endpoint (`/api/webhooks/payment`) was processing events without verifying the cryptographic signature, allowing potential attackers to spoof payment success events.
+**Learning:** Parsing the request body as JSON (`request.json()`) consumes the stream and makes it impossible to verify the signature against the original raw body, as whitespace or ordering differences invalidate the hash.
+**Prevention:** Always read the request body as text (`request.text()`) first when signature verification is required, pass this raw string to the verifier, and only then parse it to JSON.
+
 ## Signal (SEO)
 
 ### 2024-05-22 - Missing Structured Data for Organization
