@@ -1,7 +1,7 @@
 'use client';
 
 // UI Kit
-import { Badge, Button, Input } from '@repo/ui';
+import { Badge, Button } from '@repo/ui';
 import { motion } from 'framer-motion';
 import { Book, Gamepad2, Laptop, Search, Smartphone, Zap } from 'lucide-react';
 import Image from 'next/image';
@@ -28,6 +28,7 @@ export default function MegastorePage() {
   const addItem = useCartStore((s) => s.addItem);
   const { openCart } = useUIStore();
 
+  // biome-ignore lint/suspicious/noExplicitAny: Product type mismatch with query result
   const handleQuickAdd = (e: React.MouseEvent, product: any) => {
     e.preventDefault(); // Prevent navigation
     addItem({
@@ -166,7 +167,7 @@ export default function MegastorePage() {
 
       {/* 4. FLASH DEALS */}
       <section className="max-w-7xl mx-auto px-4 mb-20">
-        <div className="bg-gradient-to-br from-[#1a1a1a] to-black rounded-[2.5rem] border border-white/10 overflow-hidden relative">
+        <div className="bg-gradient-to-br from-brand-surface to-black rounded-[2.5rem] border border-white/10 overflow-hidden relative">
           <div className="absolute top-0 right-0 p-[20%] bg-brand-pink/20 blur-[120px] rounded-full pointer-events-none" />
 
           <div className="grid md:grid-cols-2 gap-12 p-8 md:p-16 items-center relative z-10">
