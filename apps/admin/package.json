@@ -21,7 +21,7 @@
     "@repo/ui": "workspace:*",
     "@repo/utils": "workspace:*",
     "@supabase/ssr": "^0.8.0",
-    "@supabase/supabase-js": "^2.93.2",
+    "@supabase/supabase-js": "^2.93.3",
     "@tanstack/react-query": "^5.90.20",
     "@tanstack/react-table": "^8.13.2",
     "clsx": "^2.1.1",

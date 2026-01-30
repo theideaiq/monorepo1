@@ -16,7 +16,7 @@
     "@repo/database": "workspace:*",
     "@repo/env": "workspace:*",
     "@repo/payment-engine": "workspace:^",
-    "@supabase/supabase-js": "^2.93.2",
+    "@supabase/supabase-js": "^2.93.3",
     "@upstash/redis": "^1.28.4",
     "grammy": "^1.39.3",
     "lucide-react": "^0.563.0",

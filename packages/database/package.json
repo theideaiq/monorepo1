@@ -23,7 +23,7 @@
     "seed": "pnpm seed:accounts && pnpm seed:products"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.93.2"
+    "@supabase/supabase-js": "^2.93.3"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.13",
