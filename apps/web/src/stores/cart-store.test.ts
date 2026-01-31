@@ -86,7 +86,7 @@ describe('Cart Store', () => {
     addItem(item);
 
     const stored = localStorage.getItem('cart-storage-v2');
-    expect(stored).toBeDefined();
+    expect(stored).not.toBeNull();
     if (stored) {
       const parsed = JSON.parse(stored);
       expect(parsed.state.items[0]).toMatchObject({ ...item, quantity: 1 });
