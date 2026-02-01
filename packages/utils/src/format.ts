@@ -66,3 +66,18 @@ export function formatCompactNumber(number: number): string {
     maximumFractionDigits: 1,
   }).format(number);
 }
+
+/**
+ * Format a number as IQD price (without currency symbol).
+ * Uses 'en-IQ' locale which typically uses commas for thousands.
+ * Enforces no decimal places as IQD is typically an integer currency.
+ *
+ * @param amount - The numerical amount.
+ * @returns The formatted string (e.g. "50,000").
+ */
+export function formatPrice(amount: number): string {
+  if (!Number.isFinite(amount)) return '0';
+  return new Intl.NumberFormat('en-IQ', {
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
