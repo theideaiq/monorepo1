@@ -101,6 +101,7 @@ export default function AuthPage() {
 
           {/* Social Auth */}
           <Button
+            type="button"
             onClick={handleGoogle}
             className="w-full h-12 bg-white text-black hover:bg-slate-200 border-none font-bold flex items-center justify-center gap-3"
           >
