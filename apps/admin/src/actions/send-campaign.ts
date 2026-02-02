@@ -6,7 +6,7 @@ import React from 'react';
 import { Resend } from 'resend';
 import { BrandedTemplate } from '@/emails/BrandedTemplate';
 import { logAdminAction } from '@/lib/audit';
-import { requireAdmin } from '@/lib/auth-checks';
+import { requireAdmin } from '@/lib/server-auth';
 
 const BATCH_SIZE = 50;
 
@@ -57,6 +57,7 @@ export async function sendCampaign(campaignId: string) {
   if (!profiles || profiles.length === 0)
     throw new Error('No users found for this segment');
 
+  // biome-ignore lint/suspicious/noExplicitAny: Dynamic profile data
   const emails = profiles.map((p: any) => p.email).filter(Boolean);
 
   // 3. Send in Batches

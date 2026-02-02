@@ -2,10 +2,11 @@
 
 import { revalidatePath } from 'next/cache';
 import { logAdminAction } from '@/lib/audit';
-import { requireAdmin } from '@/lib/auth-checks';
+import { requireAdmin } from '@/lib/server-auth';
 
 export async function createSegment(
   name: string,
+  // biome-ignore lint/suspicious/noExplicitAny: Dynamic criteria
   criteria: Record<string, any>,
 ) {
   const { supabase } = await requireAdmin();
