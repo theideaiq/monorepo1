@@ -70,9 +70,8 @@ export default function MFAPage() {
       toast.success('Authentication successful');
       router.push('/');
       router.refresh();
-    } catch (err: any) {
-      // biome-ignore lint/suspicious/noExplicitAny: error handling
-      toast.error(err.message);
+    } catch (err: unknown) {
+      toast.error((err as Error).message);
     } finally {
       setLoading(false);
     }

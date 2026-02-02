@@ -45,8 +45,7 @@ export default function AuthPage() {
         toast.success('Account created! Please check your email.');
         setMode('login');
       }
-    } catch (err: any) {
-      // biome-ignore lint/suspicious/noExplicitAny: error handling
+    } catch (err: unknown) {
       toast.error((err as Error).message);
     } finally {
       setLoading(false);
@@ -128,14 +127,17 @@ export default function AuthPage() {
                   className="overflow-hidden"
                 >
                   <div className="mb-4">
-                    <label className="text-sm text-slate-400 mb-1 block" htmlFor="fullName">
+                    <label
+                      className="text-sm text-slate-400 mb-1 block"
+                      htmlFor="fullName"
+                    >
                       Full Name
                     </label>
                     <div className="relative mt-1">
-                        <User
-                          className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
-                          size={18}
-                        />
+                      <User
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
+                        size={18}
+                      />
                       <Input
                         id="fullName"
                         type="text"
@@ -152,14 +154,17 @@ export default function AuthPage() {
             </AnimatePresence>
 
             <div>
-              <label className="text-sm text-slate-400 mb-1 block" htmlFor="email">
+              <label
+                className="text-sm text-slate-400 mb-1 block"
+                htmlFor="email"
+              >
                 Email Address
               </label>
               <div className="relative mt-1">
-                  <Mail
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
-                    size={18}
-                  />
+                <Mail
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
+                  size={18}
+                />
                 <Input
                   id="email"
                   type="email"
@@ -173,14 +178,17 @@ export default function AuthPage() {
             </div>
 
             <div>
-              <label className="text-sm text-slate-400 mb-1 block" htmlFor="password">
+              <label
+                className="text-sm text-slate-400 mb-1 block"
+                htmlFor="password"
+              >
                 Password
               </label>
               <div className="relative mt-1">
-                  <Lock
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
-                    size={18}
-                  />
+                <Lock
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
+                  size={18}
+                />
                 <Input
                   id="password"
                   type="password"

@@ -2,13 +2,7 @@
 
 import { Button } from '@repo/ui';
 import { motion } from 'framer-motion';
-import {
-  BookOpen,
-  Check,
-  Crown,
-  Gamepad2,
-  Zap,
-} from 'lucide-react';
+import { BookOpen, Check, Crown, Gamepad2, Zap } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { type ReactNode, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -213,7 +207,7 @@ export default function PlusHome() {
               </div>
 
               <ul className="flex-1 space-y-4 mb-8">
-                {tier.features.map((feature, f) => (
+                {tier.features.map((feature) => (
                   <li
                     key={feature}
                     className="flex items-start gap-3 text-sm text-slate-300"

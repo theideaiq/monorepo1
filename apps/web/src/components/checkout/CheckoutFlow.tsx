@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Card, Input } from '@repo/ui';
+import { Button } from '@repo/ui';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, CreditCard, Loader2, Lock } from 'lucide-react';
 import { useState } from 'react';
@@ -63,7 +63,9 @@ export function CheckoutFlow() {
               </h3>
             </div>
             {step > 1 && (
-              <span className="text-sm text-brand-yellow font-medium">Edit</span>
+              <span className="text-sm text-brand-yellow font-medium">
+                Edit
+              </span>
             )}
           </button>
 
@@ -81,7 +83,10 @@ export function CheckoutFlow() {
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label htmlFor="fullName" className="text-xs text-slate-400">
+                        <label
+                          htmlFor="fullName"
+                          className="text-xs text-slate-400"
+                        >
                           Full Name
                         </label>
                         <input
@@ -97,7 +102,10 @@ export function CheckoutFlow() {
                         />
                       </div>
                       <div className="space-y-1">
-                        <label htmlFor="phoneNumber" className="text-xs text-slate-400">
+                        <label
+                          htmlFor="phoneNumber"
+                          className="text-xs text-slate-400"
+                        >
                           Phone Number
                         </label>
                         <input
@@ -115,7 +123,9 @@ export function CheckoutFlow() {
                     </div>
 
                     <div className="space-y-1">
-                      <label htmlFor="city" className="text-xs text-slate-400">City</label>
+                      <label htmlFor="city" className="text-xs text-slate-400">
+                        City
+                      </label>
                       <select
                         id="city"
                         name="city"
@@ -133,7 +143,10 @@ export function CheckoutFlow() {
                     </div>
 
                     <div className="space-y-1">
-                      <label htmlFor="details" className="text-xs text-slate-400">
+                      <label
+                        htmlFor="details"
+                        className="text-xs text-slate-400"
+                      >
                         Address Details
                       </label>
                       <textarea

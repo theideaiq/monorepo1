@@ -28,6 +28,7 @@ import {
 } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Edit, Search } from 'lucide-react';
+import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 import { updateProfile } from '@/actions/crm';
@@ -57,12 +58,14 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
         accessorKey: 'avatar_url',
         header: '',
         cell: ({ row }) => (
-          <img
+          <Image
             src={
               row.original.avatar_url ||
               `https://ui-avatars.com/api/?name=${encodeURIComponent(row.original.email)}`
             }
             alt="Avatar"
+            width={32}
+            height={32}
             className="w-8 h-8 rounded-full bg-slate-200"
           />
         ),
@@ -197,8 +200,7 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
 
       toast.success('Profile updated');
       setIsSheetOpen(false);
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast.error('Failed to update profile');
     }
   };
@@ -306,12 +308,14 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
           {editingProfile && editForm && (
             <div className="space-y-6 mt-6">
               <div className="flex items-center gap-4">
-                <img
+                <Image
                   src={
                     editingProfile.avatar_url ||
                     `https://ui-avatars.com/api/?name=${encodeURIComponent(editingProfile.email)}`
                   }
                   alt="Avatar"
+                  width={64}
+                  height={64}
                   className="w-16 h-16 rounded-full bg-slate-200"
                 />
                 <div>
@@ -341,10 +345,14 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
               />
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                <label
+                  htmlFor="crm-tags"
+                  className="block text-sm font-medium text-slate-700 mb-1.5"
+                >
                   Tags (comma separated)
                 </label>
                 <Textarea
+                  id="crm-tags"
                   value={editForm.crm_tags}
                   onChange={(e) =>
                     setEditForm((prev) =>
