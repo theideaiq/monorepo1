@@ -115,8 +115,8 @@ jobs:
           UPSTASH_REDIS_REST_URL: "dummy"
           SUPABASE_SERVICE_ROLE_KEY: "dummy"
           ZAIN_SECRET_KEY: "dummy"
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://dummy.supabase.co' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'dummy' }}
         run: pnpm turbo build
 
   e2e:
