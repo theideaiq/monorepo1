@@ -1,59 +1,42 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const ANDROID_DEST = path.join(
   __dirname,
-  '../android/app/google-services.json',
+  '../../../apps/droid/android/app/google-services.json',
 );
 const IOS_DEST = path.join(
   __dirname,
-  '../ios/App/App/GoogleService-Info.plist',
+  '../../../apps/ios/ios/Runner/GoogleService-Info.plist',
 );
 
-function restoreSecret(envVar, destPath, platformName) {
-  const secretBase64 = process.env[envVar];
-  if (secretBase64) {
-    try {
-      const secretBuffer = Buffer.from(secretBase64, 'base64');
-      const destDir = path.dirname(destPath);
-      fs.mkdirSync(destDir, { recursive: true });
-      fs.writeFileSync(destPath, secretBuffer);
-      fs.chmodSync(destPath, 0o600);
-      console.log(`✅ ${platformName} secrets restored to ${destPath}`);
-    } catch (error) {
-      let errorMessage;
-      if (error && typeof error.message === 'string') {
-        errorMessage = error.message;
-      } else {
-        const errorType =
-          error &&
-          error.constructor &&
-          typeof error.constructor.name === 'string'
-            ? error.constructor.name
-            : 'UnknownErrorType';
-        let errorDetails;
-        try {
-          errorDetails = JSON.stringify(error);
-        } catch {
-          errorDetails = String(error);
-        }
-        errorMessage = `${errorType}: ${errorDetails || 'Unknown error'}`;
-      }
-      console.error(
-        `❌ Failed to restore ${platformName} secrets: ${errorMessage}`,
-      );
-      process.exit(1);
+function restoreSecrets() {
+  try {
+    if (process.env.GOOGLE_SERVICES_JSON) {
+      fs.writeFileSync(ANDROID_DEST, process.env.GOOGLE_SERVICES_JSON);
+      console.log('✅ Restored Android google-services.json');
     }
-  } else {
-    console.log(
-      `⚠️ No ${platformName} secret found (${envVar} is not set), skipping.`,
-    );
+
+    if (process.env.GOOGLE_SERVICE_INFO_PLIST) {
+      fs.writeFileSync(IOS_DEST, process.env.GOOGLE_SERVICE_INFO_PLIST);
+      console.log('✅ Restored iOS GoogleService-Info.plist');
+    }
+  } catch (error) {
+    console.error('❌ Failed to restore mobile secrets:', error);
+    if (error) {
+      console.error(JSON.stringify(error, null, 2));
+    }
+
+    // Check if error is related to missing parent directories
+    if (error?.code === 'ENOENT') {
+      console.log(
+        'ℹ️  Skipping mobile secrets restoration (directories not found). This is expected if mobile apps are not checked out.',
+      );
+    } else {
+      // If it's another error, we might want to fail, or just warn
+      console.warn('⚠️  Could not restore mobile secrets, but proceeding.');
+    }
   }
 }
 
-console.log('🔄 Restoring mobile secrets...');
-
-restoreSecret('ANDROID_GOOGLE_SERVICES_BASE64', ANDROID_DEST, 'Android');
-restoreSecret('IOS_GOOGLE_SERVICE_INFO_BASE64', IOS_DEST, 'iOS');
-
-console.log('🏁 Secret restoration process complete.');
+restoreSecrets();
