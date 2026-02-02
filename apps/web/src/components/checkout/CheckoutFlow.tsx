@@ -44,12 +44,11 @@ export function CheckoutFlow() {
         <div
           className={`rounded-3xl border transition-all overflow-hidden ${step === 1 ? 'bg-white/5 border-brand-yellow/50 shadow-[0_0_20px_rgba(250,204,21,0.1)]' : 'bg-black/40 border-white/5'}`}
         >
-          <div
-            className="p-6 flex items-center justify-between cursor-pointer"
+          <button
+            type="button"
+            className="w-full p-6 flex items-center justify-between cursor-pointer text-left"
             onClick={() => setStep(1)}
             onKeyDown={(e) => e.key === 'Enter' && setStep(1)}
-            role="button"
-            tabIndex={0}
           >
             <div className="flex items-center gap-4">
               <div
@@ -64,7 +63,10 @@ export function CheckoutFlow() {
               </h3>
             </div>
             {step > 1 && (
-              <button className="text-sm text-brand-yellow font-medium">
+              <button
+                type="button"
+                className="text-sm text-brand-yellow font-medium"
+              >
                 Edit
               </button>
             )}
@@ -253,6 +255,7 @@ export function CheckoutFlow() {
             {items.map((item) => (
               <div key={item.id} className="flex gap-3">
                 <div className="w-12 h-12 bg-black rounded flex-shrink-0 relative overflow-hidden">
+                  {/* biome-ignore lint/performance/noImgElement: Cart item image */}
                   <img
                     src={item.image}
                     alt={item.title}
