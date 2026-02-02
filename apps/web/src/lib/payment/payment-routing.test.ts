@@ -27,7 +27,10 @@ describe('PaymentFactory (@repo/payment-engine)', () => {
 
   describe('getProviderByName', () => {
     it('should return ZainDirectAdapter when requested explicitly', () => {
-      const provider = PaymentFactory.getProviderByName('zain-direct', dummyConfig);
+      const provider = PaymentFactory.getProviderByName(
+        'zain-direct',
+        dummyConfig,
+      );
       expect(provider.name).toBe('zain-direct');
     });
 
@@ -38,7 +41,10 @@ describe('PaymentFactory (@repo/payment-engine)', () => {
     });
 
     it('should return WaylAdapter for unknown names (default behavior)', () => {
-      const provider = PaymentFactory.getProviderByName('unknown-provider', dummyConfig);
+      const provider = PaymentFactory.getProviderByName(
+        'unknown-provider',
+        dummyConfig,
+      );
       expect(provider.name).toBe('wayl');
     });
   });
