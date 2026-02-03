@@ -20,13 +20,14 @@ export default function RentalsList({ rentals }: { rentals: unknown[] }) {
         >
           <div className="flex items-center gap-4 mb-4">
             {rental.product?.image_url && (
-              {/* biome-ignore lint/performance/noImgElement: <explanation> */}
-              {/* biome-ignore lint/performance/noImgElement: <explanation> */}
-              <img
-                src={rental.product.image_url}
-                alt={rental.product.name}
-                className="w-16 h-16 object-cover rounded"
-              />
+              <>
+                {/* biome-ignore lint/performance/noImgElement: <explanation> */}
+                <img
+                  src={rental.product.image_url}
+                  alt={rental.product.name}
+                  className="w-16 h-16 object-cover rounded"
+                />
+              </>
             )}
             <div>
               <h3 className="font-semibold">
