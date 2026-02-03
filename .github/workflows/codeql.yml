@@ -46,7 +46,7 @@ jobs:
           # This implies 'manual' is fine, but maybe the overlay part was the issue?
           # Let's keep manual but fix the secret restoration path.
           - language: swift
-            build-mode: autobuild
+            build-mode: manual
 
     steps:
       - name: Checkout repository
@@ -102,6 +102,33 @@ jobs:
       # If autobuild fails, we might need to revert to manual and fix the specific xcodebuild command.
       # Given the logs showed a failure in manual mode finding workspaces, fixing the cd/context above might be enough.
       # But let's try letting autobuild handle it now that secrets are there.
+      - name: Build Manual (Swift)
+        if: matrix.language == 'swift'
+        run: |
+          # 1. Restore Secrets (Generates GoogleService-Info.plist)
+          # Ensure we are in the correct directory context for the script
+          cd apps/web && npm run secrets:restore
+
+          # 2. Determine Build Type (CocoaPods vs SPM)
+          if [ -f "ios/App/Podfile" ]; then
+              echo "✅ Podfile found. Installing CocoaPods..."
+              cd ios/App && pod install --repo-update && cd -
+              BUILD_TARGET="-workspace ios/App/App.xcworkspace"
+          else
+              echo "⚠️ No Podfile found. Assuming Swift Package Manager (SPM)."
+              echo "Resolving Dependencies..."
+              xcodebuild -resolvePackageDependencies -project ios/App/App.xcodeproj -scheme App
+              BUILD_TARGET="-project ios/App/App.xcodeproj"
+          fi
+
+          # 3. Build for Simulator (No Signing Required)
+          echo "Building Project..."
+          xcodebuild build \
+            $BUILD_TARGET \
+            -scheme App \
+            -destination 'generic/platform=iOS Simulator,name=iPhone 15' \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
 
       # ----------------------------------------------------------------
       # ANALYZE
