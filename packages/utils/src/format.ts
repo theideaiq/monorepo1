@@ -66,3 +66,17 @@ export function formatCompactNumber(number: number): string {
     maximumFractionDigits: 1,
   }).format(number);
 }
+
+/**
+ * Format a price for display using Iraqi standards (en-IQ).
+ * Used for displaying raw numbers without currency symbol, but with correct grouping.
+ *
+ * @param amount - The price amount.
+ * @returns The formatted price string (e.g., "1,250").
+ */
+export function formatPrice(amount: number): string {
+  if (!Number.isFinite(amount)) return '';
+  return new Intl.NumberFormat('en-IQ', {
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
