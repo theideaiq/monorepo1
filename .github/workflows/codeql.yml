@@ -64,7 +64,7 @@ jobs:
       # ----------------------------------------------------------------
       - name: Install dependencies
         if: matrix.build-mode == 'manual'
-        run: pnpm install
+        run: npm install -g pnpm && pnpm install
 
       # ----------------------------------------------------------------
       # MANUAL BUILD: Java (Android)
