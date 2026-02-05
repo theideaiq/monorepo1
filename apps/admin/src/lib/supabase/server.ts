@@ -1,7 +1,9 @@
+// biome-ignore lint/style/useNodejsImportProtocol: This import is for Next.js middleware/server context
+import { cookies } from 'next/headers';
 import type { Database } from '@repo/database/types';
 import { adminEnv } from '@repo/env/admin';
 import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import 'server-only';
 
 export async function createClient() {
   const cookieStore = await cookies();

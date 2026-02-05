@@ -6,7 +6,7 @@ import React from 'react';
 import { Resend } from 'resend';
 import { BrandedTemplate } from '@/emails/BrandedTemplate';
 import { logAdminAction } from '@/lib/audit';
-import { requireAdmin } from '@/lib/auth-checks';
+import { requireAdmin } from '@/lib/auth-utils/server';
 
 const BATCH_SIZE = 50;
 
