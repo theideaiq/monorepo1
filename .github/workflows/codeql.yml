@@ -52,6 +52,10 @@ jobs:
           java-version: 17
           distribution: 'temurin'
 
+      # Explicitly install pnpm because 'npm run' in a workspace requires it or proper node_modules
+      - name: Install pnpm
+        run: npm install -g pnpm && pnpm install
+
       # Initialize CodeQL (Defines what languages to scan)
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
@@ -66,13 +70,14 @@ jobs:
         if: matrix.language == 'java-kotlin'
         run: |
           # 1. Restore Secrets (Generates google-services.json)
-          npm run secrets:restore --workspace=apps/web
+          # Run script directly using node to avoid workspace resolution issues if pnpm is flaky in this env
+          cd apps/web && node scripts/restore-mobile-secrets.js
           
           # 2. Grant Permission
-          chmod +x apps/web/android/gradlew
+          chmod +x android/gradlew
           
           # 3. Build Debug APK (Sufficient for analysis)
-          cd apps/web/android && ./gradlew assembleDebug --no-daemon
+          cd android && ./gradlew assembleDebug --no-daemon
 
       # ----------------------------------------------------------------
       # MANUAL BUILD: Swift (iOS)
@@ -81,22 +86,34 @@ jobs:
         if: matrix.language == 'swift'
         run: |
           # 1. Restore Secrets (Generates GoogleService-Info.plist)
-          npm run secrets:restore --workspace=apps/web
+          # Run script directly using node
+          cd apps/web && node scripts/restore-mobile-secrets.js
           
           # 2. Determine Build Type (CocoaPods vs SPM)
-          if [ -f "apps/web/ios/App/Podfile" ]; then
+          if [ -f "ios/App/Podfile" ]; then
               echo "✅ Podfile found. Installing CocoaPods..."
-              cd apps/web/ios/App && pod install --repo-update && cd -
-              BUILD_TARGET="-workspace apps/web/ios/App/App.xcworkspace"
+              cd ios/App && pod install --repo-update && cd -
+              BUILD_TARGET="-workspace ios/App/App.xcworkspace"
           else
               echo "⚠️ No Podfile found. Assuming Swift Package Manager (SPM)."
+              # Capacitor often requires a sync/update before building if podfile is missing/managed
+              npx cap sync ios
               echo "Resolving Dependencies..."
-              xcodebuild -resolvePackageDependencies -project apps/web/ios/App/App.xcodeproj -scheme App
-              BUILD_TARGET="-project apps/web/ios/App/App.xcodeproj"
+              # Change directory to project root for xcodebuild
+              cd ios/App
+              xcodebuild -resolvePackageDependencies -project App.xcodeproj -scheme App
+              BUILD_TARGET="-project App.xcodeproj"
+              # Go back up for the build command or stay here? Better to stay consistent with paths.
+              cd ../../..
           fi
           
           # 3. Build for Simulator (No Signing Required)
           echo "Building Project..."
+          # Ensure we are in the right directory for xcodebuild or use absolute paths.
+          # The logic above for SPM cd's into ios/App, let's ensure we are at repo root for the final command or adjust paths.
+          # Easier to run xcodebuild from the iOS project directory.
+
+          cd apps/web/ios/App
           xcodebuild build \
             $BUILD_TARGET \
             -scheme App \

@@ -61,7 +61,7 @@ jobs:
           GEMINI_API_KEY: "dummy-gemini-key"
           NEXT_PUBLIC_SUPABASE_URL: "https://dummy.supabase.co"
           SUPABASE_SERVICE_ROLE_KEY: "dummy-service-role-key"
-          TELEGRAM_BOT_TOKEN: "123456789:DUMMY_TELEGRAM_BOT_TOKEN_FOR_CI_TESTING"
+          TELEGRAM_BOT_TOKEN: "123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"
         run: pnpm turbo check typecheck test
 
   build:
@@ -119,7 +119,7 @@ jobs:
           UPSTASH_REDIS_REST_TOKEN: "dummy-redis-token"
           GEMINI_API_KEY: "dummy-gemini-key"
           SUPABASE_SERVICE_ROLE_KEY: "dummy-service-role-key"
-          TELEGRAM_BOT_TOKEN: "123456789:DUMMY_TELEGRAM_BOT_TOKEN_FOR_CI_TESTING"
+          TELEGRAM_BOT_TOKEN: "123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"
         run: pnpm turbo build
 
   e2e:
