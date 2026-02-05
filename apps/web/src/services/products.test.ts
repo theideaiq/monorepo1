@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { mapDBProductToUI } from './products';
 
 describe('Products Service', () => {
@@ -18,15 +18,11 @@ describe('Products Service', () => {
         description: 'Test Description',
         details: {},
         stock_count: 10,
-        reviews: [
-          { rating: 5 },
-          { rating: 4 },
-          { rating: 5 }
-        ],
-        product_variants: []
+        reviews: [{ rating: 5 }, { rating: 4 }, { rating: 5 }],
+        product_variants: [],
       };
 
-      // @ts-ignore - mock data doesn't need to match full DB schema perfectly for this test
+      // @ts-expect-error - mock data doesn't need to match full DB schema perfectly for this test
       const result = mapDBProductToUI(mockDBProduct);
 
       expect(result.reviewCount).toBe(3);
@@ -34,7 +30,7 @@ describe('Products Service', () => {
     });
 
     it('should handle zero reviews', () => {
-       const mockDBProduct = {
+      const mockDBProduct = {
         id: '123',
         name: 'Test Product',
         slug: 'test-product',
@@ -49,10 +45,10 @@ describe('Products Service', () => {
         details: {},
         stock_count: 10,
         reviews: [],
-        product_variants: []
+        product_variants: [],
       };
 
-      // @ts-ignore
+      // @ts-expect-error
       const result = mapDBProductToUI(mockDBProduct);
 
       expect(result.reviewCount).toBe(0);

@@ -1,5 +1,5 @@
-import { Product } from '@/services/products';
 import { webEnv } from '@repo/env/web';
+import type { Product } from '@/services/products';
 
 export default function ProductJsonLd({ product }: { product: Product }) {
   const baseUrl = webEnv.NEXT_PUBLIC_SITE_URL;
