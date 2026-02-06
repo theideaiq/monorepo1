@@ -9,9 +9,12 @@ export async function POST(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const providerName = searchParams.get('provider');
 
-    if (!providerName) {
+    // Allowlist valid providers to prevent using arbitrary strings in factory lookup
+    const ALLOWED_PROVIDERS = ['wayl', 'zain-direct'];
+
+    if (!providerName || !ALLOWED_PROVIDERS.includes(providerName)) {
       return NextResponse.json(
-        { error: 'Missing provider param' },
+        { error: 'Invalid or missing provider param' },
         { status: 400 },
       );
     }
