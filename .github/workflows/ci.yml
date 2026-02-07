@@ -108,6 +108,14 @@ jobs:
           WAYL_WEBHOOK_SECRET: 'test_wayl_webhook_secret'
           # CI token format
           TELEGRAM_BOT_TOKEN: '123456789:DUMMY_TELEGRAM_BOT_TOKEN_FOR_CI_TESTING'
+          # Droid specific dummies
+          NEXT_PUBLIC_APP_ENV: 'test'
+          NEXT_PUBLIC_SUPABASE_URL: 'https://test.supabase.co'
+          # Server-side vars needed for build due to droid import structure
+          GEMINI_API_KEY: 'test_gemini'
+          UPSTASH_REDIS_REST_URL: 'https://test.upstash.io'
+          UPSTASH_REDIS_REST_TOKEN: 'test_upstash'
+          WEB_APP_URL: 'https://test.app'
         run: pnpm turbo build
 
   e2e:
