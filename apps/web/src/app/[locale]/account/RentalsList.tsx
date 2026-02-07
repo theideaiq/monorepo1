@@ -29,14 +29,14 @@ export default function RentalsList({ rentals }: { rentals: any[] }) {
               <div className="relative w-16 h-16 rounded overflow-hidden">
                 <Image
                   src={rental.product.image_url}
-                  alt={rental.product.name}
+                  alt={rental.product?.name || 'Product Image'}
                   fill
                   className="object-cover"
                 />
               </div>
             )}
             <div>
-              <h3 className="font-semibold text-lg">{rental.product.name}</h3>
+              <h3 className="font-semibold text-lg">{rental.product?.name}</h3>
               <p className="text-sm text-slate-500">
                 {t('rented_on')} {new Date(rental.created_at).toLocaleDateString()}
               </p>
