@@ -33,7 +33,7 @@ export async function requireAdmin() {
     throw new Error('Unauthorized: User invalid or banned');
   }
 
-  // Use local helper or duplicated logic since this file is server-only
+  // Use local helper to avoid importing from client-safe file if not needed
   if (!checkAdminAccess(requester.role)) {
     throw new Error('Unauthorized: Insufficient permissions');
   }
