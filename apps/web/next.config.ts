@@ -16,14 +16,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    turbo: {
-      resolveAlias: {
-        // Ensure shared packages resolve correctly in Turbo
-        '@repo/ui': '../../packages/ui/src',
-        '@repo/utils': '../../packages/utils/src',
-        '@repo/config': '../../packages/config/src',
-      },
+  turbo: {
+    resolveAlias: {
+      // Ensure shared packages resolve correctly in Turbo
+      '@repo/ui': '../../packages/ui/src',
+      '@repo/utils': '../../packages/utils/src',
+      '@repo/config': '../../packages/config/src',
     },
   },
   async headers() {
