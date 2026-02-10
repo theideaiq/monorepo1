@@ -2,6 +2,7 @@ import type { Database } from '@repo/database/types';
 import { adminEnv } from '@repo/env/admin';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+// biome-ignore lint/nursery/noUnknownType: "server-only" is a virtual module
 import 'server-only';
 
 export async function createClient() {

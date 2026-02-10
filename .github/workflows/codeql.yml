@@ -65,6 +65,11 @@ jobs:
       - name: Manual Build (Android)
         if: matrix.language == 'java-kotlin'
         run: |
+          # 0. Install Deps & Build Web Assets
+          npm_config_engine_strict=false npm install
+          mkdir -p apps/web/out # Dummy web build
+          npx cap sync android
+
           # 1. Restore Secrets (Generates google-services.json)
           npm run secrets:restore --workspace=apps/web
           
@@ -80,6 +85,11 @@ jobs:
       - name: Manual Build (Swift)
         if: matrix.language == 'swift'
         run: |
+          # 0. Install Deps & Build Web Assets
+          npm_config_engine_strict=false npm install
+          mkdir -p apps/web/out # Dummy web build
+          npx cap sync ios
+
           # 1. Restore Secrets (Generates GoogleService-Info.plist)
           npm run secrets:restore --workspace=apps/web
           
