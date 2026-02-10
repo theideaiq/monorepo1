@@ -96,6 +96,14 @@ jobs:
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SKIP_ENV_VALIDATION: "true"
+          SUPABASE_SERVICE_ROLE_KEY: "dummy"
+          WAYL_SECRET_KEY: "dummy"
+          WAYL_WEBHOOK_SECRET: "dummy"
+          RESEND_API_KEY: "dummy"
+          GEMINI_API_KEY: "dummy"
+          ZAIN_SECRET_KEY: "dummy"
+          TELEGRAM_BOT_TOKEN: "123:dummy"
         run: pnpm turbo build
 
   e2e:

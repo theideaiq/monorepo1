@@ -52,6 +52,14 @@ jobs:
           java-version: 17
           distribution: 'temurin'
 
+      # Install Dependencies (Required for Capacitor)
+      - name: Install Dependencies
+        run: |
+          npm install -g pnpm
+          npm_config_engine_strict=false SKIP_ENV_VALIDATION=true pnpm install
+          mkdir -p apps/web/out
+          touch apps/web/out/index.html
+
       # Initialize CodeQL (Defines what languages to scan)
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
@@ -65,13 +73,18 @@ jobs:
       - name: Manual Build (Android)
         if: matrix.language == 'java-kotlin'
         run: |
+          cd apps/web
+
           # 1. Restore Secrets (Generates google-services.json)
-          cd apps/web && node scripts/restore-mobile-secrets.js
+          node scripts/restore-mobile-secrets.js
+
+          # 2. Sync Capacitor (Generates native files)
+          npx cap sync android
           
-          # 2. Grant Permission
+          # 3. Grant Permission
           chmod +x android/gradlew
           
-          # 3. Build Debug APK (Sufficient for analysis)
+          # 4. Build Debug APK (Sufficient for analysis)
           cd android && ./gradlew assembleDebug --no-daemon
 
       # ----------------------------------------------------------------
@@ -80,10 +93,15 @@ jobs:
       - name: Manual Build (Swift)
         if: matrix.language == 'swift'
         run: |
+          cd apps/web
+
           # 1. Restore Secrets (Generates GoogleService-Info.plist)
-          cd apps/web && node scripts/restore-mobile-secrets.js
+          node scripts/restore-mobile-secrets.js
+
+          # 2. Sync Capacitor (Generates native files)
+          npx cap sync ios
           
-          # 2. Determine Build Type (CocoaPods vs SPM)
+          # 3. Determine Build Type (CocoaPods vs SPM)
           if [ -f "ios/App/Podfile" ]; then
               echo "✅ Podfile found. Installing CocoaPods..."
               cd ios/App && pod install --repo-update && cd -
@@ -95,7 +113,7 @@ jobs:
               BUILD_TARGET="-project ios/App/App.xcodeproj"
           fi
           
-          # 3. Build for Simulator (No Signing Required)
+          # 4. Build for Simulator (No Signing Required)
           echo "Building Project..."
           xcodebuild build \
             $BUILD_TARGET \
