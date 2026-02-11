@@ -65,13 +65,16 @@ jobs:
       - name: Manual Build (Android)
         if: matrix.language == 'java-kotlin'
         run: |
+          # 0. Install pnpm
+          npm install -g pnpm
+
           # 1. Install dependencies for workspace scripts
           npm_config_engine_strict=false pnpm install
-          
+
           # 2. Restore Secrets (Generates google-services.json)
           # Use 'cd' and direct node execution to avoid workspace context issues
           cd apps/web && node ../../scripts/restore-mobile-secrets.js
-          
+
           # 3. Prepare Android Project
           npx cap sync android
 
@@ -87,6 +90,9 @@ jobs:
       - name: Manual Build (Swift)
         if: matrix.language == 'swift'
         run: |
+          # 0. Install pnpm
+          npm install -g pnpm
+
           # 1. Install dependencies for workspace scripts
           npm_config_engine_strict=false pnpm install
 
