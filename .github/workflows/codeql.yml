@@ -71,6 +71,13 @@ jobs:
 
           # 1. Restore Secrets (Generates google-services.json)
           cd apps/web && node scripts/restore-mobile-secrets.js
+
+          # 1b. Create dummy webDir if missing (for Capacitor Sync)
+          mkdir -p apps/web/out
+          echo "<html><body>Dummy</body></html>" > apps/web/out/index.html
+
+          # 1c. Sync Capacitor Android
+          cd apps/web && npx cap sync android
           
           # 2. Grant Permission
           chmod +x android/gradlew
@@ -90,6 +97,13 @@ jobs:
 
           # 1. Restore Secrets (Generates GoogleService-Info.plist)
           cd apps/web && node scripts/restore-mobile-secrets.js
+
+          # 1b. Create dummy webDir if missing (for Capacitor Sync)
+          mkdir -p apps/web/out
+          echo "<html><body>Dummy</body></html>" > apps/web/out/index.html
+
+          # 1c. Sync Capacitor iOS
+          cd apps/web && npx cap sync ios
           
           # 2. Determine Build Type (CocoaPods vs SPM)
           if [ -f "apps/web/ios/App/Podfile" ]; then
