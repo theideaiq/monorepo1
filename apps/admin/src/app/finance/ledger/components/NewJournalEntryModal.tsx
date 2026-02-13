@@ -8,15 +8,25 @@ import { toast } from 'react-hot-toast';
 import type { ChartOfAccount } from '@/types/finance';
 import { createJournalEntry } from '../../actions';
 
+interface JournalLine {
+  accountId: string;
+  debit: number;
+  credit: number;
+}
+
 export function NewJournalEntryModal({
   accounts,
 }: {
   accounts: ChartOfAccount[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(
+    new Date().toISOString().split('T')[0] || '',
+  );
   const [description, setDescription] = useState('');
-  const [lines, setLines] = useState([{ accountId: '', debit: 0, credit: 0 }]);
+  const [lines, setLines] = useState<JournalLine[]>([
+    { accountId: '', debit: 0, credit: 0 },
+  ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -28,10 +38,17 @@ export function NewJournalEntryModal({
     setLines(lines.filter((_, i) => i !== index));
   };
 
-  const handleLineChange = (index: number, field: string, value: any) => {
+  const handleLineChange = (
+    index: number,
+    field: keyof JournalLine,
+    value: string | number,
+  ) => {
     const newLines = [...lines];
-    newLines[index] = { ...newLines[index], [field]: value };
-    setLines(newLines);
+    const line = newLines[index];
+    if (line) {
+      newLines[index] = { ...line, [field]: value } as JournalLine;
+      setLines(newLines);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

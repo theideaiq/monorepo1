@@ -43,8 +43,12 @@ export async function getCashFlowData(year: number) {
 
   lines.forEach((line: any) => {
     const date = new Date(line.ledger_entries.transaction_date);
+    if (Number.isNaN(date.getTime())) return;
+
     const monthIndex = date.getMonth();
     const month = monthNames[monthIndex];
+
+    if (!month) return;
 
     if (!monthlyData[month]) {
       monthlyData[month] = { revenue: 0, expenses: 0 };
