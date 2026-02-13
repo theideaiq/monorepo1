@@ -4,24 +4,28 @@ import { motion } from 'framer-motion';
 import { ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { memo } from 'react';
 import type { Product } from '@/services/products';
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart?: (e: React.MouseEvent) => void;
+  onAddToCart?: (e: React.MouseEvent, product: Product) => void;
   priority?: boolean;
 }
 
-export function ProductCard({
+// Move outside component to avoid recreation
+const priceFormatter = new Intl.NumberFormat('en-IQ', {
+  style: 'decimal',
+  maximumFractionDigits: 0,
+});
+
+function ProductCardComponent({
   product,
   onAddToCart,
   priority = false,
 }: ProductCardProps) {
   // Format price
-  const price = new Intl.NumberFormat('en-IQ', {
-    style: 'decimal',
-    maximumFractionDigits: 0,
-  }).format(product.price);
+  const price = priceFormatter.format(product.price);
 
   return (
     <Link href={`/product/${product.slug}`} className="group block h-full">
@@ -66,7 +70,7 @@ export function ProductCard({
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              onAddToCart?.(e);
+              onAddToCart?.(e, product);
             }}
             className="absolute bottom-3 right-3 p-3 bg-brand-yellow text-brand-dark rounded-full shadow-lg translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:text-black z-10"
             aria-label="Add to cart"
@@ -108,3 +112,5 @@ export function ProductCard({
     </Link>
   );
 }
+
+export const ProductCard = memo(ProductCardComponent);

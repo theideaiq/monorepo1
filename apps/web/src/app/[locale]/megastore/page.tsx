@@ -5,7 +5,7 @@ import { Badge, Button, Input } from '@repo/ui';
 import { motion } from 'framer-motion';
 import { Book, Gamepad2, Laptop, Search, Smartphone, Zap } from 'lucide-react';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useProducts } from '@/hooks/queries/use-products';
 import { useCartStore } from '@/stores/cart-store';
 import { ProductCard } from '@/components/ui/ProductCard';
@@ -28,7 +28,7 @@ export default function MegastorePage() {
   const addItem = useCartStore((s) => s.addItem);
   const { openCart } = useUIStore();
 
-  const handleQuickAdd = (e: React.MouseEvent, product: any) => {
+  const handleQuickAdd = useCallback((e: React.MouseEvent, product: Product) => {
     e.preventDefault(); // Prevent navigation
     addItem({
       id: product.id,
@@ -39,7 +39,7 @@ export default function MegastorePage() {
     });
     toast.success(`${product.title} added to cart`);
     openCart();
-  };
+  }, [addItem, openCart]);
 
   // Memoize filtered products
   const filteredProducts = useMemo(
@@ -137,7 +137,7 @@ export default function MegastorePage() {
               <div key={product.id} className="h-[420px]">
                 <ProductCard
                   product={product}
-                  onAddToCart={(e) => handleQuickAdd(e, product)}
+                  onAddToCart={handleQuickAdd}
                 />
               </div>
             ))}
