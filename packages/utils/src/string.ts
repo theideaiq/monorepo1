@@ -31,7 +31,7 @@ export function decodeHtmlEntities(text: string): string {
 
     // Handle numeric entities
     const numericMatch = match.match(NUMERIC_ENTITY_REGEX);
-    if (numericMatch) {
+    if (numericMatch && numericMatch[1]) {
       const code = numericMatch[1];
       const radix =
         code.startsWith('x') || code.startsWith('X')
