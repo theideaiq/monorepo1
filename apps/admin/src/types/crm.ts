@@ -22,6 +22,7 @@ export interface MarketingSegment {
   criteria: {
     role?: string;
     crm_status?: CRMStatus;
+    // biome-ignore lint/suspicious/noExplicitAny: Flexible metadata
     [key: string]: any;
   };
   created_at: string;

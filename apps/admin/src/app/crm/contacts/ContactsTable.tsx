@@ -28,7 +28,7 @@ import {
 } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Edit, Search } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 import { updateProfile } from '@/actions/crm';
 import { CRM_STATUSES, ROLES } from '@/lib/constants';
@@ -50,6 +50,15 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
     crm_tags: string;
   } | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const handleEdit = useCallback((profile: Profile) => {
+    setEditingProfile(profile);
+    setEditForm({
+      crm_status: profile.crm_status || CRM_STATUSES.LEAD,
+      crm_tags: profile.crm_tags?.join(', ') || '',
+    });
+    setIsSheetOpen(true);
+  }, []);
 
   const columns = useMemo<ColumnDef<Profile>[]>(
     () => [
@@ -143,7 +152,7 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
         ),
       },
     ],
-    [],
+    [handleEdit],
   );
 
   const table = useReactTable({
@@ -159,15 +168,6 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
       globalFilter,
     },
   });
-
-  const handleEdit = (profile: Profile) => {
-    setEditingProfile(profile);
-    setEditForm({
-      crm_status: profile.crm_status || CRM_STATUSES.LEAD,
-      crm_tags: profile.crm_tags?.join(', ') || '',
-    });
-    setIsSheetOpen(true);
-  };
 
   const handleSave = async () => {
     if (!editingProfile || !editForm) return;
@@ -197,8 +197,7 @@ export function ContactsTable({ initialData }: ContactsTableProps) {
 
       toast.success('Profile updated');
       setIsSheetOpen(false);
-    } catch (error) {
-      console.error(error);
+    } catch (_error) {
       toast.error('Failed to update profile');
     }
   };

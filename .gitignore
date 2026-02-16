@@ -56,3 +56,6 @@ Thumbs.db
 *.pem
 *.key
 lint_output.txt
+
+# TypeScript
+*.tsbuildinfo

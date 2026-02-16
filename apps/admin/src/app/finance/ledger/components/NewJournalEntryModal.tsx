@@ -121,8 +121,14 @@ export function NewJournalEntryModal({
               {lines.map((line, index) => (
                 <div key={index} className="flex gap-2 items-end">
                   <div className="flex-1 space-y-1">
-                    <label className="text-xs font-medium">Account</label>
+                    <label
+                      htmlFor={`account-${index}`}
+                      className="text-xs font-medium"
+                    >
+                      Account
+                    </label>
                     <select
+                      id={`account-${index}`}
                       className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       value={line.accountId}
                       onChange={(e) =>
@@ -139,8 +145,14 @@ export function NewJournalEntryModal({
                     </select>
                   </div>
                   <div className="w-24 space-y-1">
-                    <label className="text-xs font-medium">Debit</label>
+                    <label
+                      htmlFor={`debit-${index}`}
+                      className="text-xs font-medium"
+                    >
+                      Debit
+                    </label>
                     <Input
+                      id={`debit-${index}`}
                       type="number"
                       min="0"
                       step="0.01"
@@ -155,8 +167,14 @@ export function NewJournalEntryModal({
                     />
                   </div>
                   <div className="w-24 space-y-1">
-                    <label className="text-xs font-medium">Credit</label>
+                    <label
+                      htmlFor={`credit-${index}`}
+                      className="text-xs font-medium"
+                    >
+                      Credit
+                    </label>
                     <Input
+                      id={`credit-${index}`}
                       type="number"
                       min="0"
                       step="0.01"
