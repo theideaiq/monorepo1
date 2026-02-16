@@ -1,4 +1,3 @@
-# Area Labels
 'area/web':
   - changed-files:
       - any-glob-to-any-file: 'apps/web/**/*'
@@ -7,36 +6,16 @@
   - changed-files:
       - any-glob-to-any-file: 'apps/admin/**/*'
 
-'area/api':
+'area/droid':
   - changed-files:
-      - any-glob-to-any-file: 'packages/api/**/*'
+      - any-glob-to-any-file: 'apps/droid/**/*'
 
-'area/ui':
+'area/core':
   - changed-files:
-      - any-glob-to-any-file: 'packages/ui/**/*'
+      - any-glob-to-any-file: 'packages/**/*'
 
-'area/db':
+'area/ops':
   - changed-files:
-      - any-glob-to-any-file: 'packages/database/**/*'
-
-# Type Labels
-'type/feat':
-  - head-branch: ['feat/*', 'feature/*']
-
-'type/fix':
-  - head-branch: ['fix/*', 'hotfix/*']
-
-'type/chore':
-  - head-branch: ['chore/*']
-
-'type/docs':
-  - head-branch: ['docs/*']
-
-'type/test':
-  - head-branch: ['test/*']
-
-'type/refactor':
-  - head-branch: ['refactor/*']
-
-'type/ci':
-  - head-branch: ['ci/*']
+      - any-glob-to-any-file: '.github/**/*'
+      - any-glob-to-any-file: 'turbo.json'
+      - any-glob-to-any-file: 'package.json'
