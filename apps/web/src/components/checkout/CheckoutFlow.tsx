@@ -222,7 +222,8 @@ export function CheckoutFlow() {
                     <Button
                       onClick={handlePayment}
                       disabled={loading}
-                      className="w-full h-14 bg-brand-yellow text-brand-dark font-black text-lg flex items-center justify-center gap-2"
+                      size="xl"
+                      className="w-full bg-brand-yellow text-brand-dark font-black flex items-center justify-center gap-2"
                     >
                       {loading && <Loader2 className="animate-spin" />}
                       PAY {formattedTotal} IQD

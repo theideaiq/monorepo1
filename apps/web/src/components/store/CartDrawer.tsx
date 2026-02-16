@@ -32,7 +32,8 @@ export function CartDrawer() {
             <span>{formattedTotal} IQD</span>
           </div>
           <Button
-            className="w-full h-14 bg-brand-yellow text-brand-dark font-bold text-lg hover:bg-white"
+            size="xl"
+            className="w-full bg-brand-yellow text-brand-dark font-bold hover:bg-white"
             onClick={handleCheckout}
             disabled={items.length === 0}
           >

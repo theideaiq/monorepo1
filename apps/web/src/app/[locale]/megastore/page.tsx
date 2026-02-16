@@ -83,7 +83,10 @@ export default function MegastorePage() {
               collectibles. Same-day delivery in Baghdad.
             </p>
             <div className="flex gap-4">
-              <Button className="h-14 px-8 bg-white text-black hover:bg-slate-200 font-bold rounded-full">
+              <Button
+                size="xl"
+                className="bg-white text-black hover:bg-slate-200 font-bold rounded-full"
+              >
                 Shop Deals
               </Button>
             </div>
@@ -187,7 +190,10 @@ export default function MegastorePage() {
                   180,000
                 </span>
               </div>
-              <Button className="h-14 px-10 bg-brand-pink hover:bg-pink-600 text-white font-bold rounded-full text-lg border-none">
+              <Button
+                size="xl"
+                className="bg-brand-pink hover:bg-pink-600 text-white font-bold rounded-full border-none"
+              >
                 Claim Deal
               </Button>
             </div>
