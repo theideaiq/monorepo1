@@ -1,13 +1,12 @@
 'use client';
 
-import { Button, Input } from '@repo/ui';
+import { Button } from '@repo/ui';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Chrome, ArrowRight, Mail, Lock, User, Loader2 } from 'lucide-react';
+import { Mail, Lock, User, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 
 const supabase = createClient();
 
@@ -46,8 +45,9 @@ export default function AuthPage() {
         toast.success('Account created! Please check your email.');
         setMode('login');
       }
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err: unknown) {
+      // biome-ignore lint/suspicious/noExplicitAny: Error handling
+      toast.error((err as any).message);
     } finally {
       setLoading(false);
     }
@@ -105,7 +105,25 @@ export default function AuthPage() {
             onClick={handleGoogle}
             className="w-full h-12 bg-white text-black hover:bg-slate-200 border-none font-bold flex items-center justify-center gap-3"
           >
-            <Chrome size={20} className="text-blue-600" />
+            {/* biome-ignore lint/a11y/noSvgWithoutTitle: Decorative icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-blue-600"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="12" r="4" />
+              <line x1="21.17" x2="12" y1="8" y2="8" />
+              <line x1="3.95" x2="8.54" y1="6.06" y2="14" />
+              <line x1="10.88" x2="15.46" y1="21.94" y2="14" />
+            </svg>
             Continue with Google
           </Button>
 
@@ -128,7 +146,10 @@ export default function AuthPage() {
                   className="overflow-hidden"
                 >
                   <div className="mb-4">
-                    <label className="text-sm text-slate-400 mb-1 block">
+                    <label
+                      htmlFor="fullName"
+                      className="text-sm text-slate-400 mb-1 block"
+                    >
                       Full Name
                     </label>
                     <div className="relative">
@@ -137,6 +158,7 @@ export default function AuthPage() {
                         size={18}
                       />
                       <input
+                        id="fullName"
                         type="text"
                         required={mode === 'register'}
                         value={fullName}
@@ -151,7 +173,10 @@ export default function AuthPage() {
             </AnimatePresence>
 
             <div>
-              <label className="text-sm text-slate-400 mb-1 block">
+              <label
+                htmlFor="email"
+                className="text-sm text-slate-400 mb-1 block"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -160,6 +185,7 @@ export default function AuthPage() {
                   size={18}
                 />
                 <input
+                  id="email"
                   type="email"
                   required
                   value={email}
@@ -171,7 +197,10 @@ export default function AuthPage() {
             </div>
 
             <div>
-              <label className="text-sm text-slate-400 mb-1 block">
+              <label
+                htmlFor="password"
+                className="text-sm text-slate-400 mb-1 block"
+              >
                 Password
               </label>
               <div className="relative">
@@ -180,6 +209,7 @@ export default function AuthPage() {
                   size={18}
                 />
                 <input
+                  id="password"
                   type="password"
                   required
                   value={password}
@@ -212,6 +242,7 @@ export default function AuthPage() {
                 ? "Don't have an account? "
                 : 'Already have an account? '}
               <button
+                type="button"
                 onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
                 className="text-brand-yellow hover:underline font-bold"
               >
