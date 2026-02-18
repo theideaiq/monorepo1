@@ -6,12 +6,6 @@ const IQD_DECIMAL_FORMATTER = new Intl.NumberFormat('en-IQ', {
   maximumFractionDigits: 0,
 });
 
-const USD_DECIMAL_FORMATTER = new Intl.NumberFormat('en-US', {
-  style: 'decimal',
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
-
 const IQD_CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'IQD',
