@@ -23,6 +23,8 @@ jobs:
     env:
       ANDROID_GOOGLE_SERVICES_BASE64: ${{ secrets.ANDROID_GOOGLE_SERVICES_BASE64 }}
       IOS_GOOGLE_SERVICE_INFO_BASE64: ${{ secrets.IOS_GOOGLE_SERVICE_INFO_BASE64 }}
+      # Required for pnpm scripts
+      SKIP_ENV_VALIDATION: "true"
 
     strategy:
       fail-fast: false
@@ -52,6 +54,7 @@ jobs:
 
       - name: Install dependencies
         # Install explicit dev deps like @capacitor/cli which are needed for build scripts
+        # Use --frozen-lockfile to ensure consistent installs
         run: npm_config_engine_strict=false pnpm install
 
       # Required for Android Gradle Build
@@ -74,14 +77,17 @@ jobs:
       - name: Manual Build (Android)
         if: matrix.language == 'java-kotlin'
         run: |
-          # 1. Restore Secrets (Generates google-services.json)
-          # Use cd strategy to run in correct context without relying on workspace flags if they fail
+          # 1. Restore Secrets
           cd apps/web && npm run secrets:restore
           
-          # 2. Grant Permission (Assuming root is context)
-          chmod +x android/gradlew
+          # 2. Sync Capacitor (Generates native projects)
+          # Important: This creates the android/ directory content if missing/outdated
+          cd apps/web && npx cap sync android
           
-          # 3. Build Debug APK (Sufficient for analysis)
+          # 3. Grant Permission
+          chmod +x android/gradlew
+
+          # 4. Build Debug APK
           cd android && ./gradlew assembleDebug --no-daemon
 
       # ----------------------------------------------------------------
@@ -90,10 +96,13 @@ jobs:
       - name: Manual Build (Swift)
         if: matrix.language == 'swift'
         run: |
-          # 1. Restore Secrets (Generates GoogleService-Info.plist)
+          # 1. Restore Secrets
           cd apps/web && npm run secrets:restore
+
+          # 2. Sync Capacitor (Generates native projects)
+          cd apps/web && npx cap sync ios
           
-          # 2. Determine Build Type (CocoaPods vs SPM)
+          # 3. Determine Build Type (CocoaPods vs SPM)
           if [ -f "ios/App/Podfile" ]; then
               echo "✅ Podfile found. Installing CocoaPods..."
               cd ios/App && pod install --repo-update && cd -
@@ -105,18 +114,23 @@ jobs:
               BUILD_TARGET="-project ios/App/App.xcodeproj"
           fi
           
-          # 3. Build for Simulator (No Signing Required)
+          # 4. Build for Simulator
           echo "Building Project..."
-          # Note: Paths are relative to apps/web now because of cd?
-          # No, the previous cd was inside the if block or for secrets:restore.
-          # Let's be explicit with paths relative to repo root to avoid confusion.
 
-          cd ../.. # Go back to root if we were in apps/web (actually run commands are separate shell instances usually, unless implied block)
-          # GitHub Actions 'run' blocks share shell state only within the same step? No, typically one shell per step.
-          # So previous step's cd doesn't persist.
+          # Go back to repo root just in case
+          cd ../..
 
-          # Re-verify paths:
-          # apps/web/ios/App/App.xcodeproj
+          # Use full path or relative from root.
+          # CodeQL runner root is workspace root.
+          # Path to xcodeproj: apps/web/ios/App/App.xcodeproj
+          # Note: BUILD_TARGET has relative path from apps/web context if defined there?
+          # Let's verify paths.
+          # apps/web/ios/App/App.xcodeproj is correct relative to root.
+
+          # We need to run xcodebuild from apps/web/ios/App? No, usually root or where .xcodeproj is.
+          # If BUILD_TARGET is "-project ios/App/App.xcodeproj", we must be in apps/web.
+
+          cd apps/web
 
           xcodebuild build \
             $BUILD_TARGET \
