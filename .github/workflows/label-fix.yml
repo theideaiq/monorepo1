@@ -1,16 +1,17 @@
-name: Label
+name: Label Fix
 on: pull_request
 
 jobs:
   label:
-    name: Label PRs
+    name: Label PRs (Fix)
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/labeler@v6
+      - uses: actions/checkout@v4
+      - uses: actions/labeler@v5
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          configuration-path: .github/labeler-fix.yml
           sync-labels: true
