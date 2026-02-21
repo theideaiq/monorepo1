@@ -28,14 +28,20 @@ export function NewJournalEntryModal({
     setLines(lines.filter((_, i) => i !== index));
   };
 
-  const handleLineChange = (index: number, field: string, value: any) => {
+  const handleLineChange = (
+    index: number,
+    field: string,
+    value: string | number,
+  ) => {
     const newLines = [...lines];
+    // @ts-ignore - dynamic assignment
     newLines[index] = { ...newLines[index], [field]: value };
     setLines(newLines);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!date || !description) return;
 
     // Validation: Debits must equal Credits
     const totalDebit = lines.reduce((sum, line) => sum + Number(line.debit), 0);
