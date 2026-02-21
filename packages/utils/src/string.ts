@@ -56,3 +56,29 @@ export function slugify(text: string): string {
     .replace(/[^\w-]+/g, '') // Remove all non-word chars
     .replace(/--+/g, '-'); // Replace multiple - with single -
 }
+
+/**
+ * Safely serializes an object to a JSON string suitable for embedding in HTML (e.g., JSON-LD).
+ * Escapes characters that could be used for XSS attacks (<, >, &, U+2028, U+2029).
+ *
+ * @param data - The object to serialize.
+ * @returns The escaped JSON string.
+ */
+export function safeJsonLdStringify(data: unknown): string {
+  return JSON.stringify(data).replace(/[\u2028\u2029<>&]/g, (c) => {
+    switch (c) {
+      case '<':
+        return '\\u003c';
+      case '>':
+        return '\\u003e';
+      case '&':
+        return '\\u0026';
+      case '\u2028':
+        return '\\u2028';
+      case '\u2029':
+        return '\\u2029';
+      default:
+        return c;
+    }
+  });
+}
